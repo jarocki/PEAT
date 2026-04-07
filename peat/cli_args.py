@@ -404,6 +404,39 @@ peat heat -e -c peat-config.yaml
 """  # End HEAT examples
 
 
+forensic_examples = """
+# Analyze a forensic disk image (E01 format)
+peat forensic ./evidence/workstation.E01
+
+# Analyze a raw disk image
+peat forensic ./evidence/plc_flash.dd
+
+# Analyze a PCAP file with ICS traffic
+peat forensic ./captures/scada_network.pcap
+
+# Analyze ICS log files from a directory
+peat forensic ./logs/sel_relay_exports/
+
+# Force input type when auto-detection is ambiguous
+peat forensic --forensic-mode disk_image ./evidence/unknown_format.bin
+
+# Analyze firmware binary
+peat forensic --forensic-mode firmware ./evidence/plc_firmware.bin
+
+# Add analyst notes to the forensic metadata
+peat forensic --forensic-notes "Case 2026-042, evidence item 3" ./evidence/rtu.E01
+
+# Analyze and upload results to Elasticsearch
+peat forensic -e http://192.0.2.20:9200 ./evidence/historian.vmdk
+
+# Verbose output with named run
+peat forensic -v --run-name case_2026_042 ./evidence/workstation.E01
+
+# Analyze a PCAPNG file
+peat forensic ./captures/modbus_traffic.pcapng
+"""  # End forensic examples
+
+
 ALL_EXAMPLES: dict[str, str] = {
     "scan": scan_examples,
     "pull": pull_examples,
@@ -411,6 +444,7 @@ ALL_EXAMPLES: dict[str, str] = {
     "push": push_examples,
     "pillage": pillage_examples,
     "heat": heat_examples,
+    "forensic": forensic_examples,
 }
 
 
@@ -498,6 +532,20 @@ def build_argument_parser(version: str = "0.0.0") -> argparse.ArgumentParser:
         description=heat_description,
     )
     heat_parser.set_defaults(func="heat")
+
+    # Forensic command
+    forensic_description = (
+        "Passive forensic analysis of OT/ICS artifacts. "
+        "Analyzes disk images (E01, dd, VMDK, VHD), "
+        "ICS/SCADA log files, network packet captures (PCAP/PCAPNG), "
+        "and firmware binaries without touching live devices."
+    )
+    forensic_parser = subparsers.add_parser(
+        name="forensic",
+        help=forensic_description,
+        description=forensic_description,
+    )
+    forensic_parser.set_defaults(func="forensic")
 
     # Config-Builder command
     config_builder_description = (
@@ -1045,6 +1093,36 @@ def build_argument_parser(version: str = "0.0.0") -> argparse.ArgumentParser:
         'use the file without the "-sXXX" in the name as the source.',
     )
     add_list_module_args(pillage_parser)  # Hack to add "--list-*" commands
+
+    # Forensic command arguments
+    forensic_parser.add_argument(
+        "forensic_source",
+        type=str,
+        nargs="?",
+        default=None,
+        metavar="SOURCE",
+        help="Path to forensic evidence: disk image (E01, dd, VMDK, VHD), "
+        "PCAP/PCAPNG file, log file, log directory, or firmware binary.",
+    )
+    forensic_parser.add_argument(
+        "--forensic-mode",
+        type=str,
+        choices=["disk_image", "pcap", "log_file", "log_directory", "firmware"],
+        default=None,
+        dest="forensic_mode",
+        help="Force a specific analysis mode instead of auto-detecting "
+        "from the file extension and magic bytes.",
+    )
+    forensic_parser.add_argument(
+        "--forensic-notes",
+        type=str,
+        default="",
+        dest="forensic_notes",
+        metavar="NOTES",
+        help="Analyst notes to include in the forensic metadata "
+        "(e.g. case number, evidence item ID).",
+    )
+    add_list_module_args(forensic_parser)  # Hack to add "--list-*" commands
 
     # Encrypt command
     encrypt_parser.add_argument(

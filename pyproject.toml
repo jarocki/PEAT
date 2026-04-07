@@ -223,6 +223,16 @@ dependencies = [
     # Required for: Fortigate
     "scp>=0.15.0",
     "textual>=6.1.0",
+
+    # Forensic disk image analysis framework (Fox-IT/NCC Group)
+    # Provides unified abstraction over E01, VMDK, VHD, QCoW containers
+    # and NTFS, ExtFS, FAT, QNX, SquashFS, JFFS2 filesystems.
+    # Required for: peat forensic (disk image analysis)
+    "dissect>=3.0",
+
+    # High-speed PCAP parsing for network forensics
+    # Required for: peat forensic (PCAP analysis triage stage)
+    "dpkt>=1.9",
 ]
 
 [project.scripts]
