@@ -30,6 +30,7 @@ from peat import (
     state,
     utils,
 )
+from peat.api.forensic_api import forensic_main
 from peat.config_builder import launch_builder
 from peat.heat import HEAT_EXTRACTORS
 
@@ -300,6 +301,9 @@ def oneshot_main(args: dict[str, Any]) -> bool:
 
         elif args["func"] == "pillage":
             return pillage(args["pillage_source"])
+
+        elif args["func"] == "forensic":
+            return forensic_main(args)
 
         else:
             log.critical(f"Unknown func: {args['func']}")

@@ -49,6 +49,72 @@ sudo docker run -i ghcr.io/sandialabs/peat:latest --help
     - Windows: `.\peat.exe scan -i 192.0.2.0/24`
     - Linux: `./peat scan -i 192.0.2.0/24`
 
+## Forensic Analysis
+
+PEAT includes a passive forensic analysis mode (`peat forensic`) for analyzing OT/ICS artifacts without touching live devices. This is intended for incident response, digital forensics, and offline security assessments where active device interrogation is not possible or poses operational risk.
+
+### Capabilities
+
+**Disk Images** (E01, dd/raw, VMDK, VHD, QCoW2):
+Mounts forensic disk images virtually using the [dissect](https://github.com/fox-it/dissect) framework — no root privileges or `qemu-nbd` required. Searches for ICS artifacts (PLC projects, relay configs, firmware) using patterns from all registered PEAT device modules. Supports embedded filesystems found in OT devices: NTFS, ext4, FAT, QNX, SquashFS, JFFS2.
+
+**Firmware Binaries**:
+Scans firmware blobs for known signatures (VxWorks `ESTFBINR`, SquashFS, JFFS2, CramFS, ELF, gzip/zlib, U-Boot) and extracts embedded content with automatic decompression.
+
+**ICS/SCADA Log Files**:
+Auto-detects and parses vendor-specific log formats with output normalized to the Elastic Common Schema (ECS):
+- SEL relay Sequential Events Recorder (SER) logs
+- Siemens SIPROTEC diagnostic CSV exports (from DIGSI 5)
+- Schneider ClearSCADA / Geo SCADA Expert comms logs (TX/RX format)
+- Schneider Modicon PLC CSV logs (SD card/flash exports)
+- Generic CSV with timestamp auto-detection (fallback)
+
+**Network Packet Captures** (PCAP/PCAPNG):
+Two-stage analysis pipeline — fast triage with [dpkt](https://github.com/kbandla/dpkt) followed by deep ICS protocol dissection:
+- Modbus TCP: function code decoding, register address extraction, exception detection
+- DNP3: function code parsing, source/destination address extraction
+- EtherNet/IP (CIP): encapsulation command parsing, session tracking
+- S7comm, OPC-UA, BACnet: port-based identification
+- Passive asset inventory: builds a device list from observed traffic without sending any packets
+
+### Forensic Integrity
+
+All forensic operations maintain evidence integrity:
+- Streaming SHA-256 and MD5 hashes computed on ingest
+- Chain-of-custody metadata (timestamps, file properties, analyst notes) written as JSON
+- Read-only file access with warnings for writable evidence
+- Per-log-line SHA-256 hashes in parsed output for log integrity verification
+
+### Usage Examples
+
+```shell
+# Analyze a forensic disk image
+peat forensic ./evidence/workstation.E01
+
+# Analyze a PCAP with ICS traffic
+peat forensic ./captures/scada_network.pcap
+
+# Analyze a directory of ICS log files
+peat forensic ./logs/sel_relay_exports/
+
+# Analyze firmware with analyst notes
+peat forensic --forensic-notes "Case 2026-042, item 3" ./evidence/plc_firmware.bin
+
+# Force input type when auto-detection is ambiguous
+peat forensic --forensic-mode firmware ./evidence/unknown_format.bin
+
+# Output to Elasticsearch
+peat forensic -e http://192.0.2.20:9200 ./evidence/historian.vmdk
+```
+
+Output is written to `./peat_results/` and includes:
+- `forensic-metadata.json` — evidence hashes and chain-of-custody data
+- `forensic_artifacts/` — extracted ICS files from disk images
+- `firmware_extracted/` — carved and decompressed firmware regions
+- `forensic_logs/parsed-log-entries.ndjson` — ECS-normalized log entries (Elasticsearch bulk-importable)
+- `forensic_pcap/ics-events.ndjson` — extracted ICS protocol events
+- `forensic_pcap/asset-inventory.json` — passively discovered device inventory
+
 ## Install notes
 
 PEAT is distributed in several formats, including executable files for Linux and Windows and a Docker Container. The format you want to install depends on your use case. Typically, you'll want the executable format, which is `peat` on Linux and `peat.exe` on Windows. These can be downloaded from the [releases page](https://github.com/sandialabs/PEAT/releases) or from [CI/CD builds](https://github.com/sandialabs/PEAT/actions).
