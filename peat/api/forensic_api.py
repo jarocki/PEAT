@@ -120,10 +120,23 @@ def _write_forensic_metadata(metadata: ForensicMetadata) -> None:
 def _analyze_disk_image(
     path: Path, metadata: ForensicMetadata | None, args: dict[str, Any]
 ) -> bool:
-    """Dispatch to disk image analysis pipeline."""
+    """Dispatch to disk image analysis pipeline, then parse extracted artifacts."""
     from peat.forensic.image import analyze_disk_image
 
     result = analyze_disk_image(image_path=path, metadata=metadata)
+
+    # Feed extracted artifacts into PEAT's parse pipeline
+    extracted_paths = [
+        Path(a.output_path) for a in result.artifacts
+        if a.output_path and Path(a.output_path).exists()
+    ]
+    if extracted_paths:
+        parse_results = _parse_extracted_artifacts(extracted_paths)
+        log.info(
+            f"Parse pipeline: {parse_results['parsed']} of "
+            f"{parse_results['total']} extracted artifacts parsed successfully"
+        )
+
     return len(result.errors) == 0 or len(result.artifacts) > 0
 
 
@@ -150,8 +163,69 @@ def _analyze_logs(
 def _analyze_firmware(
     path: Path, metadata: ForensicMetadata | None, args: dict[str, Any]
 ) -> bool:
-    """Dispatch to firmware analysis pipeline."""
+    """Dispatch to firmware analysis pipeline, then parse extracted content."""
     from peat.forensic.firmware import analyze_firmware
 
     result = analyze_firmware(firmware_path=path)
+
+    # Feed extracted firmware files into PEAT's parse pipeline
+    extracted_paths = [
+        Path(p) for p in result.extracted_files
+        if Path(p).exists()
+    ]
+    if extracted_paths:
+        parse_results = _parse_extracted_artifacts(extracted_paths)
+        log.info(
+            f"Parse pipeline: {parse_results['parsed']} of "
+            f"{parse_results['total']} extracted files parsed successfully"
+        )
+
     return len(result.errors) == 0 or len(result.regions) > 0
+
+
+def _parse_extracted_artifacts(artifact_paths: list[Path]) -> dict[str, int]:
+    """
+    Feed extracted forensic artifacts into PEAT's existing parse pipeline.
+
+    Matches each artifact against PEAT device module filename patterns and
+    invokes the module's parser for matching files. This connects the forensic
+    extraction layer to PEAT's full device data model.
+
+    Args:
+        artifact_paths: Paths to extracted files on disk.
+
+    Returns:
+        Dict with 'total', 'parsed', and 'failed' counts.
+    """
+    from peat.api.parse_api import find_parsable_files, parse_data
+    from peat import module_api
+
+    results = {"total": len(artifact_paths), "parsed": 0, "failed": 0}
+    all_files = sorted(str(p) for p in artifact_paths)
+
+    # Get all parse-capable modules
+    parse_modules = [
+        cls for cls in module_api.classes
+        if hasattr(cls, "filename_patterns") and cls.filename_patterns
+    ]
+
+    for dev_cls in parse_modules:
+        matched_files = find_parsable_files(all_files, dev_cls)
+        for file_path in matched_files:
+            log.info(f"Parsing extracted artifact with {dev_cls.__name__}: {file_path.name}")
+            try:
+                dev = parse_data(file_path, dev_cls)
+                if dev:
+                    results["parsed"] += 1
+                    log.info(f"Successfully parsed: {file_path.name} → {dev_cls.__name__}")
+                else:
+                    results["failed"] += 1
+            except Exception as e:
+                log.warning(f"Parse failed for {file_path.name}: {e}")
+                results["failed"] += 1
+
+    unmatched = results["total"] - results["parsed"] - results["failed"]
+    if unmatched > 0:
+        log.debug(f"{unmatched} extracted files did not match any PEAT module patterns")
+
+    return results
