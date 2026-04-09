@@ -12,6 +12,8 @@ from pathlib import Path
 import pytest
 
 from peat.forensic.logs.base import ParsedLogEntry, LogParser
+from peat.forensic.logs.ge_parser import GEURLogParser, GESCLParser
+from peat.forensic.logs.rockwell_parser import RockwellFTAEParser
 from peat.forensic.logs.sel_parser import SELLogParser
 from peat.forensic.logs.siprotec_parser import SiprotecLogParser, GenericCSVLogParser
 from peat.forensic.logs.schneider_parser import SchneiderCommsParser
@@ -291,8 +293,172 @@ class TestLogIngestion:
         assert "sel_ser" in parser_names
         assert "siprotec_csv" in parser_names
         assert "schneider_comms" in parser_names
+        assert "ge_ur_csv" in parser_names
+        assert "ge_scl_xml" in parser_names
+        assert "rockwell_ftae" in parser_names
         assert "generic_csv" in parser_names
 
     def test_empty_directory(self, tmp_path: Path) -> None:
         entries = ingest_logs(tmp_path, output_dir=tmp_path / "out")
         assert len(entries) == 0
+
+
+# -- GE UR fixture --
+
+GE_UR_CSV = """\
+Date/Time,Event Type,User,Source,Description
+2026-03-15 14:23:45,Setting Change,admin,Front Panel,Trip Setting modified
+2026-03-15 14:24:00,Login,operator,Ethernet,User login successful
+2026-03-15 14:25:00,Protection Trip,system,Internal,Overcurrent Phase A 51P pickup
+2026-03-15 14:30:00,Firmware Update,admin,Ethernet,Firmware download started
+"""
+
+GE_SCL_XML = """\
+<?xml version="1.0" encoding="UTF-8"?>
+<SCL xmlns="http://www.iec.ch/61850/2003/SCL">
+  <IED name="GE_UR_01" manufacturer="GE" type="Multilin UR">
+    <AccessPoint name="AP1">
+      <Server>
+        <LDevice inst="PROT">
+          <LN0 lnClass="LLN0" inst="" lnType="LLN0_Type">
+            <GSEControl name="GOOSE_Trip" appID="TRIP01" confRev="1"/>
+            <GSEControl name="GOOSE_Status" appID="STATUS01" confRev="2"/>
+          </LN0>
+        </LDevice>
+      </Server>
+    </AccessPoint>
+  </IED>
+  <IED name="SEL_751_02" manufacturer="SEL" type="SEL-751">
+    <AccessPoint name="AP1">
+      <Server>
+        <LDevice inst="PROT">
+          <LN0 lnClass="LLN0" inst="" lnType="LLN0_Type">
+            <GSEControl name="GOOSE_BrkStatus" appID="BRK01" confRev="1"/>
+          </LN0>
+        </LDevice>
+      </Server>
+    </AccessPoint>
+  </IED>
+</SCL>
+"""
+
+# -- Rockwell FTAE fixture --
+
+ROCKWELL_FTAE_CSV = """\
+Alarm Name,Alarm Severity,Event Time,Alarm Message,Acknowledgement Status
+Tank_Level_High,High,2026-03-15 14:23:45,Tank level exceeded 95%,Unacknowledged
+Pump_1_Fault,Critical,2026-03-15 14:24:00,Motor overload detected,Unacknowledged
+Temp_Warning,Medium,2026-03-15 14:25:00,Temperature approaching limit,Acknowledged
+Mode_Change,Low,2026-03-15 14:30:00,PLC mode change to Run,Acknowledged
+E_Stop_Pressed,Critical,2026-03-15 14:35:00,Emergency stop activated,Unacknowledged
+"""
+
+
+class TestGEURLogParser:
+    """Tests for GE UR relay CSV log parser."""
+
+    def test_detect_ge_csv(self, tmp_path: Path) -> None:
+        f = tmp_path / "ge_ur_audit.csv"
+        f.write_text("GE Multilin Universal Relay Audit Log\n" + GE_UR_CSV)
+        assert GEURLogParser.detect(f) is True
+
+    def test_parse_event_count(self, tmp_path: Path) -> None:
+        f = tmp_path / "ge_ur_audit.csv"
+        f.write_text(GE_UR_CSV)
+        entries = GEURLogParser.parse(f)
+        assert len(entries) == 4
+
+    def test_parse_protection_trip(self, tmp_path: Path) -> None:
+        f = tmp_path / "ge_ur_audit.csv"
+        f.write_text(GE_UR_CSV)
+        entries = GEURLogParser.parse(f)
+        trip = entries[2]
+        assert trip.severity == "critical"
+        assert trip.action == "protection_event"
+
+    def test_parse_auth_event(self, tmp_path: Path) -> None:
+        f = tmp_path / "ge_ur_audit.csv"
+        f.write_text(GE_UR_CSV)
+        entries = GEURLogParser.parse(f)
+        login = entries[1]
+        assert login.category == "authentication"
+
+    def test_vendor_set(self, tmp_path: Path) -> None:
+        f = tmp_path / "ge_ur_audit.csv"
+        f.write_text(GE_UR_CSV)
+        entries = GEURLogParser.parse(f)
+        for e in entries:
+            assert e.device_vendor == "GE"
+
+
+class TestGESCLParser:
+    """Tests for GE IEC 61850 SCL XML parser."""
+
+    def test_detect_scl(self, tmp_path: Path) -> None:
+        f = tmp_path / "substation.scl"
+        f.write_text(GE_SCL_XML)
+        assert GESCLParser.detect(f) is True
+
+    def test_parse_ieds(self, tmp_path: Path) -> None:
+        f = tmp_path / "substation.scl"
+        f.write_text(GE_SCL_XML)
+        entries = GESCLParser.parse(f)
+        ied_entries = [e for e in entries if e.action == "ied_definition"]
+        assert len(ied_entries) == 2
+        ied_names = {e.device_id for e in ied_entries}
+        assert "GE_UR_01" in ied_names
+        assert "SEL_751_02" in ied_names
+
+    def test_parse_goose(self, tmp_path: Path) -> None:
+        f = tmp_path / "substation.scl"
+        f.write_text(GE_SCL_XML)
+        entries = GESCLParser.parse(f)
+        goose_entries = [e for e in entries if e.action == "goose_config"]
+        assert len(goose_entries) == 3
+        app_ids = {e.extra.get("app_id") for e in goose_entries}
+        assert "TRIP01" in app_ids
+        assert "BRK01" in app_ids
+
+
+class TestRockwellFTAEParser:
+    """Tests for Rockwell FactoryTalk Alarms and Events parser."""
+
+    def test_detect_ftae(self, tmp_path: Path) -> None:
+        f = tmp_path / "ftae_alarms.csv"
+        f.write_text(ROCKWELL_FTAE_CSV)
+        assert RockwellFTAEParser.detect(f) is True
+
+    def test_parse_event_count(self, tmp_path: Path) -> None:
+        f = tmp_path / "ftae_alarms.csv"
+        f.write_text(ROCKWELL_FTAE_CSV)
+        entries = RockwellFTAEParser.parse(f)
+        assert len(entries) == 5
+
+    def test_parse_critical_alarm(self, tmp_path: Path) -> None:
+        f = tmp_path / "ftae_alarms.csv"
+        f.write_text(ROCKWELL_FTAE_CSV)
+        entries = RockwellFTAEParser.parse(f)
+        fault = entries[1]
+        assert fault.severity == "critical"
+        assert "overload" in fault.message.lower()
+
+    def test_parse_estop(self, tmp_path: Path) -> None:
+        f = tmp_path / "ftae_alarms.csv"
+        f.write_text(ROCKWELL_FTAE_CSV)
+        entries = RockwellFTAEParser.parse(f)
+        estop = entries[4]
+        assert estop.severity == "critical"
+
+    def test_parse_ack_status(self, tmp_path: Path) -> None:
+        f = tmp_path / "ftae_alarms.csv"
+        f.write_text(ROCKWELL_FTAE_CSV)
+        entries = RockwellFTAEParser.parse(f)
+        assert entries[0].outcome == "pending"  # Unacknowledged
+        assert entries[2].outcome == "acknowledged"  # Acknowledged
+
+    def test_vendor_set(self, tmp_path: Path) -> None:
+        f = tmp_path / "ftae_alarms.csv"
+        f.write_text(ROCKWELL_FTAE_CSV)
+        entries = RockwellFTAEParser.parse(f)
+        for e in entries:
+            assert e.device_vendor == "Rockwell Automation"
