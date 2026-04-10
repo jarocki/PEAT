@@ -164,17 +164,20 @@ def analyze_pcap(
     pcap_path: Path,
     output_dir: Path | None = None,
     deep_dissect: bool = True,
+    use_zeek: bool = True,
 ) -> PcapAnalysisResult:
     """
     Analyze a PCAP/PCAPNG file for ICS/SCADA traffic.
 
     Stage 1: Fast triage with dpkt — extract flows, identify ICS ports.
     Stage 2: Deep dissection with scapy — parse ICS protocol payloads.
+    Stage 3 (optional): Zeek/ICSNPP for advanced ICS analysis + MITRE ATT&CK.
 
     Args:
         pcap_path: Path to PCAP or PCAPNG file.
         output_dir: Directory to write results.
         deep_dissect: Enable Stage 2 scapy-based ICS protocol parsing.
+        use_zeek: Enable Stage 3 Zeek/ICSNPP analysis (if Zeek is installed).
 
     Returns:
         PcapAnalysisResult with flows, events, and asset inventory.
@@ -200,6 +203,26 @@ def analyze_pcap(
         log.info(f"Stage 2: Deep dissecting {len(ics_packets):,} ICS packets with scapy")
         _stage2_dissect(ics_packets, result)
         log.info(f"Dissection complete: {len(result.ics_events):,} ICS events extracted")
+
+    # Stage 3: Optional Zeek/ICSNPP analysis
+    if use_zeek:
+        from peat.forensic.zeek import analyze_with_zeek
+
+        zeek_dir = output_dir / "zeek" if output_dir else None
+        zeek_result = analyze_with_zeek(pcap_path, output_dir=zeek_dir)
+
+        if zeek_result.zeek_available and zeek_result.ics_events:
+            log.info(
+                f"Stage 3: Zeek added {len(zeek_result.ics_events)} ICS events"
+                f"{f', {len(zeek_result.mitre_techniques)} MITRE techniques' if zeek_result.mitre_techniques else ''}"
+            )
+            # Merge Zeek ICS events into result
+            for zeek_event in zeek_result.ics_events:
+                result.ics_events.append(ICSEvent(
+                    ics_protocol=zeek_event.get("_zeek_log", "").replace(".log", ""),
+                    description=json.dumps(zeek_event, default=str),
+                    extra=zeek_event,
+                ))
 
     # Build asset inventory from flows
     _build_asset_inventory(flows, result)
