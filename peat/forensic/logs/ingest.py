@@ -19,6 +19,7 @@ from typing import Any
 from peat import config, log
 from peat.forensic.logs.base import LogParser, ParsedLogEntry
 from peat.forensic.logs.ge_parser import GESCLParser, GEURLogParser
+from peat.forensic.logs.historian_parser import PICSVParser, PIXMLParser
 from peat.forensic.logs.rockwell_parser import RockwellFTAEParser
 from peat.forensic.logs.schneider_parser import SchneiderCommsParser, SchneiderModiconCSVParser
 from peat.forensic.logs.sel_parser import SELLogParser
@@ -33,6 +34,8 @@ PARSERS: list[type[LogParser]] = [
     RockwellFTAEParser,
     SchneiderCommsParser,
     SchneiderModiconCSVParser,
+    PICSVParser,
+    PIXMLParser,
     GenericCSVLogParser,  # Fallback — must be last
 ]
 
