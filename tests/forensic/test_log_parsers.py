@@ -13,6 +13,7 @@ import pytest
 
 from peat.forensic.logs.base import ParsedLogEntry, LogParser
 from peat.forensic.logs.ge_parser import GEURLogParser, GESCLParser
+from peat.forensic.logs.historian_parser import PICSVParser, PIXMLParser
 from peat.forensic.logs.rockwell_parser import RockwellFTAEParser
 from peat.forensic.logs.sel_parser import SELLogParser
 from peat.forensic.logs.siprotec_parser import SiprotecLogParser, GenericCSVLogParser
@@ -296,6 +297,8 @@ class TestLogIngestion:
         assert "ge_ur_csv" in parser_names
         assert "ge_scl_xml" in parser_names
         assert "rockwell_ftae" in parser_names
+        assert "pi_csv" in parser_names
+        assert "pi_xml" in parser_names
         assert "generic_csv" in parser_names
 
     def test_empty_directory(self, tmp_path: Path) -> None:
@@ -462,3 +465,115 @@ class TestRockwellFTAEParser:
         entries = RockwellFTAEParser.parse(f)
         for e in entries:
             assert e.device_vendor == "Rockwell Automation"
+
+
+# -- Historian fixtures --
+
+PI_CSV = """\
+Tag,Timestamp,Value,Quality
+TANK.LEVEL,2026-03-15 14:00:00,85.2,Good
+TANK.LEVEL,2026-03-15 14:01:00,85.5,Good
+TANK.LEVEL,2026-03-15 14:02:00,92.1,Good
+PUMP.STATUS,2026-03-15 14:00:00,1,Good
+PUMP.CURRENT,2026-03-15 14:00:00,12.5,Bad
+VALVE.POS,2026-03-15 14:00:00,,Comm Failure
+"""
+
+PI_XML = """\
+<?xml version="1.0" encoding="UTF-8"?>
+<PIData source="PISystem">
+  <Data tag="TANK.LEVEL" timestamp="2026-03-15 14:00:00" value="85.2" quality="Good"/>
+  <Data tag="TANK.LEVEL" timestamp="2026-03-15 14:01:00" value="85.5" quality="Good"/>
+  <Data tag="PUMP.STATUS" timestamp="2026-03-15 14:00:00" value="1" quality="Good"/>
+  <Data tag="SENSOR.TEMP" timestamp="2026-03-15 14:00:00" value="72.3" quality="Uncertain"/>
+</PIData>
+"""
+
+
+class TestPICSVParser:
+    """Tests for OSIsoft PI / AVEVA historian CSV parser."""
+
+    def test_detect_pi_csv(self, tmp_path: Path) -> None:
+        f = tmp_path / "pi_export.csv"
+        f.write_text(PI_CSV)
+        assert PICSVParser.detect(f) is True
+
+    def test_detect_with_pi_indicator(self, tmp_path: Path) -> None:
+        f = tmp_path / "export.csv"
+        f.write_text("# OSIsoft PI DataLink Export\n" + PI_CSV)
+        assert PICSVParser.detect(f) is True
+
+    def test_parse_event_count(self, tmp_path: Path) -> None:
+        f = tmp_path / "pi_export.csv"
+        f.write_text(PI_CSV)
+        entries = PICSVParser.parse(f)
+        assert len(entries) == 6
+
+    def test_parse_good_quality(self, tmp_path: Path) -> None:
+        f = tmp_path / "pi_export.csv"
+        f.write_text(PI_CSV)
+        entries = PICSVParser.parse(f)
+        good = entries[0]
+        assert good.severity == "info"
+        assert good.action == "process_value"
+        assert good.extra["tag"] == "TANK.LEVEL"
+        assert good.extra["value"] == "85.2"
+
+    def test_parse_bad_quality(self, tmp_path: Path) -> None:
+        f = tmp_path / "pi_export.csv"
+        f.write_text(PI_CSV)
+        entries = PICSVParser.parse(f)
+        bad = entries[4]  # PUMP.CURRENT with Bad quality
+        assert bad.severity == "warning"
+        assert bad.action == "bad_quality"
+
+    def test_parse_comm_failure(self, tmp_path: Path) -> None:
+        f = tmp_path / "pi_export.csv"
+        f.write_text(PI_CSV)
+        entries = PICSVParser.parse(f)
+        comm_fail = entries[5]  # VALVE.POS with Comm Failure
+        assert comm_fail.severity == "warning"
+
+    def test_vendor_set(self, tmp_path: Path) -> None:
+        f = tmp_path / "pi_export.csv"
+        f.write_text(PI_CSV)
+        entries = PICSVParser.parse(f)
+        for e in entries:
+            assert e.device_vendor == "OSIsoft/AVEVA"
+
+    def test_timestamps_parsed(self, tmp_path: Path) -> None:
+        f = tmp_path / "pi_export.csv"
+        f.write_text(PI_CSV)
+        entries = PICSVParser.parse(f)
+        assert entries[0].timestamp is not None
+        assert entries[0].timestamp.hour == 14
+
+
+class TestPIXMLParser:
+    """Tests for OSIsoft PI XML export parser."""
+
+    def test_detect_pi_xml(self, tmp_path: Path) -> None:
+        f = tmp_path / "pi_data.xml"
+        f.write_text(PI_XML)
+        assert PIXMLParser.detect(f) is True
+
+    def test_parse_event_count(self, tmp_path: Path) -> None:
+        f = tmp_path / "pi_data.xml"
+        f.write_text(PI_XML)
+        entries = PIXMLParser.parse(f)
+        assert len(entries) == 4
+
+    def test_parse_uncertain_quality(self, tmp_path: Path) -> None:
+        f = tmp_path / "pi_data.xml"
+        f.write_text(PI_XML)
+        entries = PIXMLParser.parse(f)
+        uncertain = [e for e in entries if "Uncertain" in e.extra.get("quality", "")]
+        assert len(uncertain) == 1
+        assert uncertain[0].severity == "warning"
+
+    def test_vendor_set(self, tmp_path: Path) -> None:
+        f = tmp_path / "pi_data.xml"
+        f.write_text(PI_XML)
+        entries = PIXMLParser.parse(f)
+        for e in entries:
+            assert e.device_vendor == "OSIsoft/AVEVA"
