@@ -228,9 +228,24 @@ def analyze_pcap(
     _build_asset_inventory(flows, result)
     log.info(f"Asset inventory: {len(result.assets)} devices discovered passively")
 
+    # Passive device fingerprinting
+    from peat.forensic.fingerprint import fingerprint_from_dpkt_pcap
+
+    fingerprints = fingerprint_from_dpkt_pcap(pcap_path)
+    if fingerprints:
+        # Enrich assets with fingerprint data
+        for asset in result.assets:
+            if asset.ip in fingerprints:
+                fp = fingerprints[asset.ip]
+                if fp.os_guess:
+                    asset.roles.add(f"os:{fp.os_guess}")
+                asset.protocols.update(fp.ics_protocols)
+
     # Write results
     if output_dir:
         _write_results(result, output_dir)
+        if fingerprints:
+            _write_fingerprints(fingerprints, output_dir)
 
     return result
 
@@ -625,3 +640,16 @@ def _write_results(result: PcapAnalysisResult, output_dir: Path) -> None:
             log.debug(f"Asset inventory: {assets_path} ({len(inventory)} devices)")
         except OSError as e:
             log.warning(f"Failed to write inventory: {e}")
+
+
+def _write_fingerprints(
+    fingerprints: dict[str, Any], output_dir: Path
+) -> None:
+    """Write device fingerprints to a JSON file."""
+    fp_path = output_dir / "device-fingerprints.json"
+    try:
+        data = [fp.to_dict() for fp in fingerprints.values()]
+        fp_path.write_text(json.dumps(data, indent=4))
+        log.debug(f"Fingerprints: {fp_path} ({len(data)} devices)")
+    except OSError as e:
+        log.warning(f"Failed to write fingerprints: {e}")
