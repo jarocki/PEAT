@@ -276,10 +276,10 @@ Running as container
 .. code-block:: bash
 
    # Podman
-   podman run --rm -v $(pwd)/peat_results:/peat_results --network "host" -i --privileged ghcr.io/sandialabs/peat scan -b 192.0.2.255
+   podman run --rm -v $(pwd)/peat_results:/peat_results --network "host" -i --privileged ghcr.io/jarocki/peat scan -b 192.0.2.255
 
    # Docker
-   docker run --rm -v $(pwd)/peat_results:/peat_results --network "host" -i --privileged ghcr.io/sandialabs/peat scan -b 192.0.2.255
+   docker run --rm -v $(pwd)/peat_results:/peat_results --network "host" -i --privileged ghcr.io/jarocki/peat scan -b 192.0.2.255
 
 Examples
 ^^^^^^^^
@@ -423,7 +423,7 @@ Containers (Docker/Podman)
 Docker arguments
 ----------------
 .. note::
-   Take note of the arguments to ``docker run`` when reading the examples. All command line arguments after "docker run" and before the image name ("ghcr.io/sandialabs/peat") are arguments to Docker, and any after the image name are arguments to PEAT.
+   Take note of the arguments to ``docker run`` when reading the examples. All command line arguments after "docker run" and before the image name ("ghcr.io/jarocki/peat") are arguments to Docker, and any after the image name are arguments to PEAT.
 
 .. warning::
    Results will NOT be saved unless the output directory is mounted in the container! Ensure ``-v $(pwd)/peat_results:/peat_results`` is always included in the arguments to ``docker run``.
@@ -451,12 +451,12 @@ View the command line help
 .. code-block:: bash
 
    # Podman
-   podman run --rm -i ghcr.io/sandialabs/peat --help
-   podman run --rm -i ghcr.io/sandialabs/peat scan --help
+   podman run --rm -i ghcr.io/jarocki/peat --help
+   podman run --rm -i ghcr.io/jarocki/peat scan --help
 
    # Docker
-   docker run --rm -i ghcr.io/sandialabs/peat --help
-   docker run --rm -i ghcr.io/sandialabs/peat scan --help
+   docker run --rm -i ghcr.io/jarocki/peat --help
+   docker run --rm -i ghcr.io/jarocki/peat scan --help
 
 
 Parsing files and directories
@@ -469,23 +469,23 @@ To parse a single file, use a pipe (``|``), or use redirection to STDIN (``<``)
 .. code-block:: bash
 
    # Using cat
-   cat examples/devices/sel/sel_351/set_all.txt | docker run --rm -i ghcr.io/sandialabs/peat parse -d selrelay
+   cat examples/devices/sel/sel_351/set_all.txt | docker run --rm -i ghcr.io/jarocki/peat parse -d selrelay
 
    # Using file redirection
-   docker run --rm -i ghcr.io/sandialabs/peat parse -d selrelay < examples/devices/sel/sel_351/set_all.txt
+   docker run --rm -i ghcr.io/jarocki/peat parse -d selrelay < examples/devices/sel/sel_351/set_all.txt
 
 To parse data from a directory, mount it as a volume
 
 .. code-block:: console
 
    # General usage. "/dirname" is the name of the directory you want to parse.
-   docker run --rm -v "$(pwd)/dirname":"/dirname" -v $(pwd)/peat_results:/peat_results -i ghcr.io/sandialabs/peat parse -v -d ion -- "/dirname"
+   docker run --rm -v "$(pwd)/dirname":"/dirname" -v $(pwd)/peat_results:/peat_results -i ghcr.io/jarocki/peat parse -v -d ion -- "/dirname"
 
    # Push the parse results to an Elasticsearch server listening on localhost
-   docker run --rm -v $(pwd)/peat_results:/peat_results --network "host" -i ghcr.io/sandialabs/peat parse -e -v -d selrelay -- "/peat_results/*/devices/"
+   docker run --rm -v $(pwd)/peat_results:/peat_results --network "host" -i ghcr.io/jarocki/peat parse -e -v -d selrelay -- "/peat_results/*/devices/"
 
    # Another concrete example of parsing a directory. Note the absolute path to /examples.
-   docker run --rm -v "$(pwd)/examples":"/examples" -v $(pwd)/peat_results:/peat_results --network "host" -i --privileged ghcr.io/sandialabs/peat -VV -e http://localhost:9200 -d selrelay /examples/devices/sel/*/*.rdb
+   docker run --rm -v "$(pwd)/examples":"/examples" -v $(pwd)/peat_results:/peat_results --network "host" -i --privileged ghcr.io/jarocki/peat -VV -e http://localhost:9200 -d selrelay /examples/devices/sel/*/*.rdb
 
 Pulling data from devices
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -493,25 +493,25 @@ Running a basic pull
 
 .. code-block:: shell
 
-   docker run --rm -v $(pwd)/peat_results:/peat_results --network "host" -i ghcr.io/sandialabs/peat pull -i 192.0.2.0/24
+   docker run --rm -v $(pwd)/peat_results:/peat_results --network "host" -i ghcr.io/jarocki/peat pull -i 192.0.2.0/24
 
 To improve scanning abilities, run as root using "privileged". This requires ``root`` privileges on the host system running Docker.
 
 .. code-block:: bash
 
-   docker run --rm --privileged -v $(pwd)/peat_results:/peat_results --network "host" -i ghcr.io/sandialabs/peat pull -i 192.0.2.0/24
+   docker run --rm --privileged -v $(pwd)/peat_results:/peat_results --network "host" -i ghcr.io/jarocki/peat pull -i 192.0.2.0/24
 
 Pull from a SEL relay, and export the results to Elasticsearch
 
 .. code-block:: bash
 
-   docker run --rm -v $(pwd)/peat_results:/peat_results --network "host" -i ghcr.io/sandialabs/peat pull -vV -e -d selrelay -i 192.0.2.22
+   docker run --rm -v $(pwd)/peat_results:/peat_results --network "host" -i ghcr.io/jarocki/peat pull -vV -e -d selrelay -i 192.0.2.22
 
 Pull from three relays on two independent networks, and export the results to Elasticsearch
 
 .. code-block:: bash
 
-   docker run --rm -v $(pwd)/peat_results:/peat_results --network "host" -i ghcr.io/sandialabs/peat pull -vV -e -d selrelay -i 192.0.3.44-55 192.0.2.22-33
+   docker run --rm -v $(pwd)/peat_results:/peat_results --network "host" -i ghcr.io/jarocki/peat pull -vV -e -d selrelay -i 192.0.3.44-55 192.0.2.22-33
 
 Pushing data to devices
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -519,7 +519,7 @@ Pushing a set of configuration files to a SEL relay
 
 .. code-block:: bash
 
-   docker run --rm -v $(pwd)/peat_results:/peat_results --network "host" -i ghcr.io/sandialabs/peat push -vV -d selrelay -i 192.0.2.22 -- "/relay_configs/"
+   docker run --rm -v $(pwd)/peat_results:/peat_results --network "host" -i ghcr.io/jarocki/peat push -vV -d selrelay -i 192.0.2.22 -- "/relay_configs/"
 
 Development and Debugging
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -527,7 +527,7 @@ Testing inside of the container and saving the changes
 
 .. code-block:: bash
 
-   docker run --name "peat_dev" -v $(pwd)/peat_results:/peat_results -i -t --entrypoint "/bin/sh" ghcr.io/sandialabs/peat
+   docker run --name "peat_dev" -v $(pwd)/peat_results:/peat_results -i -t --entrypoint "/bin/sh" ghcr.io/jarocki/peat
    docker commit peat_dev
 
 Attach to an existing container (including a running one)
@@ -742,7 +742,7 @@ It's **strongly** recommended to use the Docker container version of PEAT, as it
 .. code-block:: shell
 
    # This example will process all PCAP files in "./pcaps", and save the results to "./peat_results"
-   docker run --rm -i --network host -v "$(pwd)/pcaps":/pcaps -v $(pwd)/peat_results:/peat_results ghcr.io/sandialabs/peat:latest heat -vVV -e http://heat-elastic:9200 --pcaps /pcaps --heat-file-only --heat-protocols FTPExtractor
+   docker run --rm -i --network host -v "$(pwd)/pcaps":/pcaps -v $(pwd)/peat_results:/peat_results ghcr.io/jarocki/peat:latest heat -vVV -e http://heat-elastic:9200 --pcaps /pcaps --heat-file-only --heat-protocols FTPExtractor
 
 Examples
 ^^^^^^^^

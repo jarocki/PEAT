@@ -8,5 +8,5 @@ pdm install -d
 
 pre-commit install
 
-# git remote add upstream https://github.com/sandialabs/PEAT.git
+# git remote add upstream https://github.com/jarocki/PEAT.git
 # git remote set-url --push upstream no_push

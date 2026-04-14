@@ -72,7 +72,7 @@ How to setup a local Python environment if you will be developing PEAT and need 
 .. code-block:: ps1con
 
    # Clone the PEAT Git repository
-   git clone https://github.com/sandialabs/peat.git
+   git clone https://github.com/jarocki/PEAT.git
    cd peat
 
    # Install dependencies and create environment
@@ -85,7 +85,7 @@ NOTE: the GitHub Actions CI pipeline automatically builds and pushes containers 
 .. code-block:: bash
 
    bash distribution/build-docker.sh
-   docker run -it ghcr.io/sandialabs/peat --help
+   docker run -it ghcr.io/jarocki/peat --help
 
 General build guidance
 ----------------------

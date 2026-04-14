@@ -239,11 +239,11 @@ dependencies = [
 peat = "peat.__main__:main"
 
 [project.urls]
-Repository = "https://github.com/sandialabs/PEAT"
-Download = "https://github.com/sandialabs/PEAT/releases"
-Changelog = "https://github.com/sandialabs/PEAT/blob/main/CHANGELOG.md"
+Repository = "https://github.com/jarocki/PEAT"
+Download = "https://github.com/jarocki/PEAT/releases"
+Changelog = "https://github.com/jarocki/PEAT/blob/main/CHANGELOG.md"
 Documentation = "https://sandialabs.github.io/PEAT/"
-Issues = "https://github.com/sandialabs/PEAT/issues"
+Issues = "https://github.com/jarocki/PEAT/issues"
 
 
 [tool.pdm.dev-dependencies]

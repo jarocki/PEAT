@@ -26,7 +26,7 @@ Thank you for your interest in contributing to PEAT! We welcome contributions fr
 3. **Set Upstream Remote**: Add the original repository as an upstream remote to keep your fork up to date:
 
     ```bash
-    git remote add upstream https://github.com/sandialabs/peat.git
+    git remote add upstream https://github.com/jarocki/PEAT.git
     ```
 
 4. **(Optional) Update Your Fork with Upstream**: To keep your fork up to date with the original repository, follow these steps:
@@ -53,7 +53,7 @@ Thank you for your interest in contributing to PEAT! We welcome contributions fr
 
 ### Reporting Issues
 
-If you encounter a bug or have a feature request, please open an issue in the [Issues](https://github.com/sandialabs/PEAT/issues) section. Be sure to include:
+If you encounter a bug or have a feature request, please open an issue in the [Issues](https://github.com/jarocki/PEAT/issues) section. Be sure to include:
 
 - A clear description of the issue.
 - Steps to reproduce the issue.
@@ -61,7 +61,7 @@ If you encounter a bug or have a feature request, please open an issue in the [I
 
 ### Suggesting Enhancements
 
-We welcome suggestions for improvements! Please open an [issue](https://github.com/sandialabs/PEAT/issues) or a [discussion](https://github.com/sandialabs/PEAT/discussions) to discuss your ideas before implementing them. You are also welcome to implement the idea and open a Pull Request, however be aware that there is a risk your idea may be rejected.
+We welcome suggestions for improvements! Please open an [issue](https://github.com/jarocki/PEAT/issues) or a [discussion](https://github.com/jarocki/PEAT/discussions) to discuss your ideas before implementing them. You are also welcome to implement the idea and open a Pull Request, however be aware that there is a risk your idea may be rejected.
 
 ### Submitting Code
 
@@ -99,7 +99,7 @@ We welcome suggestions for improvements! Please open an [issue](https://github.c
     - Changes SHOULD have basic tests implemented. These tests should be called from the CI pipeline (this is the case if unit tests are placed in `tests/`).
     - Changes SHOULD be commented to a reasonable extent, especially in areas where the data or knowledge required is not readily available or obvious. There SHOULD be docstrings in the majority of functions and classes added.
     - Type annotations SHOULD be used for function arguments, function return values, and class attributes.
-    - TODO comments are permitted, but discouraged. If the TODO is significant, [open a issue](https://github.com/sandialabs/PEAT/issues) on GitHub or start a [discussion](https://github.com/sandialabs/PEAT/discussions).
+    - TODO comments are permitted, but discouraged. If the TODO is significant, [open a issue](https://github.com/jarocki/PEAT/issues) on GitHub or start a [discussion](https://github.com/jarocki/PEAT/discussions).
     - Docstrings should follow [PEP-257](https://peps.python.org/pep-0257/).
 
 1. **Stage Your Changes**: Use the `git add` command to stage the changes you want to commit. You can stage specific files or all changes:
@@ -167,10 +167,10 @@ We welcome suggestions for improvements! Please open an [issue](https://github.c
     git push origin feat/add-user-authentication --force
     ```
 
-1. **Open a Pull Request**: Go to the original repository and open a [pull request](https://github.com/sandialabs/peat/pulls). Provide a clear description of your changes and reference any related issues.
+1. **Open a Pull Request**: Go to the original repository and open a [pull request](https://github.com/jarocki/PEAT/pulls). Provide a clear description of your changes and reference any related issues.
 
 1. **(Optional) Request review from relevant maintainers**: All pull requests must be approved by at least one maintainer. If you know which maintainers would best understand you contribution, request their review by clicking on "Reviewers" on the right side of the PR screen.
 
 ## License
 
-By contributing to this project, you agree that your contributions will be licensed under the [GNU](https://github.com/sandialabs/peat/blob/main/LICENSE) License.
+By contributing to this project, you agree that your contributions will be licensed under the [GNU](https://github.com/jarocki/PEAT/blob/main/LICENSE) License.

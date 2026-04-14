@@ -51,7 +51,7 @@ Setting up a development environment
 
    .. code-block:: bash
 
-      git clone https://github.com/sandialabs/peat.git
+      git clone https://github.com/jarocki/PEAT.git
       cd peat
 
 4. Create environment and install dependencies

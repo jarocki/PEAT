@@ -7,7 +7,7 @@
 
 set -eu
 
-REPO="${REPO:-sandialabs/PEAT}"
+REPO="${REPO:-jarocki/PEAT}"
 API_URL="https://github.com/$REPO/releases/latest/download"
 
 BIN_URL="$API_URL/peat"

@@ -3,7 +3,7 @@ Install
 *******
 This section documents how to setup PEAT for optimal use on each supported platform. Refer to :doc:`operate` for next steps after completing installation.
 
-PEAT is distributed in multiple formats customized to each supported platform. All formats are included in `official releases on GitHub <https://github.com/sandialabs/PEAT/releases>`__. If you need to build the executables manually or know more about the various distribution methods, refer to the :ref:`distribution`.
+PEAT is distributed in multiple formats customized to each supported platform. All formats are included in `official releases on GitHub <https://github.com/jarocki/PEAT/releases>`__. If you need to build the executables manually or know more about the various distribution methods, refer to the :ref:`distribution`.
 
 Installation
 ------------
@@ -103,21 +103,21 @@ Docker
 ++++++
 .. code-block:: bash
 
-   docker pull ghcr.io/sandialabs/peat:latest
+   docker pull ghcr.io/jarocki/peat:latest
 
    # Verify the container is able to run
-   docker run -i ghcr.io/sandialabs/peat:latest --version
-   docker run -i ghcr.io/sandialabs/peat:latest --help
+   docker run -i ghcr.io/jarocki/peat:latest --version
+   docker run -i ghcr.io/jarocki/peat:latest --help
 
 Podman
 ++++++
 .. code-block:: bash
 
-   podman pull ghcr.io/sandialabs/peat:latest
+   podman pull ghcr.io/jarocki/peat:latest
 
    # Verify the container is able to run
-   podman run -i ghcr.io/sandialabs/peat:latest --version
-   podman run -i ghcr.io/sandialabs/peat:latest --help
+   podman run -i ghcr.io/jarocki/peat:latest --version
+   podman run -i ghcr.io/jarocki/peat:latest --help
 
 Offline system install
 ++++++++++++++++++++++
@@ -126,11 +126,11 @@ The container image can be used on isolated or Internet-restricted networks by d
 
 1. On the Internet-connected system, pull the PEAT container image
 
-      docker pull ghcr.io/sandialabs/peat:latest
+      docker pull ghcr.io/jarocki/peat:latest
 
 2. Save the image to a tar file for transfer
 
-      docker save -o peat_docker_image.tar ghcr.io/sandialabs/peat:latest
+      docker save -o peat_docker_image.tar ghcr.io/jarocki/peat:latest
 
 3. Copy ``peat_docker_image.tar`` to the isolated system (for example, via approved removable media or transfer mechanism).
 
@@ -140,12 +140,12 @@ The container image can be used on isolated or Internet-restricted networks by d
 
 5. Verify the container runs and reports its version
 
-      docker run -i ghcr.io/sandialabs/peat:latest --version
+      docker run -i ghcr.io/jarocki/peat:latest --version
 
 
 PEAT Releases
 -------------
-PEAT releases are managed via `GitHub Releases <https://github.com/sandialabs/PEAT/releases>`__, and usually consist of the following:
+PEAT releases are managed via `GitHub Releases <https://github.com/jarocki/PEAT/releases>`__, and usually consist of the following:
 
 - The Linux and Windows executables (``peat`` and ``peat.exe``)
 - The Python source distribution (``.tar.gz``) and binary wheel (``.whl``)
