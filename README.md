@@ -1,9 +1,9 @@
 # Process Extraction and Analysis Tool (PEAT)
 
-[![GitHub Actions Pipeline Status](https://github.com/sandialabs/PEAT/actions/workflows/tests.yml/badge.svg)](https://github.com/sandialabs/PEAT/actions)
+[![GitHub Actions Pipeline Status](https://github.com/jarocki/PEAT/actions/workflows/tests.yml/badge.svg)](https://github.com/jarocki/PEAT/actions)
 [![OpenSSF Best Practices](https://www.bestpractices.dev/projects/11835/badge)](https://www.bestpractices.dev/projects/11835)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-[![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/sandialabs/PEAT)
+[![Open in Dev Containers](https://img.shields.io/static/v1?label=Dev%20Containers&message=Open&color=blue)](https://vscode.dev/redirect?url=vscode://ms-vscode-remote.remote-containers/cloneInVolume?url=https://github.com/jarocki/PEAT)
 
 PEAT is a Operational Technology (OT) device interrogator, including pulling, parsing and uploading artifacts (configuration, firmware, process logic, etc.) and network discovery ("scanning"). It runs on most systems, including Linux, Windows, and as a Docker container.
 
@@ -20,24 +20,24 @@ NOTE: PEAT will hang for a few seconds after running before there is output. Thi
 The install script will download the latest full release of PEAT and install it into `/usr/local/bin/peat`. It will also download the manpage into `/usr/local/share/man/man1/peat.1` and update the manual database, if `mandb` command is present.
 
 ```shell
-curl -sSL https://raw.githubusercontent.com/sandialabs/PEAT/refs/heads/main/scripts/install_peat.sh | sudo sh -
+curl -sSL https://raw.githubusercontent.com/jarocki/PEAT/refs/heads/main/scripts/install_peat.sh | sudo sh -
 ```
 
 ### Windows
 
 ```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/sandialabs/PEAT/refs/heads/main/scripts/install_peat.ps1 | iex"
+powershell -ExecutionPolicy ByPass -c "irm https://raw.githubusercontent.com/jarocki/PEAT/refs/heads/main/scripts/install_peat.ps1 | iex"
 ```
 
 ### Docker
 
 ```shell
-sudo docker run -i ghcr.io/sandialabs/peat:latest --help
+sudo docker run -i ghcr.io/jarocki/peat:latest --help
 ```
 
 ## Quickstart
 
-1. Download the [latest release](https://github.com/sandialabs/PEAT/releases) for your platform
+1. Download the [latest release](https://github.com/jarocki/PEAT/releases) for your platform
 1. Open a terminal in the folder you downloaded PEAT to
 1. Run help to list subcommands
     - Windows: `.\peat.exe --help`
@@ -117,7 +117,7 @@ Output is written to `./peat_results/` and includes:
 
 ## Install notes
 
-PEAT is distributed in several formats, including executable files for Linux and Windows and a Docker Container. The format you want to install depends on your use case. Typically, you'll want the executable format, which is `peat` on Linux and `peat.exe` on Windows. These can be downloaded from the [releases page](https://github.com/sandialabs/PEAT/releases) or from [CI/CD builds](https://github.com/sandialabs/PEAT/actions).
+PEAT is distributed in several formats, including executable files for Linux and Windows and a Docker Container. The format you want to install depends on your use case. Typically, you'll want the executable format, which is `peat` on Linux and `peat.exe` on Windows. These can be downloaded from the [releases page](https://github.com/jarocki/PEAT/releases) or from [CI/CD builds](https://github.com/jarocki/PEAT/actions).
 
 Python is NOT required to run PEAT if using the executable or container. PEAT is designed to be portable and brings it's own dependencies for the most part, requiring minimal or no configuring on the target system. Refer to the [system requirements page](https://sandialabs.github.io/PEAT/system_requirements.html) for further details.
 
@@ -132,7 +132,7 @@ The commands below are a basic "quick start" for development. Ensure [PDM is ins
 ```bash
 # Ensure PDM is installed
 # Clone repo, if it hasn't been already
-git clone https://github.com/sandialabs/peat.git
+git clone https://github.com/jarocki/PEAT.git
 
 # Change directory
 cd peat

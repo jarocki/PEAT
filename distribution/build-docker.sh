@@ -14,7 +14,7 @@ CURDIR="$(pwd)"
 cd "$INSTALLDIR" >/dev/null
 
 GIT_LATEST_TAG="$(git describe --tags --abbrev=0)"
-IMAGE="ghcr.io/sandialabs/peat"
+IMAGE="ghcr.io/jarocki/peat"
 TAG="${TAG:-latest}"
 BUILDER_TAG="$TAG-builder-cache"
 

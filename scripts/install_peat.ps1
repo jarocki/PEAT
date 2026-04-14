@@ -10,7 +10,7 @@ Run in a regular (non-admin) PowerShell session.
 
 $ErrorActionPreference = "Stop"
 
-$Repo = "sandialabs/PEAT"
+$Repo = "jarocki/PEAT"
 $Url  = "https://github.com/$Repo/releases/latest/download/peat.exe"
 $DestDir  = Join-Path $env:LOCALAPPDATA "Programs"
 $DestExe  = Join-Path $DestDir "peat.exe"
