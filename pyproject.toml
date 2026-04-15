@@ -29,7 +29,7 @@ tag_regex = '^v(?P<version>\d{1,4}\.\d{1,2}\.\d{1,2})(\-prerelease|\.dev)?$'
 [project]
 name = "PEAT"
 dynamic = ["version"]
-description = "Process Extraction and Analysis Tool (PEAT)"
+description = "Process Extraction and Analysis Tool (PEAT) — with passive forensic analysis for ICS/SCADA incident response"
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
 license-files = [
@@ -39,7 +39,7 @@ license-files = [
 authors = [
     {name = "PEAT Developers", email = "peat@sandia.gov"},
 ]
-keywords = ["peat", "ics", "scada", "ot", "sandia"]
+keywords = ["peat", "ics", "scada", "ot", "forensic", "dfir", "incident-response", "pcap", "modbus", "dnp3"]
 classifiers = [
     # https://pypi.org/classifiers/
     "Development Status :: 5 - Production/Stable",
