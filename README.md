@@ -1,4 +1,4 @@
-### Important note:  This is an experimental fork of https://github.com/sandialabs/PEAT that adds a "forensic" workflow.  It is untested in actual forensic cases and is not guaranteed to produce accurate or forensically sound results.
+no### Important note:  This is an experimental fork of https://github.com/sandialabs/PEAT that adds a "forensic" workflow.  It is untested in actual forensic cases and is not guaranteed to produce accurate or forensically sound results.
 
 # Process Extraction and Analysis Tool (PEAT)
 
@@ -190,3 +190,5 @@ pdm run test
 Copyright 2026 National Technology & Engineering Solutions of Sandia, LLC (NTESS). Under the terms of Contract DE-NA0003525 with NTESS, the U.S. Government retains certain rights in this software.
 
 This software is licensed under a GPLv3 license. Please see [LICENSE](LICENSE) and [COPYRIGHT.md](COPYRIGHT.md) for more information.
+
+Modifications for forensic workflow are Copyright 2026 John Jarocki and respective copyright holders.
