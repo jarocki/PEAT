@@ -1,4 +1,4 @@
-no### Important note:  This is an experimental fork of https://github.com/sandialabs/PEAT that adds a "forensic" workflow.  It is untested in actual forensic cases and is not guaranteed to produce accurate or forensically sound results.
+### Important note:  This is an experimental fork of https://github.com/sandialabs/PEAT that adds a "forensic" workflow.  It is untested in actual forensic cases and is not guaranteed to produce accurate or forensically sound results.
 
 # Process Extraction and Analysis Tool (PEAT)
 
