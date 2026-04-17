@@ -16,6 +16,12 @@ integrity requirements (hashing, chain of custody) are cross-cutting concerns
 that don't fit neatly into any single existing module, (3) keeps active and
 passive capabilities cleanly separated for users who need forensic-grade analysis.
 """
+# Copyright 2026 John Jarocki
+# Developed with AI assistance from Claude Opus 4.6 (Anthropic)
+#
+# This file is part of PEAT and is licensed under GPL-3.0.
+# See LICENSE for details.
+
 
 from __future__ import annotations
 

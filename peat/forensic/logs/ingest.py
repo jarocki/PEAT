@@ -9,6 +9,12 @@ system. The number of ICS log parsers is small and well-defined — the
 overhead of a full plugin registry isn't justified. New parsers are added
 by importing them here and appending to PARSERS.
 """
+# Copyright 2026 John Jarocki
+# Developed with AI assistance from Claude Opus 4.6 (Anthropic)
+#
+# This file is part of PEAT and is licensed under GPL-3.0.
+# See LICENSE for details.
+
 
 from __future__ import annotations
 

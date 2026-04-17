@@ -17,6 +17,12 @@ pyshark (TShark wrapper) was considered for S7comm/BACnet/GOOSE but adds
 a heavy external dependency; we use port-based identification instead and
 defer deep dissection of those protocols to optional Zeek integration.
 """
+# Copyright 2026 John Jarocki
+# Developed with AI assistance from Claude Opus 4.6 (Anthropic)
+#
+# This file is part of PEAT and is licensed under GPL-3.0.
+# See LICENSE for details.
+
 
 from __future__ import annotations
 

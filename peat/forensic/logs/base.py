@@ -12,6 +12,12 @@ ParsedLogEntry → Event as a separate step. This allows the forensic
 module to be used standalone for log analysis without requiring
 full PEAT initialization.
 """
+# Copyright 2026 John Jarocki
+# Developed with AI assistance from Claude Opus 4.6 (Anthropic)
+#
+# This file is part of PEAT and is licensed under GPL-3.0.
+# See LICENSE for details.
+
 
 from __future__ import annotations
 

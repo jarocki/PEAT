@@ -15,6 +15,12 @@ call. Manual composition is available as a fallback for images that
 Target.open cannot handle (e.g., bare filesystem images without partition
 tables, which are common in embedded ICS device dumps).
 """
+# Copyright 2026 John Jarocki
+# Developed with AI assistance from Claude Opus 4.6 (Anthropic)
+#
+# This file is part of PEAT and is licensed under GPL-3.0.
+# See LICENSE for details.
+
 
 from __future__ import annotations
 

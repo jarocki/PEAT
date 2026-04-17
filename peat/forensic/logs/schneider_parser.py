@@ -15,6 +15,12 @@ Also handles Schneider Modicon PLC CSV logs from SD card/flash exports.
 ClearSCADA log line widths vary based on payload length. The TX/RX keyword
 is the reliable anchor point for splitting direction from payload data.
 """
+# Copyright 2026 John Jarocki
+# Developed with AI assistance from Claude Opus 4.6 (Anthropic)
+#
+# This file is part of PEAT and is licensed under GPL-3.0.
+# See LICENSE for details.
+
 
 from __future__ import annotations
 
