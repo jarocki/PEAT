@@ -53,6 +53,15 @@ sudo docker run -i ghcr.io/jarocki/peat:latest --help
 
 ## Forensic Analysis
 
+> **Experimental Feature — AI-Assisted Development**
+>
+> The forensic analysis module was developed with AI assistance (Claude,
+> Anthropic) and should be considered experimental. It has not undergone
+> the same level of field testing as PEAT's core device interrogation
+> capabilities. Use in production incident response should include
+> independent verification of results. See [SECURITY.md](SECURITY.md)
+> for reporting issues.
+
 PEAT includes a passive forensic analysis mode (`peat forensic`) for analyzing OT/ICS artifacts without touching live devices. This is intended for incident response, digital forensics, and offline security assessments where active device interrogation is not possible or poses operational risk.
 
 ### Capabilities
@@ -116,6 +125,17 @@ Output is written to `./peat_results/` and includes:
 - `forensic_logs/parsed-log-entries.ndjson` — ECS-normalized log entries (Elasticsearch bulk-importable)
 - `forensic_pcap/ics-events.ndjson` — extracted ICS protocol events
 - `forensic_pcap/asset-inventory.json` — passively discovered device inventory
+
+## AI-Assisted Development Notice
+
+The forensic analysis extension (`peat/forensic/`, ~6,400 lines) was developed
+with AI assistance from Claude Opus 4.6 (Anthropic).
+
+- All AI-assisted commits include `Co-Authored-By` tags in the git history
+- All code was directed, reviewed, tested, and verified by a human developer
+- Architectural decisions and security-critical logic were human-directed
+
+This notice is provided for transparency per open-source community norms.
 
 ## Install notes
 
@@ -187,8 +207,10 @@ pdm run test
 
 ## License
 
-Copyright 2026 National Technology & Engineering Solutions of Sandia, LLC (NTESS). Under the terms of Contract DE-NA0003525 with NTESS, the U.S. Government retains certain rights in this software.
+Original PEAT code: Copyright 2026 National Technology & Engineering Solutions of Sandia, LLC (NTESS). Under the terms of Contract DE-NA0003525 with NTESS, the U.S. Government retains certain rights in this software.
 
-This software is licensed under a GPLv3 license. Please see [LICENSE](LICENSE) and [COPYRIGHT.md](COPYRIGHT.md) for more information.
+Forensic extension: Copyright 2026 John Jarocki. Developed with AI assistance from Claude Opus 4.6 (Anthropic).
 
-Modifications for forensic workflow are Copyright 2026 John Jarocki and respective copyright holders.
+This software is licensed under a GPLv3 license. This fork includes a dependency on [dissect](https://github.com/fox-it/dissect) (AGPL-3.0-or-later); see [NOTICE](NOTICE) for details.
+
+Please see [LICENSE](LICENSE), [COPYRIGHT.md](COPYRIGHT.md), and [NOTICE](NOTICE) for more information.
