@@ -9,6 +9,12 @@ input type and delegates, rather than requiring users to know which sub-module
 handles their input. This mirrors how `peat pull` auto-detects device types.
 Users can also force a specific mode via CLI flags.
 """
+# Copyright 2026 John Jarocki
+# Developed with AI assistance from Claude Opus 4.6 (Anthropic)
+#
+# This file is part of PEAT and is licensed under GPL-3.0.
+# See LICENSE for details.
+
 
 from __future__ import annotations
 

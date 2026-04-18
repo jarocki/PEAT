@@ -7,3 +7,24 @@ The PEAT software includes the following third-party software:
 beremiz - GNU General Public License v2.0: Copyright (C) 2016: Andrey Skvortsov, Copyright (C) 2007: Edouard TISSERANT and Laurent BESSARD. See COPYING file in plc_open directory for copyrights details.
 
 nrbf.py - .NET Remoting Binary Format reading library for Python 3.6+ - Copyright (C) 2017, 2020, 2021 Christopher Gurnee
+
+--- Dependencies added by the forensic analysis extension (peat/forensic/) ---
+
+dissect (>=3.0) - Digital forensics & incident response framework
+  Copyright: Fox-IT (part of NCC Group Plc)
+  License: AGPL-3.0-or-later
+  Source: https://github.com/fox-it/dissect
+  Note: When combined with PEAT, the AGPL-3.0 Section 13 network-use
+  provision applies to the resulting combined work. PEAT uses dissect
+  for local disk image analysis only; no network service is provided.
+
+dpkt (>=1.9) - Fast, simple packet creation / parsing
+  Copyright: Various (Duane Barksdale et al.)
+  License: BSD-3-Clause
+  Source: https://github.com/kbandla/dpkt
+
+--- Fork modifications (github.com/jarocki/PEAT) ---
+
+The passive forensic analysis extension was added in 2026 by John Jarocki
+with AI development assistance from Claude Opus 4.6 (Anthropic). All
+AI-assisted commits are marked with Co-Authored-By tags in git history.

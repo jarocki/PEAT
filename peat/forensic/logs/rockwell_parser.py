@@ -14,6 +14,12 @@ pylogix requires a live EtherNet/IP connection to a controller and cannot
 parse offline exports. CSV exports from FactoryTalk View, FTAE, or CCW
 are the standard offline artifact available to forensic analysts.
 """
+# Copyright 2026 John Jarocki
+# Developed with AI assistance from Claude Opus 4.6 (Anthropic)
+#
+# This file is part of PEAT and is licensed under GPL-3.0.
+# See LICENSE for details.
+
 
 from __future__ import annotations
 

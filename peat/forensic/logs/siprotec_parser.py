@@ -14,6 +14,12 @@ Binary diagnostic logs require proprietary Siemens decoders. CSV exports
 from DIGSI 5 cover the majority of forensic use cases and are parseable
 with standard Python CSV tools.
 """
+# Copyright 2026 John Jarocki
+# Developed with AI assistance from Claude Opus 4.6 (Anthropic)
+#
+# This file is part of PEAT and is licensed under GPL-3.0.
+# See LICENSE for details.
+
 
 from __future__ import annotations
 

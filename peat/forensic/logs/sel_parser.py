@@ -16,6 +16,12 @@ that doesn't require cross-line state tracking for basic event extraction.
 Multi-line fault reports are grouped by matching consecutive entries with
 identical timestamps (within a tolerance window).
 """
+# Copyright 2026 John Jarocki
+# Developed with AI assistance from Claude Opus 4.6 (Anthropic)
+#
+# This file is part of PEAT and is licensed under GPL-3.0.
+# See LICENSE for details.
+
 
 from __future__ import annotations
 

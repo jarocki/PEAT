@@ -17,6 +17,12 @@ software). SCL XML provides deeper device model information but requires
 XML parsing. Both are handled by the same parser class with format
 auto-detection.
 """
+# Copyright 2026 John Jarocki
+# Developed with AI assistance from Claude Opus 4.6 (Anthropic)
+#
+# This file is part of PEAT and is licensed under GPL-3.0.
+# See LICENSE for details.
+
 
 from __future__ import annotations
 
