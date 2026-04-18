@@ -23,6 +23,8 @@ from enum import Enum
 from pathlib import Path
 from peat import log
 
+log.warning("Forensic module is experimental and AI-assisted. Verify results independently.")
+
 
 class ForensicInputType(Enum):
     """Types of forensic input that PEAT can process."""
