@@ -23,6 +23,12 @@ yields entries in chunks rather than loading everything into memory.
 Anomaly detection (standard deviation from baseline) is left to downstream
 analysis — the parser normalizes data; it doesn't interpret it.
 """
+# Copyright 2026 John Jarocki
+# Developed with AI assistance from Claude Opus 4.6 (Anthropic)
+#
+# This file is part of PEAT and is licensed under GPL-3.0.
+# See LICENSE for details.
+
 
 from __future__ import annotations
 

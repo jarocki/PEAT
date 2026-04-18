@@ -12,3 +12,9 @@ Supported formats:
   - Rockwell FactoryTalk Alarms and Events CSV exports
   - OSIsoft PI / AVEVA historian CSV/XML exports
 """
+# Copyright 2026 John Jarocki
+# Developed with AI assistance from Claude Opus 4.6 (Anthropic)
+#
+# This file is part of PEAT and is licensed under GPL-3.0.
+# See LICENSE for details.
+

@@ -8,6 +8,12 @@ generation, and utilities to ensure all forensic operations are read-only.
 into memory. ICS disk images and PCAPs can be multi-gigabyte; streaming with
 a 64KB buffer keeps memory usage constant regardless of file size.
 """
+# Copyright 2026 John Jarocki
+# Developed with AI assistance from Claude Opus 4.6 (Anthropic)
+#
+# This file is part of PEAT and is licensed under GPL-3.0.
+# See LICENSE for details.
+
 
 from __future__ import annotations
 
