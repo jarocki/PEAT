@@ -171,6 +171,15 @@ We welcome suggestions for improvements! Please open an [issue](https://github.c
 
 1. **(Optional) Request review from relevant maintainers**: All pull requests must be approved by at least one maintainer. If you know which maintainers would best understand you contribution, request their review by clicking on "Reviewers" on the right side of the PR screen.
 
+### AI-Assisted Contributions
+
+Contributions that used AI assistance (code generation, refactoring, etc.)
+are welcome, provided:
+
+1. The contributor has reviewed and understands all submitted code
+2. AI assistance is disclosed via `Co-Authored-By` tags in commits
+3. The contributor takes responsibility for correctness and licensing
+
 ## License
 
 By contributing to this project, you agree that your contributions will be licensed under the [GNU](https://github.com/jarocki/PEAT/blob/main/LICENSE) License.
