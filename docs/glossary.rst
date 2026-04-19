@@ -32,6 +32,9 @@ Glossary
    CASCII
       :term:`SEL` Compressed :term:`ASCII` protocol. :term:`SEL` proprietary protocol for communicating to devices.
 
+   Chain of Custody
+      Documentation of the chronological history of evidence handling, including who collected it, when, and any transfers. PEAT's forensic module generates chain-of-custody metadata as JSON.
+
    CI/CD
       Continuous Integration/Continuous Deployment, a modern software development and testing methodology.
 
@@ -65,6 +68,9 @@ Glossary
    DCS
       Distributed Control System
 
+   DFIR
+      Digital Forensics and Incident Response. The practice of investigating digital evidence to understand security incidents.
+
    DGA
       Dissolved Gas Analyzer
 
@@ -87,7 +93,10 @@ Glossary
       Docker is a system for building and running containers. Docker is a set of platform as a service products that use OS-level virtualization to deliver software in packages called containers. Containers are isolated from one another and bundle their own software, libraries and configuration files. Similar to :term:`Podman`. Further reading: `Docker documentation <https://docs.docker.com/>`__
 
    ECS
-      Elastic Common Schema. ECS defines a common set of fields to be used when storing event data in :term:`Elasticsearch`. Refer to the `ECS documentation <https://www.elastic.co/guide/en/ecs/current/index.html>`__ for further details.
+      Elastic Common Schema. ECS defines a common set of fields to be used when storing event data in :term:`Elasticsearch`. PEAT's forensic log parsers normalize output to ECS format. Refer to the `ECS documentation <https://www.elastic.co/guide/en/ecs/current/index.html>`__ for further details.
+
+   Evidence Integrity
+      The assurance that digital evidence has not been altered. PEAT's forensic module maintains integrity through cryptographic hashing (SHA-256, MD5) and read-only file access.
 
    ES
       Elasticsearch
@@ -214,6 +223,9 @@ Glossary
 
    OpenPLC
       Open-source software ("virtual") :term:`PLC` implemented in C++
+
+   Passive Analysis
+      Analysis performed without sending any packets or modifying any data. PEAT's forensic mode operates entirely in passive/read-only mode.
 
    PCAP
       Packet Capture. Used interchangeably as a general term for capturing network traffic or to refer to the ``.pcap`` file format used by ``tcpdump``, ``libpcap``, and many other tools.

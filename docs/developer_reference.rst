@@ -17,6 +17,7 @@ Documentation of PEAT's Python codebase and APIs.
    device_modules
    general_apis
    heat_api
+   forensic_analysis
    python_examples
    elastic_implementation
    database_schema
