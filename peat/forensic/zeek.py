@@ -24,7 +24,6 @@ The module gracefully degrades when Zeek/ICSNPP/ACID are not installed.
 # This file is part of PEAT and is licensed under GPL-3.0.
 # See LICENSE for details.
 
-
 from __future__ import annotations
 
 import json
@@ -89,7 +88,10 @@ def check_icsnpp(zeek_bin: str) -> bool:
     try:
         result = subprocess.run(
             [zeek_bin, "-N"],
-            capture_output=True, text=True, timeout=10,
+            capture_output=True,
+            text=True,
+            timeout=10,
+            check=False,
         )
         return "ICSNPP" in result.stdout or "icsnpp" in result.stdout.lower()
     except (subprocess.TimeoutExpired, OSError):
@@ -101,7 +103,10 @@ def check_acid(zeek_bin: str) -> bool:
     try:
         result = subprocess.run(
             [zeek_bin, "-N"],
-            capture_output=True, text=True, timeout=10,
+            capture_output=True,
+            text=True,
+            timeout=10,
+            check=False,
         )
         return "ACID" in result.stdout or "acid" in result.stdout.lower()
     except (subprocess.TimeoutExpired, OSError):
@@ -188,8 +193,9 @@ def _run_zeek(
     cmd = [
         zeek_bin,
         "-C",  # Ignore checksum errors (common in forensic captures)
-        "-r", str(pcap_path),
-        f"LogAscii::use_json=T",  # JSON output for easy parsing
+        "-r",
+        str(pcap_path),
+        "LogAscii::use_json=T",  # JSON output for easy parsing
     ]
 
     log.info(f"Running Zeek on: {pcap_path.name}")
@@ -202,6 +208,7 @@ def _run_zeek(
             capture_output=True,
             text=True,
             timeout=600,  # 10 minute timeout for large PCAPs
+            check=False,
         )
 
         if zeek_result.returncode != 0:
@@ -318,13 +325,15 @@ def _extract_mitre_notices(notice_path: Path, result: ZeekAnalysisResult) -> Non
                 note = entry.get("note", "")
 
                 if "ATT&CK" in msg or "ATT&CK" in note or "MITRE" in msg:
-                    result.mitre_techniques.append({
-                        "note": note,
-                        "message": msg,
-                        "source_ip": entry.get("src", ""),
-                        "destination_ip": entry.get("dst", ""),
-                        "timestamp": entry.get("ts", ""),
-                        "sub_message": entry.get("sub", ""),
-                    })
+                    result.mitre_techniques.append(
+                        {
+                            "note": note,
+                            "message": msg,
+                            "source_ip": entry.get("src", ""),
+                            "destination_ip": entry.get("dst", ""),
+                            "timestamp": entry.get("ts", ""),
+                            "sub_message": entry.get("sub", ""),
+                        }
+                    )
     except OSError as e:
         log.warning(f"Failed to read notice.log for MITRE extraction: {e}")

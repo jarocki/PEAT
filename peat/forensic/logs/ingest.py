@@ -15,12 +15,10 @@ by importing them here and appending to PARSERS.
 # This file is part of PEAT and is licensed under GPL-3.0.
 # See LICENSE for details.
 
-
 from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Any
 
 from peat import config, log
 from peat.forensic.logs.base import LogParser, ParsedLogEntry

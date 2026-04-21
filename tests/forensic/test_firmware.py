@@ -10,12 +10,7 @@ import struct
 import zlib
 from pathlib import Path
 
-import pytest
-
 from peat.forensic.firmware import (
-    SIGNATURES,
-    FirmwareAnalysisResult,
-    FirmwareRegion,
     analyze_firmware,
 )
 

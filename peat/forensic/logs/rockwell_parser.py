@@ -20,34 +20,82 @@ are the standard offline artifact available to forensic analysts.
 # This file is part of PEAT and is licensed under GPL-3.0.
 # See LICENSE for details.
 
-
 from __future__ import annotations
 
-import re
-from datetime import datetime
 from pathlib import Path
 
 from peat import log
 from peat.forensic.logs.base import LogParser, ParsedLogEntry
 
 # Column name candidates for Rockwell FTAE CSVs
-_RW_TIMESTAMP_COLS = {"event time", "timestamp", "time", "date/time", "date_time",
-                       "alarm time", "occurrence time"}
+_RW_TIMESTAMP_COLS = {
+    "event time",
+    "timestamp",
+    "time",
+    "date/time",
+    "date_time",
+    "alarm time",
+    "occurrence time",
+}
 _RW_ALARM_COLS = {"alarm name", "alarm", "tag", "tag name", "point name", "name"}
-_RW_MESSAGE_COLS = {"message", "description", "alarm message", "event message",
-                     "alarm description", "text"}
-_RW_SEVERITY_COLS = {"severity", "priority", "level", "alarm severity",
-                      "alarm priority", "criticality"}
-_RW_STATUS_COLS = {"status", "acknowledgement status", "ack status", "state",
-                    "alarm state", "condition"}
+_RW_MESSAGE_COLS = {
+    "message",
+    "description",
+    "alarm message",
+    "event message",
+    "alarm description",
+    "text",
+}
+_RW_SEVERITY_COLS = {
+    "severity",
+    "priority",
+    "level",
+    "alarm severity",
+    "alarm priority",
+    "criticality",
+}
+_RW_STATUS_COLS = {
+    "status",
+    "acknowledgement status",
+    "ack status",
+    "state",
+    "alarm state",
+    "condition",
+}
 
 # Rockwell-specific classification
-_RW_CRITICAL_KW = {"fault", "critical", "emergency", "e-stop", "estop", "shutdown",
-                    "overload", "overcurrent", "safety"}
-_RW_WARNING_KW = {"high", "low", "warning", "caution", "deviation", "exceeded",
-                   "approaching", "limit"}
-_RW_CONFIG_KW = {"download", "upload", "program", "firmware", "mode change",
-                  "run", "remote", "online", "offline"}
+_RW_CRITICAL_KW = {
+    "fault",
+    "critical",
+    "emergency",
+    "e-stop",
+    "estop",
+    "shutdown",
+    "overload",
+    "overcurrent",
+    "safety",
+}
+_RW_WARNING_KW = {
+    "high",
+    "low",
+    "warning",
+    "caution",
+    "deviation",
+    "exceeded",
+    "approaching",
+    "limit",
+}
+_RW_CONFIG_KW = {
+    "download",
+    "upload",
+    "program",
+    "firmware",
+    "mode change",
+    "run",
+    "remote",
+    "online",
+    "offline",
+}
 
 
 class RockwellFTAEParser(LogParser):
@@ -57,10 +105,14 @@ class RockwellFTAEParser(LogParser):
     vendor = "Rockwell Automation"
     description = "Rockwell FactoryTalk Alarms and Events CSV parser"
     file_patterns = [
-        "*FactoryTalk*.csv", "*factorytalk*.csv",
-        "*FTAE*.csv", "*ftae*.csv",
-        "*alarm*.csv", "*Alarm*.csv",
-        "*CCW*.csv", "*ccw*.csv",
+        "*FactoryTalk*.csv",
+        "*factorytalk*.csv",
+        "*FTAE*.csv",
+        "*ftae*.csv",
+        "*alarm*.csv",
+        "*Alarm*.csv",
+        "*CCW*.csv",
+        "*ccw*.csv",
     ]
 
     @classmethod
@@ -71,16 +123,29 @@ class RockwellFTAEParser(LogParser):
         lower = sample.lower()
 
         # Check for Rockwell/FactoryTalk indicators
-        rw_indicators = {"factorytalk", "allen-bradley", "rockwell", "ftae",
-                         "rslogix", "studio 5000", "controllogix", "compactlogix",
-                         "connected components"}
+        rw_indicators = {
+            "factorytalk",
+            "allen-bradley",
+            "rockwell",
+            "ftae",
+            "rslogix",
+            "studio 5000",
+            "controllogix",
+            "compactlogix",
+            "connected components",
+        }
         if any(ind in lower for ind in rw_indicators):
             return True
 
         # Check for alarm-specific CSV with Rockwell-style headers
         first_line = sample.split("\n", 1)[0].lower()
-        alarm_headers = {"alarm name", "alarm severity", "alarm message",
-                         "alarm time", "ack status"}
+        alarm_headers = {
+            "alarm name",
+            "alarm severity",
+            "alarm message",
+            "alarm time",
+            "ack status",
+        }
         return sum(1 for h in alarm_headers if h in first_line) >= 2
 
     @classmethod
@@ -124,20 +189,22 @@ class RockwellFTAEParser(LogParser):
             if alarm_name:
                 extra["alarm_name"] = alarm_name
 
-            entries.append(ParsedLogEntry(
-                timestamp=timestamp,
-                message=message or alarm_name,
-                original=str(row),
-                source_type="rockwell_ftae",
-                source_file=path.name,
-                action=action,
-                category=category,
-                severity=severity,
-                outcome=outcome,
-                device_vendor="Rockwell Automation",
-                device_model="ControlLogix",
-                extra=extra,
-            ))
+            entries.append(
+                ParsedLogEntry(
+                    timestamp=timestamp,
+                    message=message or alarm_name,
+                    original=str(row),
+                    source_type="rockwell_ftae",
+                    source_file=path.name,
+                    action=action,
+                    category=category,
+                    severity=severity,
+                    outcome=outcome,
+                    device_vendor="Rockwell Automation",
+                    device_model="ControlLogix",
+                    extra=extra,
+                )
+            )
 
         log.info(f"Parsed {len(entries)} alarms from Rockwell FTAE: {path.name}")
         return entries

@@ -29,14 +29,9 @@ analysis — the parser normalizes data; it doesn't interpret it.
 # This file is part of PEAT and is licensed under GPL-3.0.
 # See LICENSE for details.
 
-
 from __future__ import annotations
 
-import csv
-import io
-import re
 import xml.etree.ElementTree as ET
-from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -44,18 +39,53 @@ from peat import log
 from peat.forensic.logs.base import LogParser, ParsedLogEntry
 
 # Column candidates for historian CSV auto-detection
-_HIST_TAG_COLS = {"tag", "tagname", "tag name", "tag_name", "point", "pointname",
-                   "point name", "point_name", "name", "item", "itemid"}
+_HIST_TAG_COLS = {
+    "tag",
+    "tagname",
+    "tag name",
+    "tag_name",
+    "point",
+    "pointname",
+    "point name",
+    "point_name",
+    "name",
+    "item",
+    "itemid",
+}
 _HIST_VALUE_COLS = {"value", "val", "data", "result", "reading", "measurement"}
-_HIST_QUALITY_COLS = {"quality", "status", "qual", "opc quality", "data quality",
-                       "state", "validity"}
-_HIST_TIMESTAMP_COLS = {"timestamp", "time", "date", "datetime", "date/time",
-                         "sample time", "event time", "t"}
+_HIST_QUALITY_COLS = {
+    "quality",
+    "status",
+    "qual",
+    "opc quality",
+    "data quality",
+    "state",
+    "validity",
+}
+_HIST_TIMESTAMP_COLS = {
+    "timestamp",
+    "time",
+    "date",
+    "datetime",
+    "date/time",
+    "sample time",
+    "event time",
+    "t",
+}
 _HIST_UNIT_COLS = {"unit", "units", "engineering units", "eng units", "uom"}
 
 # Quality values that indicate bad/questionable data
-_BAD_QUALITY = {"bad", "uncertain", "questionable", "error", "comm failure",
-                "sensor failure", "out of range", "stale", "timeout"}
+_BAD_QUALITY = {
+    "bad",
+    "uncertain",
+    "questionable",
+    "error",
+    "comm failure",
+    "sensor failure",
+    "out of range",
+    "stale",
+    "timeout",
+}
 
 
 class PICSVParser(LogParser):
@@ -65,10 +95,15 @@ class PICSVParser(LogParser):
     vendor = "OSIsoft/AVEVA"
     description = "OSIsoft PI / AVEVA historian CSV export parser"
     file_patterns = [
-        "*PI*.csv", "*pi_*.csv", "*aveva*.csv",
-        "*historian*.csv", "*Historian*.csv",
-        "*datalink*.csv", "*DataLink*.csv",
-        "*process_data*.csv", "*trend*.csv",
+        "*PI*.csv",
+        "*pi_*.csv",
+        "*aveva*.csv",
+        "*historian*.csv",
+        "*Historian*.csv",
+        "*datalink*.csv",
+        "*DataLink*.csv",
+        "*process_data*.csv",
+        "*trend*.csv",
     ]
 
     @classmethod
@@ -79,8 +114,15 @@ class PICSVParser(LogParser):
         lower = sample.lower()
 
         # Check for PI/AVEVA indicators
-        pi_indicators = {"osisoft", "pi system", "pi datalink", "aveva", "pi web api",
-                         "af sdk", "pi server"}
+        pi_indicators = {
+            "osisoft",
+            "pi system",
+            "pi datalink",
+            "aveva",
+            "pi web api",
+            "af sdk",
+            "pi server",
+        }
         if any(ind in lower for ind in pi_indicators):
             return True
 
@@ -138,19 +180,21 @@ class PICSVParser(LogParser):
             if unit:
                 extra["unit"] = unit
 
-            entries.append(ParsedLogEntry(
-                timestamp=timestamp,
-                message=f"{tag}={value} ({quality})",
-                original=str(row),
-                source_type="pi_csv",
-                source_file=path.name,
-                action=action,
-                category="process",
-                severity=severity,
-                device_vendor="OSIsoft/AVEVA",
-                device_model="PI System",
-                extra=extra,
-            ))
+            entries.append(
+                ParsedLogEntry(
+                    timestamp=timestamp,
+                    message=f"{tag}={value} ({quality})",
+                    original=str(row),
+                    source_type="pi_csv",
+                    source_file=path.name,
+                    action=action,
+                    category="process",
+                    severity=severity,
+                    device_vendor="OSIsoft/AVEVA",
+                    device_model="PI System",
+                    extra=extra,
+                )
+            )
 
         if bad_quality_count:
             log.info(
@@ -174,8 +218,13 @@ class PIXMLParser(LogParser):
     def detect(cls, path: Path, sample: str = "") -> bool:
         if not sample:
             sample = cls._read_text(path)[:4096]
-        return ("<PI" in sample or "<AF" in sample or "PIPoint" in sample
-                or "osisoft" in sample.lower() or "PISystem" in sample)
+        return (
+            "<PI" in sample
+            or "<AF" in sample
+            or "PIPoint" in sample
+            or "osisoft" in sample.lower()
+            or "PISystem" in sample
+        )
 
     @classmethod
     def parse(cls, path: Path) -> list[ParsedLogEntry]:
@@ -198,19 +247,21 @@ class PIXMLParser(LogParser):
 
             timestamp = cls._parse_timestamp(ts_str)
 
-            entries.append(ParsedLogEntry(
-                timestamp=timestamp,
-                message=f"{tag}={value} ({quality})",
-                original=ET.tostring(elem, encoding="unicode")[:300],
-                source_type="pi_xml",
-                source_file=path.name,
-                action="process_value",
-                category="process",
-                severity="warning" if quality.lower() in _BAD_QUALITY else "info",
-                device_vendor="OSIsoft/AVEVA",
-                device_model="PI System",
-                extra={"tag": tag, "value": value, "quality": quality},
-            ))
+            entries.append(
+                ParsedLogEntry(
+                    timestamp=timestamp,
+                    message=f"{tag}={value} ({quality})",
+                    original=ET.tostring(elem, encoding="unicode")[:300],
+                    source_type="pi_xml",
+                    source_file=path.name,
+                    action="process_value",
+                    category="process",
+                    severity="warning" if quality.lower() in _BAD_QUALITY else "info",
+                    device_vendor="OSIsoft/AVEVA",
+                    device_model="PI System",
+                    extra={"tag": tag, "value": value, "quality": quality},
+                )
+            )
 
         log.info(f"Parsed {len(entries)} readings from PI XML: {path.name}")
         return entries
@@ -219,8 +270,17 @@ class PIXMLParser(LogParser):
 def _iter_data_elements(root: ET.Element):
     """Iterate over data-bearing XML elements in PI exports."""
     # Try common PI XML structures
-    for tag_name in ["Data", "Value", "Reading", "Sample", "Item",
-                     "PIPoint", "Record", "Row", "Entry"]:
+    for tag_name in [
+        "Data",
+        "Value",
+        "Reading",
+        "Sample",
+        "Item",
+        "PIPoint",
+        "Record",
+        "Row",
+        "Entry",
+    ]:
         elements = root.findall(f".//{tag_name}")
         if elements:
             yield from elements

@@ -21,11 +21,9 @@ is the reliable anchor point for splitting direction from payload data.
 # This file is part of PEAT and is licensed under GPL-3.0.
 # See LICENSE for details.
 
-
 from __future__ import annotations
 
 import re
-from datetime import datetime
 from pathlib import Path
 
 from peat import log
@@ -108,20 +106,22 @@ class SchneiderCommsParser(LogParser):
             if channel_info:
                 extra["channel"] = channel_info
 
-            entries.append(ParsedLogEntry(
-                timestamp=timestamp,
-                message=f"{direction} {status} {payload}".strip(),
-                original=stripped,
-                source_type="schneider_comms",
-                source_file=path.name,
-                action=f"scada_{direction.lower()}",
-                category="network",
-                severity=severity,
-                outcome=outcome,
-                device_vendor="Schneider Electric",
-                device_model="ClearSCADA",
-                extra=extra,
-            ))
+            entries.append(
+                ParsedLogEntry(
+                    timestamp=timestamp,
+                    message=f"{direction} {status} {payload}".strip(),
+                    original=stripped,
+                    source_type="schneider_comms",
+                    source_file=path.name,
+                    action=f"scada_{direction.lower()}",
+                    category="network",
+                    severity=severity,
+                    outcome=outcome,
+                    device_vendor="Schneider Electric",
+                    device_model="ClearSCADA",
+                    extra=extra,
+                )
+            )
 
         log.info(f"Parsed {len(entries)} comms entries from Schneider log: {path.name}")
         return entries
@@ -163,18 +163,20 @@ class SchneiderModiconCSVParser(LogParser):
                 if timestamp:
                     break
 
-            entries.append(ParsedLogEntry(
-                timestamp=timestamp,
-                message=str(row),
-                original=str(row),
-                source_type="schneider_modicon_csv",
-                source_file=path.name,
-                category="process",
-                severity="info",
-                device_vendor="Schneider Electric",
-                device_model="Modicon",
-                extra={k: v for k, v in row.items() if v},
-            ))
+            entries.append(
+                ParsedLogEntry(
+                    timestamp=timestamp,
+                    message=str(row),
+                    original=str(row),
+                    source_type="schneider_modicon_csv",
+                    source_file=path.name,
+                    category="process",
+                    severity="info",
+                    device_vendor="Schneider Electric",
+                    device_model="Modicon",
+                    extra={k: v for k, v in row.items() if v},
+                )
+            )
 
         log.info(f"Parsed {len(entries)} entries from Modicon CSV: {path.name}")
         return entries

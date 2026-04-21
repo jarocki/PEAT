@@ -9,17 +9,14 @@ patterns (variable whitespace, mixed case, optional fields).
 
 from pathlib import Path
 
-import pytest
-
-from peat.forensic.logs.base import ParsedLogEntry, LogParser
-from peat.forensic.logs.ge_parser import GEURLogParser, GESCLParser
+from peat.forensic.logs.base import ParsedLogEntry
+from peat.forensic.logs.ge_parser import GESCLParser, GEURLogParser
 from peat.forensic.logs.historian_parser import PICSVParser, PIXMLParser
+from peat.forensic.logs.ingest import PARSERS, ingest_logs
 from peat.forensic.logs.rockwell_parser import RockwellFTAEParser
-from peat.forensic.logs.sel_parser import SELLogParser
-from peat.forensic.logs.siprotec_parser import SiprotecLogParser, GenericCSVLogParser
 from peat.forensic.logs.schneider_parser import SchneiderCommsParser
-from peat.forensic.logs.ingest import ingest_logs, PARSERS
-
+from peat.forensic.logs.sel_parser import SELLogParser
+from peat.forensic.logs.siprotec_parser import GenericCSVLogParser, SiprotecLogParser
 
 # -- SEL SER log fixtures --
 

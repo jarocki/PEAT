@@ -21,11 +21,9 @@ tables, which are common in embedded ICS device dumps).
 # This file is part of PEAT and is licensed under GPL-3.0.
 # See LICENSE for details.
 
-
 from __future__ import annotations
 
 import fnmatch
-import io
 import json
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -154,7 +152,7 @@ _EXCLUDED_DIRS = {
 
 def analyze_disk_image(
     image_path: Path,
-    metadata: ForensicMetadata | None = None,
+    metadata: ForensicMetadata | None = None,  # noqa: ARG001
     output_dir: Path | None = None,
     extract_artifacts: bool = True,
     include_extra_patterns: bool = True,
@@ -425,7 +423,7 @@ def _walk_target_fs(
 ) -> None:
     """Walk a dissect.target Filesystem using its path/walk API."""
     try:
-        for dirpath, dirnames, filenames in fs.walk("/"):
+        for dirpath, _dirnames, filenames in fs.walk("/"):
             # Skip excluded directories
             dir_name = dirpath.rsplit("/", 1)[-1].lower() if "/" in dirpath else dirpath.lower()
             if dir_name in _EXCLUDED_DIRS:
@@ -436,8 +434,13 @@ def _walk_target_fs(
                 virtual_path = f"{dirpath}/{filename}" if dirpath != "/" else f"/{filename}"
 
                 _check_and_extract(
-                    fs, virtual_path, filename, result, patterns,
-                    output_dir, extract_artifacts,
+                    fs,
+                    virtual_path,
+                    filename,
+                    result,
+                    patterns,
+                    output_dir,
+                    extract_artifacts,
                 )
     except Exception as e:
         error_msg = f"Filesystem walk error: {e}"
@@ -483,15 +486,25 @@ def _walk_raw_entry(
                     child_name = getattr(child, "name", str(child))
                     child_path = f"{current_path}/{child_name}".replace("//", "/")
                     _walk_raw_entry(
-                        child, child_path, fs, result, patterns,
-                        output_dir, extract_artifacts,
+                        child,
+                        child_path,
+                        fs,
+                        result,
+                        patterns,
+                        output_dir,
+                        extract_artifacts,
                     )
         elif hasattr(entry, "is_file") and entry.is_file():
             result.total_files_scanned += 1
             filename = current_path.rsplit("/", 1)[-1]
             _check_and_extract(
-                fs, current_path, filename, result, patterns,
-                output_dir, extract_artifacts,
+                fs,
+                current_path,
+                filename,
+                result,
+                patterns,
+                output_dir,
+                extract_artifacts,
             )
     except Exception as e:
         log.trace(f"Error walking {current_path}: {e}")
@@ -509,7 +522,9 @@ def _check_and_extract(
     """Check if a file matches any ICS pattern and optionally extract it."""
     for source_name, pattern_list in patterns.items():
         for pattern in pattern_list:
-            if fnmatch.fnmatch(filename, pattern) or fnmatch.fnmatch(filename.lower(), pattern.lower()):
+            if fnmatch.fnmatch(filename, pattern) or fnmatch.fnmatch(
+                filename.lower(), pattern.lower()
+            ):
                 log.info(f"Found ICS artifact: {virtual_path} (matched: {source_name}/{pattern})")
 
                 try:

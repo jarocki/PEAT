@@ -15,14 +15,13 @@ Users can also force a specific mode via CLI flags.
 # This file is part of PEAT and is licensed under GPL-3.0.
 # See LICENSE for details.
 
-
 from __future__ import annotations
 
 import json
 from pathlib import Path
 from typing import Any
 
-from peat import config, log, state
+from peat import config, log
 from peat.forensic import ForensicInputType, detect_input_type
 from peat.forensic.integrity import (
     ForensicMetadata,
@@ -124,7 +123,9 @@ def _write_forensic_metadata(metadata: ForensicMetadata) -> None:
 
 
 def _analyze_disk_image(
-    path: Path, metadata: ForensicMetadata | None, args: dict[str, Any]
+    path: Path,
+    metadata: ForensicMetadata | None,
+    args: dict[str, Any],  # noqa: ARG001
 ) -> bool:
     """Dispatch to disk image analysis pipeline, then parse extracted artifacts."""
     from peat.forensic.image import analyze_disk_image
@@ -133,7 +134,8 @@ def _analyze_disk_image(
 
     # Feed extracted artifacts into PEAT's parse pipeline
     extracted_paths = [
-        Path(a.output_path) for a in result.artifacts
+        Path(a.output_path)
+        for a in result.artifacts
         if a.output_path and Path(a.output_path).exists()
     ]
     if extracted_paths:
@@ -147,7 +149,9 @@ def _analyze_disk_image(
 
 
 def _analyze_pcap(
-    path: Path, metadata: ForensicMetadata | None, args: dict[str, Any]
+    path: Path,
+    metadata: ForensicMetadata | None,  # noqa: ARG001
+    args: dict[str, Any],  # noqa: ARG001
 ) -> bool:
     """Dispatch to PCAP analysis pipeline."""
     from peat.forensic.pcap import analyze_pcap
@@ -157,7 +161,9 @@ def _analyze_pcap(
 
 
 def _analyze_logs(
-    path: Path, metadata: ForensicMetadata | None, args: dict[str, Any]
+    path: Path,
+    metadata: ForensicMetadata | None,  # noqa: ARG001
+    args: dict[str, Any],  # noqa: ARG001
 ) -> bool:
     """Dispatch to log file analysis pipeline."""
     from peat.forensic.logs.ingest import ingest_logs
@@ -167,7 +173,9 @@ def _analyze_logs(
 
 
 def _analyze_firmware(
-    path: Path, metadata: ForensicMetadata | None, args: dict[str, Any]
+    path: Path,
+    metadata: ForensicMetadata | None,  # noqa: ARG001
+    args: dict[str, Any],  # noqa: ARG001
 ) -> bool:
     """Dispatch to firmware analysis pipeline, then parse extracted content."""
     from peat.forensic.firmware import analyze_firmware
@@ -175,10 +183,7 @@ def _analyze_firmware(
     result = analyze_firmware(firmware_path=path)
 
     # Feed extracted firmware files into PEAT's parse pipeline
-    extracted_paths = [
-        Path(p) for p in result.extracted_files
-        if Path(p).exists()
-    ]
+    extracted_paths = [Path(p) for p in result.extracted_files if Path(p).exists()]
     if extracted_paths:
         parse_results = _parse_extracted_artifacts(extracted_paths)
         log.info(
@@ -203,15 +208,16 @@ def _parse_extracted_artifacts(artifact_paths: list[Path]) -> dict[str, int]:
     Returns:
         Dict with 'total', 'parsed', and 'failed' counts.
     """
-    from peat.api.parse_api import find_parsable_files, parse_data
     from peat import module_api
+    from peat.api.parse_api import find_parsable_files, parse_data
 
     results = {"total": len(artifact_paths), "parsed": 0, "failed": 0}
     all_files = sorted(str(p) for p in artifact_paths)
 
     # Get all parse-capable modules
     parse_modules = [
-        cls for cls in module_api.classes
+        cls
+        for cls in module_api.classes
         if hasattr(cls, "filename_patterns") and cls.filename_patterns
     ]
 

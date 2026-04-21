@@ -22,7 +22,6 @@ identical timestamps (within a tolerance window).
 # This file is part of PEAT and is licensed under GPL-3.0.
 # See LICENSE for details.
 
-
 from __future__ import annotations
 
 import re

@@ -10,24 +10,21 @@ testing the full pipeline end-to-end: dpkt triage -> ICS identification
 
 import struct
 import time
+from datetime import UTC, datetime
 from pathlib import Path
 
 import dpkt
-import pytest
 
 from peat.forensic.pcap import (
-    ICSEvent,
-    NetworkFlow,
+    ICS_PORTS,
     PcapAnalysisResult,
-    analyze_pcap,
-    _dissect_modbus,
     _dissect_dnp3,
     _dissect_enip,
-    _identify_ics_protocol,
+    _dissect_modbus,
     _flow_key,
-    ICS_PORTS,
+    _identify_ics_protocol,
+    analyze_pcap,
 )
-from datetime import datetime, timezone
 
 
 def _build_pcap(tmp_path: Path, packets: list[tuple[bytes, bytes, int, int, bytes]]) -> Path:
@@ -41,14 +38,20 @@ def _build_pcap(tmp_path: Path, packets: list[tuple[bytes, bytes, int, int, byte
 
     for i, (src_ip, dst_ip, src_port, dst_port, payload) in enumerate(packets):
         tcp = dpkt.tcp.TCP(
-            sport=src_port, dport=dst_port,
-            seq=1000 + i, ack=0, off=5, flags=dpkt.tcp.TH_ACK,
+            sport=src_port,
+            dport=dst_port,
+            seq=1000 + i,
+            ack=0,
+            off=5,
+            flags=dpkt.tcp.TH_ACK,
             data=payload,
         )
         ip = dpkt.ip.IP(
-            src=src_ip, dst=dst_ip,
+            src=src_ip,
+            dst=dst_ip,
             p=dpkt.ip.IP_PROTO_TCP,
-            data=tcp, len=20 + len(tcp),
+            data=tcp,
+            len=20 + len(tcp),
         )
         eth = dpkt.ethernet.Ethernet(
             src=b"\x00\x11\x22\x33\x44\x55",
@@ -106,7 +109,7 @@ class TestModbusDissector:
 
     def test_read_holding_registers(self) -> None:
         payload = _modbus_read_request(unit_id=1, fc=3, start_addr=100, quantity=10)
-        ts = datetime(2026, 3, 15, 14, 0, 0, tzinfo=timezone.utc)
+        ts = datetime(2026, 3, 15, 14, 0, 0, tzinfo=UTC)
 
         events = _dissect_modbus(payload, ts, "192.168.1.100", "192.168.1.1", 5000, 502)
 
@@ -121,7 +124,7 @@ class TestModbusDissector:
 
     def test_write_single_register(self) -> None:
         payload = _modbus_read_request(unit_id=2, fc=6, start_addr=40, quantity=500)
-        ts = datetime(2026, 3, 15, 14, 0, 0, tzinfo=timezone.utc)
+        ts = datetime(2026, 3, 15, 14, 0, 0, tzinfo=UTC)
 
         events = _dissect_modbus(payload, ts, "192.168.1.100", "192.168.1.1", 5000, 502)
 
@@ -133,7 +136,7 @@ class TestModbusDissector:
         pdu = struct.pack(">BB", 0x83, 0x02)
         mbap = struct.pack(">HHHB", 1, 0, len(pdu) + 1, 1)
         payload = mbap + pdu
-        ts = datetime(2026, 3, 15, 14, 0, 0, tzinfo=timezone.utc)
+        ts = datetime(2026, 3, 15, 14, 0, 0, tzinfo=UTC)
 
         events = _dissect_modbus(payload, ts, "192.168.1.1", "192.168.1.100", 502, 5000)
 
@@ -143,8 +146,12 @@ class TestModbusDissector:
 
     def test_too_short_payload(self) -> None:
         events = _dissect_modbus(
-            b"\x00\x01", datetime.now(timezone.utc),
-            "1.2.3.4", "5.6.7.8", 1000, 502,
+            b"\x00\x01",
+            datetime.now(UTC),
+            "1.2.3.4",
+            "5.6.7.8",
+            1000,
+            502,
         )
         assert len(events) == 0
 
@@ -152,8 +159,12 @@ class TestModbusDissector:
         # Protocol ID != 0 means not Modbus
         payload = struct.pack(">HHHBB", 1, 99, 2, 1, 3)
         events = _dissect_modbus(
-            payload, datetime.now(timezone.utc),
-            "1.2.3.4", "5.6.7.8", 1000, 502,
+            payload,
+            datetime.now(UTC),
+            "1.2.3.4",
+            "5.6.7.8",
+            1000,
+            502,
         )
         assert len(events) == 0
 
@@ -171,10 +182,10 @@ class TestDNP3Dissector:
         payload += struct.pack("<H", 1)  # Source address
         payload += b"\x00\x00"  # CRC placeholder
         payload += b"\x00"  # Transport header
-        payload += b"\xC0"  # Application control
+        payload += b"\xc0"  # Application control
         payload += b"\x01"  # Function code: Read
 
-        ts = datetime(2026, 3, 15, 14, 0, 0, tzinfo=timezone.utc)
+        ts = datetime(2026, 3, 15, 14, 0, 0, tzinfo=UTC)
         events = _dissect_dnp3(payload, ts, "192.168.1.1", "192.168.1.10", 5000, 20000)
 
         assert len(events) == 1
@@ -184,16 +195,24 @@ class TestDNP3Dissector:
 
     def test_too_short(self) -> None:
         events = _dissect_dnp3(
-            b"\x05\x64\x0a", datetime.now(timezone.utc),
-            "1.2.3.4", "5.6.7.8", 1000, 20000,
+            b"\x05\x64\x0a",
+            datetime.now(UTC),
+            "1.2.3.4",
+            "5.6.7.8",
+            1000,
+            20000,
         )
         assert len(events) == 0
 
     def test_wrong_start_bytes(self) -> None:
         payload = b"\x00\x00" + b"\x00" * 20
         events = _dissect_dnp3(
-            payload, datetime.now(timezone.utc),
-            "1.2.3.4", "5.6.7.8", 1000, 20000,
+            payload,
+            datetime.now(UTC),
+            "1.2.3.4",
+            "5.6.7.8",
+            1000,
+            20000,
         )
         assert len(events) == 0
 
@@ -206,7 +225,7 @@ class TestENIPDissector:
         payload = struct.pack("<HHI", 0x0063, 0, 0)  # ListIdentity
         payload += b"\x00" * 16  # rest of header
 
-        ts = datetime(2026, 3, 15, 14, 0, 0, tzinfo=timezone.utc)
+        ts = datetime(2026, 3, 15, 14, 0, 0, tzinfo=UTC)
         events = _dissect_enip(payload, ts, "192.168.1.100", "192.168.1.1", 5000, 44818)
 
         assert len(events) == 1
@@ -215,8 +234,12 @@ class TestENIPDissector:
 
     def test_too_short(self) -> None:
         events = _dissect_enip(
-            b"\x00" * 10, datetime.now(timezone.utc),
-            "1.2.3.4", "5.6.7.8", 1000, 44818,
+            b"\x00" * 10,
+            datetime.now(UTC),
+            "1.2.3.4",
+            "5.6.7.8",
+            1000,
+            44818,
         )
         assert len(events) == 0
 
@@ -228,14 +251,23 @@ class TestFullPipeline:
         """Full pipeline: create PCAP with Modbus traffic, analyze it."""
         packets = [
             # Modbus Read Holding Registers request
-            (_ip(192, 168, 1, 100), _ip(192, 168, 1, 1), 5000, 502,
-             _modbus_read_request(1, 3, 0, 10)),
+            (
+                _ip(192, 168, 1, 100),
+                _ip(192, 168, 1, 1),
+                5000,
+                502,
+                _modbus_read_request(1, 3, 0, 10),
+            ),
             # Another Modbus request
-            (_ip(192, 168, 1, 100), _ip(192, 168, 1, 1), 5000, 502,
-             _modbus_read_request(1, 4, 100, 5)),
+            (
+                _ip(192, 168, 1, 100),
+                _ip(192, 168, 1, 1),
+                5000,
+                502,
+                _modbus_read_request(1, 4, 100, 5),
+            ),
             # Non-ICS traffic (HTTP)
-            (_ip(192, 168, 1, 100), _ip(10, 0, 0, 1), 5000, 80,
-             b"GET / HTTP/1.1\r\n\r\n"),
+            (_ip(192, 168, 1, 100), _ip(10, 0, 0, 1), 5000, 80, b"GET / HTTP/1.1\r\n\r\n"),
         ]
         pcap_path = _build_pcap(tmp_path, packets)
 
@@ -249,8 +281,13 @@ class TestFullPipeline:
     def test_asset_inventory(self, tmp_path: Path) -> None:
         """Pipeline should build asset inventory from flows."""
         packets = [
-            (_ip(192, 168, 1, 100), _ip(192, 168, 1, 1), 5000, 502,
-             _modbus_read_request(1, 3, 0, 10)),
+            (
+                _ip(192, 168, 1, 100),
+                _ip(192, 168, 1, 1),
+                5000,
+                502,
+                _modbus_read_request(1, 3, 0, 10),
+            ),
         ]
         pcap_path = _build_pcap(tmp_path, packets)
 
@@ -263,8 +300,13 @@ class TestFullPipeline:
 
     def test_output_files_written(self, tmp_path: Path) -> None:
         packets = [
-            (_ip(192, 168, 1, 100), _ip(192, 168, 1, 1), 5000, 502,
-             _modbus_read_request(1, 3, 0, 10)),
+            (
+                _ip(192, 168, 1, 100),
+                _ip(192, 168, 1, 1),
+                5000,
+                502,
+                _modbus_read_request(1, 3, 0, 10),
+            ),
         ]
         pcap_path = _build_pcap(tmp_path, packets)
         out = tmp_path / "out"

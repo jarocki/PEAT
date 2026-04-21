@@ -22,11 +22,11 @@ passive capabilities cleanly separated for users who need forensic-grade analysi
 # This file is part of PEAT and is licensed under GPL-3.0.
 # See LICENSE for details.
 
-
 from __future__ import annotations
 
 from enum import Enum
 from pathlib import Path
+
 from peat import log
 
 log.warning("Forensic module is experimental and AI-assisted. Verify results independently.")

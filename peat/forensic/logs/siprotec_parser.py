@@ -20,13 +20,8 @@ with standard Python CSV tools.
 # This file is part of PEAT and is licensed under GPL-3.0.
 # See LICENSE for details.
 
-
 from __future__ import annotations
 
-import csv
-import io
-import re
-from datetime import datetime
 from pathlib import Path
 
 from peat import log
@@ -88,19 +83,21 @@ class SiprotecLogParser(LogParser):
             severity = _normalize_severity(severity_raw)
             category = _classify_siprotec_event(description, event_id)
 
-            entries.append(ParsedLogEntry(
-                timestamp=timestamp,
-                message=description or event_id,
-                original=str(row),
-                source_type="siprotec_csv",
-                source_file=path.name,
-                action=event_id,
-                category=category,
-                severity=severity,
-                device_vendor="Siemens",
-                device_model="SIPROTEC",
-                extra={k: v for k, v in row.items() if v},
-            ))
+            entries.append(
+                ParsedLogEntry(
+                    timestamp=timestamp,
+                    message=description or event_id,
+                    original=str(row),
+                    source_type="siprotec_csv",
+                    source_file=path.name,
+                    action=event_id,
+                    category=category,
+                    severity=severity,
+                    device_vendor="Siemens",
+                    device_model="SIPROTEC",
+                    extra={k: v for k, v in row.items() if v},
+                )
+            )
 
         log.info(f"Parsed {len(entries)} events from SIPROTEC log: {path.name}")
         return entries
@@ -145,15 +142,17 @@ class GenericCSVLogParser(LogParser):
             timestamp = cls._parse_timestamp(ts_str)
             description = row.get(desc_col, "") if desc_col else str(row)
 
-            entries.append(ParsedLogEntry(
-                timestamp=timestamp,
-                message=description,
-                original=str(row),
-                source_type="generic_csv",
-                source_file=path.name,
-                severity=_normalize_severity(row.get(sev_col, "")) if sev_col else "info",
-                extra={k: v for k, v in row.items() if v},
-            ))
+            entries.append(
+                ParsedLogEntry(
+                    timestamp=timestamp,
+                    message=description,
+                    original=str(row),
+                    source_type="generic_csv",
+                    source_file=path.name,
+                    severity=_normalize_severity(row.get(sev_col, "")) if sev_col else "info",
+                    extra={k: v for k, v in row.items() if v},
+                )
+            )
 
         log.info(f"Parsed {len(entries)} entries from CSV: {path.name}")
         return entries

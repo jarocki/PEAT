@@ -5,7 +5,7 @@
 groups = ["default", "dev", "docs", "exe", "lint", "test"]
 strategy = []
 lock_version = "4.5.0"
-content_hash = "sha256:a22c6378021bdeb1a1c8434d83942ae846eb1afd210e523411aee345ba66f26d"
+content_hash = "sha256:0c85c615a281860367d9e271c1eda8cfa0f9ba7bbf2ea979ff7ddcd28e246bff"
 
 [[metadata.targets]]
 requires_python = ">=3.11,<3.14"
@@ -52,6 +52,15 @@ files = [
 ]
 
 [[package]]
+name = "asn1crypto"
+version = "1.5.1"
+summary = "Fast ASN.1 parser and serializer with definitions for private keys, public keys, certificates, CRL, OCSP, CMS, PKCS#3, PKCS#7, PKCS#8, PKCS#12, PKCS#5, X.509 and TSP"
+files = [
+    {file = "asn1crypto-1.5.1-py2.py3-none-any.whl", hash = "sha256:db4e40728b728508912cbb3d44f19ce188f218e9eba635821bb4b68564f8fd67"},
+    {file = "asn1crypto-1.5.1.tar.gz", hash = "sha256:13ae38502be632115abf8a24cbe5f4da52e3b5231990aff31123c805306ccb9c"},
+]
+
+[[package]]
 name = "astroid"
 version = "4.0.4"
 requires_python = ">=3.10.0"
@@ -62,6 +71,16 @@ dependencies = [
 files = [
     {file = "astroid-4.0.4-py3-none-any.whl", hash = "sha256:52f39653876c7dec3e3afd4c2696920e05c83832b9737afc21928f2d2eb7a753"},
     {file = "astroid-4.0.4.tar.gz", hash = "sha256:986fed8bcf79fb82c78b18a53352a0b287a73817d6dbcfba3162da36667c49a0"},
+]
+
+[[package]]
+name = "asttokens"
+version = "3.0.1"
+requires_python = ">=3.8"
+summary = "Annotate AST trees with source code positions"
+files = [
+    {file = "asttokens-3.0.1-py3-none-any.whl", hash = "sha256:15a3ebc0f43c2d0a50eeafea25e19046c68398e487b9f1f5b517f7c0f40f976a"},
+    {file = "asttokens-3.0.1.tar.gz", hash = "sha256:71a4ee5de0bde6a31d64f6b13f2293ac190344478f081c3d1bccfcf5eacb0cb7"},
 ]
 
 [[package]]
@@ -89,6 +108,89 @@ dependencies = [
 files = [
     {file = "babel-2.18.0-py3-none-any.whl", hash = "sha256:e2b422b277c2b9a9630c1d7903c2a00d0830c409c59ac8cae9081c92f1aeba35"},
     {file = "babel-2.18.0.tar.gz", hash = "sha256:b80b99a14bd085fcacfa15c9165f651fbb3406e66cc603abf11c5750937c992d"},
+]
+
+[[package]]
+name = "backports-zstd"
+version = "1.3.0"
+requires_python = "<3.14,>=3.9"
+summary = "Backport of compression.zstd"
+files = [
+    {file = "backports_zstd-1.3.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:249f90b39d3741c48620021a968b35f268ca70e35f555abeea9ff95a451f35f9"},
+    {file = "backports_zstd-1.3.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:b0e71e83e46154a9d3ced6d4de9a2fea8207ee1e4832aeecf364dc125eda305c"},
+    {file = "backports_zstd-1.3.0-cp311-cp311-manylinux2010_i686.manylinux_2_12_i686.manylinux_2_28_i686.whl", hash = "sha256:cbc6193acd21f96760c94dd71bf32b161223e8503f5277acb0a5ab54e5598957"},
+    {file = "backports_zstd-1.3.0-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:1df583adc0ae84a8d13d7139f42eade6d90182b1dd3e0d28f7df3c564b9fd55d"},
+    {file = "backports_zstd-1.3.0-cp311-cp311-manylinux2014_ppc64le.manylinux_2_17_ppc64le.manylinux_2_28_ppc64le.whl", hash = "sha256:d833fc23aa3cc2e05aeffc7cfadd87b796654ad3a7fb214555cda3f1db2d4dc2"},
+    {file = "backports_zstd-1.3.0-cp311-cp311-manylinux2014_s390x.manylinux_2_17_s390x.manylinux_2_28_s390x.whl", hash = "sha256:142178fe981061f1d2a57c5348f2cd31a3b6397a35593e7a17dbda817b793a7f"},
+    {file = "backports_zstd-1.3.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:5eed0a09a163f3a8125a857cb031be87ed052e4a47bc75085ed7fca786e9bb5b"},
+    {file = "backports_zstd-1.3.0-cp311-cp311-manylinux_2_34_riscv64.manylinux_2_39_riscv64.whl", hash = "sha256:60aa483fef5843749e993dde01229e5eedebca8c283023d27d6bf6800d1d4ce3"},
+    {file = "backports_zstd-1.3.0-cp311-cp311-musllinux_1_2_aarch64.whl", hash = "sha256:ea0886c1b619773544546e243ed73f6d6c2b1ae3c00c904ccc9903a352d731e1"},
+    {file = "backports_zstd-1.3.0-cp311-cp311-musllinux_1_2_i686.whl", hash = "sha256:5e137657c830a5ce99be40a1d713eb1d246bae488ada28ff0666ac4387aebdd5"},
+    {file = "backports_zstd-1.3.0-cp311-cp311-musllinux_1_2_ppc64le.whl", hash = "sha256:94048c8089755e482e4b34608029cf1142523a625873c272be2b1c9253871a72"},
+    {file = "backports_zstd-1.3.0-cp311-cp311-musllinux_1_2_riscv64.whl", hash = "sha256:d339c1ec40485e97e600eb9a285fb13169dbf44c5094b945788a62f38b96e533"},
+    {file = "backports_zstd-1.3.0-cp311-cp311-musllinux_1_2_s390x.whl", hash = "sha256:8aeee9210c54cf8bf83f4d263a6d0d6e7a0298aeb5a14a0a95e90487c5c3157c"},
+    {file = "backports_zstd-1.3.0-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:ba7114a3099e5ea05cbb46568bd0e08bca2ca11e12c6a7b563a24b86b2b4a67f"},
+    {file = "backports_zstd-1.3.0-cp311-cp311-win32.whl", hash = "sha256:08dfdfb85da5915383bfae680b6ac10ab5769ab22e690f9a854320720011ae8e"},
+    {file = "backports_zstd-1.3.0-cp311-cp311-win_amd64.whl", hash = "sha256:d8aac2e7cdcc8f310c16f98a0062b48d0a081dbb82862794f4f4f5bdafde30a4"},
+    {file = "backports_zstd-1.3.0-cp311-cp311-win_arm64.whl", hash = "sha256:440ef1be06e82dc0d69dbb57177f2ce98bbd2151013ee7e551e2f2b54caa6120"},
+    {file = "backports_zstd-1.3.0-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:f4a292e357f3046d18766ce06d990ccbab97411708d3acb934e63529c2ea7786"},
+    {file = "backports_zstd-1.3.0-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:fb4c386f38323698991b38edcc9c091d46d4713f5df02a3b5c80a28b40e289ea"},
+    {file = "backports_zstd-1.3.0-cp312-cp312-manylinux2010_i686.manylinux_2_12_i686.manylinux_2_28_i686.whl", hash = "sha256:f52523d2bdada29e653261abdc9cfcecd9e5500d305708b7e37caddb24909d4e"},
+    {file = "backports_zstd-1.3.0-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:3321d00beaacbd647252a7f581c1e1cdbdbda2407f2addce4bfb10e8e404b7c7"},
+    {file = "backports_zstd-1.3.0-cp312-cp312-manylinux2014_ppc64le.manylinux_2_17_ppc64le.manylinux_2_28_ppc64le.whl", hash = "sha256:88f94d238ef36c639c0ae17cf41054ce103da9c4d399c6a778ce82690d9f4919"},
+    {file = "backports_zstd-1.3.0-cp312-cp312-manylinux2014_s390x.manylinux_2_17_s390x.manylinux_2_28_s390x.whl", hash = "sha256:97d8c78fe20c7442c810adccfd5e3ea6a4e6f4f1fa4c73da2bc083260ebead17"},
+    {file = "backports_zstd-1.3.0-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:eefda80c3dbfbd924f1c317e7b0543d39304ee645583cb58bae29e19f42948ed"},
+    {file = "backports_zstd-1.3.0-cp312-cp312-manylinux_2_34_riscv64.manylinux_2_39_riscv64.whl", hash = "sha256:2ab5d3b5a54a674f4f6367bb9e0914063f22cd102323876135e9cc7a8f14f17e"},
+    {file = "backports_zstd-1.3.0-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:7558fb0e8c8197c59a5f80c56bf8f56c3690c45fd62f14e9e2081661556e3e64"},
+    {file = "backports_zstd-1.3.0-cp312-cp312-musllinux_1_2_i686.whl", hash = "sha256:27744870e38f017159b9c0241ea51562f94c7fefcfa4c5190fb3ec4a65a7fc63"},
+    {file = "backports_zstd-1.3.0-cp312-cp312-musllinux_1_2_ppc64le.whl", hash = "sha256:b099750755bb74c280827c7d68de621da0f245189082ab48ff91bda0ec2db9df"},
+    {file = "backports_zstd-1.3.0-cp312-cp312-musllinux_1_2_riscv64.whl", hash = "sha256:5434e86f2836d453ae3e19a2711449683b7e21e107686838d12a255ad256ca99"},
+    {file = "backports_zstd-1.3.0-cp312-cp312-musllinux_1_2_s390x.whl", hash = "sha256:407e451f64e2f357c9218f5be4e372bb6102d7ae88582d415262a9d0a4f9b625"},
+    {file = "backports_zstd-1.3.0-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:58a071f3c198c781b2df801070290b7174e3ff61875454e9df93ab7ea9ea832b"},
+    {file = "backports_zstd-1.3.0-cp312-cp312-win32.whl", hash = "sha256:21a9a542ccc7958ddb51ae6e46d8ed25d585b54d0d52aaa1c8da431ea158046a"},
+    {file = "backports_zstd-1.3.0-cp312-cp312-win_amd64.whl", hash = "sha256:89ea8281821123b071a06b30b80da8e4d8a2b40a4f57315a19850337a21297ac"},
+    {file = "backports_zstd-1.3.0-cp312-cp312-win_arm64.whl", hash = "sha256:f6843ecb181480e423b02f60fe29e393cbc31a95fb532acdf0d3a2c87bd50ce3"},
+    {file = "backports_zstd-1.3.0-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:e86e03e3661900955f01afed6c59cae9baa63574e3b66896d99b7de97eaffce9"},
+    {file = "backports_zstd-1.3.0-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:41974dcacc9824c1effe1c8d2f9d762bcf47d265ca4581a3c63321c7b06c61f0"},
+    {file = "backports_zstd-1.3.0-cp313-cp313-manylinux2010_i686.manylinux_2_12_i686.manylinux_2_28_i686.whl", hash = "sha256:3090a97738d6ce9545d3ca5446df43370928092a962cbc0153e5445a947e98ed"},
+    {file = "backports_zstd-1.3.0-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:ddc874638abf03ea1ff3b0525b4a26a8d0adf7cb46a448c3449f08e4abc276b3"},
+    {file = "backports_zstd-1.3.0-cp313-cp313-manylinux2014_ppc64le.manylinux_2_17_ppc64le.manylinux_2_28_ppc64le.whl", hash = "sha256:db609e57b8ed88b3472930c87e93c08a4bbd5ffeb94608cd9c7c6f0ac0e166c6"},
+    {file = "backports_zstd-1.3.0-cp313-cp313-manylinux2014_s390x.manylinux_2_17_s390x.manylinux_2_28_s390x.whl", hash = "sha256:5f13033a3dd95f323c067199f2e61b4589a7880188ef4ef356c7ffbdb78a9f11"},
+    {file = "backports_zstd-1.3.0-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:9c4c7bcda5619a754726e7f5b391827f5efbe4bed8e62e9ec7490d42bff18aa6"},
+    {file = "backports_zstd-1.3.0-cp313-cp313-manylinux_2_34_riscv64.manylinux_2_39_riscv64.whl", hash = "sha256:884a94c40f27affe986f394f219a4fd3cbbd08e1cff2e028d29d467574cd266e"},
+    {file = "backports_zstd-1.3.0-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:497f5765126f11a5b3fd8fedfdae0166d1dd867e7179b8148370a3313d047197"},
+    {file = "backports_zstd-1.3.0-cp313-cp313-musllinux_1_2_i686.whl", hash = "sha256:a6ff6769948bb29bba07e1c2e8582d5a9765192a366108e42d6581a458475881"},
+    {file = "backports_zstd-1.3.0-cp313-cp313-musllinux_1_2_ppc64le.whl", hash = "sha256:1623e5bff1acd9c8ef90d24fc548110f20df2d14432bfe5de59e76fc036824ef"},
+    {file = "backports_zstd-1.3.0-cp313-cp313-musllinux_1_2_riscv64.whl", hash = "sha256:622c28306dcc429c8f2057fc4421d5722b1f22968d299025b35d71b50cfd4e03"},
+    {file = "backports_zstd-1.3.0-cp313-cp313-musllinux_1_2_s390x.whl", hash = "sha256:09a2785e410ed2e812cb39b684ef5eb55083a5897bfd0e6f5de3bbd2c6345f70"},
+    {file = "backports_zstd-1.3.0-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:ade1f4127fdbe36a02f8067d75aa79c1ea1c8a306bf63c7b818bb7b530e1beaa"},
+    {file = "backports_zstd-1.3.0-cp313-cp313-win32.whl", hash = "sha256:668e6fb1805b825cb7504c71436f7b28d4d792bb2663ee901ec9a2bb15804437"},
+    {file = "backports_zstd-1.3.0-cp313-cp313-win_amd64.whl", hash = "sha256:385bdadf0ea8fe6ba780a95e4c7d7f018db7bafdd630932f0f9f0fad05d608ff"},
+    {file = "backports_zstd-1.3.0-cp313-cp313-win_arm64.whl", hash = "sha256:4321a8a367537224b3559fe7aeb8012b98aea2a60a737e59e51d86e2e856fe0a"},
+    {file = "backports_zstd-1.3.0-cp313-cp313t-macosx_10_13_x86_64.whl", hash = "sha256:10057d66fa4f0a7d3f6419ffb84b4fe61088da572e3ac4446134a1c8089e4166"},
+    {file = "backports_zstd-1.3.0-cp313-cp313t-macosx_11_0_arm64.whl", hash = "sha256:4abf29d706ba05f658ca0247eb55675bcc00e10f12bca15736e45b05f1f2d2dc"},
+    {file = "backports_zstd-1.3.0-cp313-cp313t-manylinux2010_i686.manylinux_2_12_i686.manylinux_2_28_i686.whl", hash = "sha256:127b0d73c745b0684da3d95c31c0939570810dad8967dfe8231eea8f0e047b2f"},
+    {file = "backports_zstd-1.3.0-cp313-cp313t-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:0205ef809fb38bb5ca7f59fa03993596f918768b9378fb7fbd8a68889a6ce028"},
+    {file = "backports_zstd-1.3.0-cp313-cp313t-manylinux2014_ppc64le.manylinux_2_17_ppc64le.manylinux_2_28_ppc64le.whl", hash = "sha256:1c389b667b0b07915781aa28beabf2481f11a6062a1a081873c4c443b98601a7"},
+    {file = "backports_zstd-1.3.0-cp313-cp313t-manylinux2014_s390x.manylinux_2_17_s390x.manylinux_2_28_s390x.whl", hash = "sha256:8e7ac5ef693d49d6fb35cd7bbb98c4762cfea94a8bd2bf2ab112027004f70b11"},
+    {file = "backports_zstd-1.3.0-cp313-cp313t-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:5d5543945aae2a76a850b23f283249424f535de6a622d6002957b7d971e6a36d"},
+    {file = "backports_zstd-1.3.0-cp313-cp313t-manylinux_2_34_riscv64.manylinux_2_39_riscv64.whl", hash = "sha256:e38be15ebce82737deda2c9410c1f942f1df9da74121049243a009810432db75"},
+    {file = "backports_zstd-1.3.0-cp313-cp313t-musllinux_1_2_aarch64.whl", hash = "sha256:e3e3f58c76f4730607a4e0130d629173aa114ae72a5c8d3d5ad94e1bf51f18d8"},
+    {file = "backports_zstd-1.3.0-cp313-cp313t-musllinux_1_2_i686.whl", hash = "sha256:b808bf889722d889b792f7894e19c1f904bb0e9092d8c0eb0787b939b08bad9a"},
+    {file = "backports_zstd-1.3.0-cp313-cp313t-musllinux_1_2_ppc64le.whl", hash = "sha256:f7be27d56f2f715bcd252d0c65c232146d8e1e039c7e2835b8a3ad3dc88bc508"},
+    {file = "backports_zstd-1.3.0-cp313-cp313t-musllinux_1_2_riscv64.whl", hash = "sha256:cbe341c7fcc723893663a37175ba859328b907a4e6d2d40a4c26629cc55efb67"},
+    {file = "backports_zstd-1.3.0-cp313-cp313t-musllinux_1_2_s390x.whl", hash = "sha256:b4116a9e12dfcd834dd9132cf6a94657bf0d328cba5b295f26de26ea0ae1adc8"},
+    {file = "backports_zstd-1.3.0-cp313-cp313t-musllinux_1_2_x86_64.whl", hash = "sha256:1049e804cc8754290b24dab383d4d6ed0b7f794ad8338813ddcb3907d15a89d0"},
+    {file = "backports_zstd-1.3.0-cp313-cp313t-win32.whl", hash = "sha256:7d3f0f2499d2049ec53d2674c605a4b3052c217cc7ee49c05258046411685adc"},
+    {file = "backports_zstd-1.3.0-cp313-cp313t-win_amd64.whl", hash = "sha256:eb2f8fab0b1ea05148394cb34a9e543a43477178765f2d6e7c84ed332e34935e"},
+    {file = "backports_zstd-1.3.0-cp313-cp313t-win_arm64.whl", hash = "sha256:c66ad9eb5bfbe28c2387b7fc58ddcdecfb336d6e4e60bcba1694a906c1f21a6c"},
+    {file = "backports_zstd-1.3.0-pp311-pypy311_pp73-macosx_10_15_x86_64.whl", hash = "sha256:968167d29f012cee7b112ad031a8925e484e97e99288e55e4d62962c3a1013e3"},
+    {file = "backports_zstd-1.3.0-pp311-pypy311_pp73-macosx_11_0_arm64.whl", hash = "sha256:d8f6fc7d62b71083b574193dd8fb3a60e6bb34880cc0132aad242943af301f7a"},
+    {file = "backports_zstd-1.3.0-pp311-pypy311_pp73-manylinux2010_i686.manylinux_2_12_i686.manylinux_2_28_i686.whl", hash = "sha256:e0f2eca6aac280fdb77991ad3362487ee91a7fb064ad40043fb5a0bf5a376943"},
+    {file = "backports_zstd-1.3.0-pp311-pypy311_pp73-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:676eb5e177d4ef528cf3baaeea4fffe05f664e4dd985d3ac06960ef4619c81a9"},
+    {file = "backports_zstd-1.3.0-pp311-pypy311_pp73-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:199eb9bd8aca6a9d489c41a682fad22c587dffe57b613d0fe6d492d0d38ce7c5"},
+    {file = "backports_zstd-1.3.0-pp311-pypy311_pp73-win_amd64.whl", hash = "sha256:2524bd6777a828d5e7ccd7bd1a57f9e7007ae654fc2bd1bc1a207f6428674e4a"},
+    {file = "backports_zstd-1.3.0.tar.gz", hash = "sha256:e8b2d68e2812f5c9970cabc5e21da8b409b5ed04e79b4585dbffa33e9b45ebe2"},
 ]
 
 [[package]]
@@ -511,6 +613,16 @@ files = [
 ]
 
 [[package]]
+name = "decorator"
+version = "5.2.1"
+requires_python = ">=3.8"
+summary = "Decorators for Humans"
+files = [
+    {file = "decorator-5.2.1-py3-none-any.whl", hash = "sha256:d316bb415a2d9e2d2b3abcc4084c6502fc09240e292cd76a76afc106a1c8e04a"},
+    {file = "decorator-5.2.1.tar.gz", hash = "sha256:65f266143752f734b0a7cc83c46f4618af75b8c5911b00ccb61d0ac9b6da0360"},
+]
+
+[[package]]
 name = "deepdiff"
 version = "8.6.1"
 requires_python = ">=3.9"
@@ -539,6 +651,16 @@ files = [
 ]
 
 [[package]]
+name = "defusedxml"
+version = "0.7.1"
+requires_python = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+summary = "XML bomb protection for Python stdlib modules"
+files = [
+    {file = "defusedxml-0.7.1-py2.py3-none-any.whl", hash = "sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61"},
+    {file = "defusedxml-0.7.1.tar.gz", hash = "sha256:1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69"},
+]
+
+[[package]]
 name = "dill"
 version = "0.4.1"
 requires_python = ">=3.9"
@@ -546,6 +668,554 @@ summary = "serialize all of Python"
 files = [
     {file = "dill-0.4.1-py3-none-any.whl", hash = "sha256:1e1ce33e978ae97fcfcff5638477032b801c46c7c65cf717f95fbc2248f79a9d"},
     {file = "dill-0.4.1.tar.gz", hash = "sha256:423092df4182177d4d8ba8290c8a5b640c66ab35ec7da59ccfa00f6fa3eea5fa"},
+]
+
+[[package]]
+name = "dissect"
+version = "3.22"
+requires_python = ">=3.10"
+summary = "Dissect is a digital forensics & incident response framework and toolset that allows you to quickly access and analyse forensic artefacts from various disk and file formats, developed by Fox-IT (part of NCC Group)"
+dependencies = [
+    "dissect-apfs==1.1",
+    "dissect-archive==1.8",
+    "dissect-btrfs==1.10",
+    "dissect-cim==3.13",
+    "dissect-clfs==1.11",
+    "dissect-cramfs==1.1",
+    "dissect-cstruct==4.7",
+    "dissect-database==1.1",
+    "dissect-etl==3.14",
+    "dissect-eventlog==3.11",
+    "dissect-evidence==3.13",
+    "dissect-executable==1.11",
+    "dissect-extfs==3.15",
+    "dissect-fat==3.13",
+    "dissect-ffs==3.12",
+    "dissect-fve==4.6",
+    "dissect-hypervisor==3.21",
+    "dissect-jffs==1.6",
+    "dissect-ntfs==3.16",
+    "dissect-ole==3.12",
+    "dissect-qnxfs==1.2",
+    "dissect-regf==3.14",
+    "dissect-shellitem==3.13",
+    "dissect-squashfs==1.12",
+    "dissect-target[full]==3.25.1",
+    "dissect-thumbcache==1.11",
+    "dissect-util==3.24",
+    "dissect-vmfs==3.13",
+    "dissect-volume==3.18",
+    "dissect-xfs==3.13",
+]
+files = [
+    {file = "dissect-3.22-py3-none-any.whl", hash = "sha256:00fd4e21e4ea6418bcc3f794b55720a20ccf92817e8dc1a1db651d90d5bba42e"},
+    {file = "dissect-3.22.tar.gz", hash = "sha256:8a621a1dd9830e7aabc79b18ac686be742bb3104e4ca3224f62fb60faf8e53d0"},
+]
+
+[[package]]
+name = "dissect-apfs"
+version = "1.1"
+requires_python = ">=3.10.0"
+summary = "A Dissect module implementing a parser for the APFS file system, a commonly used Apple file system"
+dependencies = [
+    "asn1crypto",
+    "dissect-cstruct<5,>=4",
+    "dissect-fve<5,>=4.2",
+    "dissect-util<4,>=3.23",
+    "pycryptodome",
+]
+files = [
+    {file = "dissect_apfs-1.1-py3-none-any.whl", hash = "sha256:0e73884d54efdcf9a0c2ad68e49d0aaf80849a6f60f0a9837030a8a36555945b"},
+    {file = "dissect_apfs-1.1.tar.gz", hash = "sha256:eeb42b1d862119cfa3a9006e44af39ed1f9fbad0ef03540249481b9879ac7332"},
+]
+
+[[package]]
+name = "dissect-archive"
+version = "1.8"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing parsers for various archive and backup formats"
+dependencies = [
+    "dissect-cstruct<5,>=4",
+    "dissect-util<4,>=3.22",
+]
+files = [
+    {file = "dissect_archive-1.8-py3-none-any.whl", hash = "sha256:b0d81d81591fc0485eeacc98a81f1888640892b6cbbed1fd19fa946c4365229c"},
+    {file = "dissect_archive-1.8.tar.gz", hash = "sha256:62faef53897e44f4279236c5c9c9ee2cec345b4741cbbd7987e47a333bca7146"},
+]
+
+[[package]]
+name = "dissect-btrfs"
+version = "1.10"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing a parser for the Btrfs file system, a commonly used Linux filesystem."
+dependencies = [
+    "dissect-cstruct<5,>=4",
+    "dissect-util<4,>=3.23",
+]
+files = [
+    {file = "dissect_btrfs-1.10-py3-none-any.whl", hash = "sha256:22569fba43c1740aa998544998beee09b599ff95f45d4fe3e05a47fac689d938"},
+    {file = "dissect_btrfs-1.10.tar.gz", hash = "sha256:9a0dc60cde09a23fad5334cfcaa452cf18d3ab75e1491655e5d633d5f2f854c3"},
+]
+
+[[package]]
+name = "dissect-cim"
+version = "3.13"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing a parser for the Windows Common Information Model (CIM) database, used in the Windows operating system"
+dependencies = [
+    "dissect-cstruct<5,>=4",
+    "dissect-util<4,>=3",
+]
+files = [
+    {file = "dissect_cim-3.13-py3-none-any.whl", hash = "sha256:52272c9cb6065a3dc4400edd0c75b4e1eaf0ece5b2812d2fd5d28b6e96823a42"},
+    {file = "dissect_cim-3.13.tar.gz", hash = "sha256:5ff0d7dd54cf580c29316d81e0e0d5a905213e4110a04f8309544e10701af38e"},
+]
+
+[[package]]
+name = "dissect-clfs"
+version = "1.11"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing a parser for the CLFS (Common Log File System) file system of Windows"
+dependencies = [
+    "dissect-cstruct<5,>=4",
+]
+files = [
+    {file = "dissect_clfs-1.11-py3-none-any.whl", hash = "sha256:cb53c342e9b48fc46e7255f206c48cf8ca68701a7de458c81515d5a359fcabd0"},
+    {file = "dissect_clfs-1.11.tar.gz", hash = "sha256:0a25ef483eeb663cccd866735107514d62b8e56afb814ddf35ec6209e0e59a40"},
+]
+
+[[package]]
+name = "dissect-cramfs"
+version = "1.1"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing a parser for the Cram file system, commonly used in appliance or device firmware"
+dependencies = [
+    "dissect-cstruct<5,>=4",
+    "dissect-util<4,>=3",
+]
+files = [
+    {file = "dissect_cramfs-1.1-py3-none-any.whl", hash = "sha256:48d7aeaaa7ac7f9ffa15d6d00f7893882b1edba6fd8b3d45b4252d018f2a8550"},
+    {file = "dissect_cramfs-1.1.tar.gz", hash = "sha256:a531dc50e847c5a511ceea5a4172ba79e9d33d5318673495da73d15efcd9222f"},
+]
+
+[[package]]
+name = "dissect-cstruct"
+version = "4.7"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing a parser for C-like structures: structure parsing in Python made easy"
+files = [
+    {file = "dissect_cstruct-4.7-py3-none-any.whl", hash = "sha256:0427621ce67baa3106df2dc63a320d0a7f5c2da88ba3faf2ef5886a1a6b458fd"},
+    {file = "dissect_cstruct-4.7.tar.gz", hash = "sha256:4bf821a381312b9b2fdefea307f7e33548158d39d7d154f1b3007472c51a1fc4"},
+]
+
+[[package]]
+name = "dissect-database"
+version = "1.1"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing parsers for various database formats, including Berkeley DB, Microsofts Extensible Storage Engine (ESE) and SQLite3"
+dependencies = [
+    "dissect-cstruct<5,>=4",
+    "dissect-util<4,>=3.24.dev1",
+]
+files = [
+    {file = "dissect_database-1.1-py3-none-any.whl", hash = "sha256:7325c52229c4e3413ccbcb2c602c9a53344c742a07e290bbf170240ac6d7c6c9"},
+    {file = "dissect_database-1.1.tar.gz", hash = "sha256:67307a232c978fd9ea854e92b1c6f645f3be235270d6962342c632374a77af33"},
+]
+
+[[package]]
+name = "dissect-etl"
+version = "3.14"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing a parser for Event Trace Log (ETL) files, used by the Windows operating system to log kernel events"
+dependencies = [
+    "defusedxml",
+    "dissect-cstruct<5,>=4.6",
+    "dissect-util<4,>=3",
+]
+files = [
+    {file = "dissect_etl-3.14-py3-none-any.whl", hash = "sha256:9487d8a4bae31a48fb1311f2df6bc1d245bca532049fd7403c82992ea35058d9"},
+    {file = "dissect_etl-3.14.tar.gz", hash = "sha256:4c71365a1cc2c9e400f8bf5562df6d6494a870b4d88f003b36154558be37100f"},
+]
+
+[[package]]
+name = "dissect-eventlog"
+version = "3.11"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing parsers for the Windows EVT, EVTX and WEVT log file formats"
+dependencies = [
+    "dissect-cstruct<5,>=4",
+    "dissect-util<4,>=3",
+]
+files = [
+    {file = "dissect_eventlog-3.11-py3-none-any.whl", hash = "sha256:2077da82d1b4f73642c06692cde436884419f6a7614accfb7d783602e57aad24"},
+    {file = "dissect_eventlog-3.11.tar.gz", hash = "sha256:1a03f05748831e72981c5c456a9e8f6ad1a69544dc0b16359dd1d2a0de994b02"},
+]
+
+[[package]]
+name = "dissect-evidence"
+version = "3.13"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing a parsers for various forensic evidence file containers, currently: AD1, ASDF and EWF"
+dependencies = [
+    "dissect-cstruct<5,>=4",
+    "dissect-util<4,>=3",
+]
+files = [
+    {file = "dissect_evidence-3.13-py3-none-any.whl", hash = "sha256:a7aaa0823870a5678e5ee5a5e8ba08ed1cb3c480b789754fb74e8d3b86fa600e"},
+    {file = "dissect_evidence-3.13.tar.gz", hash = "sha256:33a24a32b385610dbd0d635428c6b08cffae1d724ba50f14f79b23c59adf2697"},
+]
+
+[[package]]
+name = "dissect-executable"
+version = "1.11"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing a parsers for various executable formats such as PE, ELF and Macho-O"
+dependencies = [
+    "dissect-cstruct<5,>=4.6",
+    "dissect-util<4,>=3",
+]
+files = [
+    {file = "dissect_executable-1.11-py3-none-any.whl", hash = "sha256:01a1236e320d86882cc3f3c4c077ee61f7a87c2e0339a15f2f6db929dad30abd"},
+    {file = "dissect_executable-1.11.tar.gz", hash = "sha256:04ad4abed1294b073b49ae2baf1c69543f57c441bf07bb6d4b58f346e7fbc2ca"},
+]
+
+[[package]]
+name = "dissect-extfs"
+version = "3.15"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing a parser for the ExtFS file system, the native filesystem for Linux operating systems"
+dependencies = [
+    "dissect-cstruct<5,>=4",
+    "dissect-util<4,>=3",
+]
+files = [
+    {file = "dissect_extfs-3.15-py3-none-any.whl", hash = "sha256:9c67e64552eedc58ecbbdda82287a6c8fbf8b29d99a7b55073d838233d6dfcab"},
+    {file = "dissect_extfs-3.15.tar.gz", hash = "sha256:60d15704546119bc5467065c8b287403e8a70f14553a787cdceee9a08c223184"},
+]
+
+[[package]]
+name = "dissect-fat"
+version = "3.13"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing parsers for the FAT and exFAT file systems, commonly used on flash memory based storage devices and UEFI partitions"
+dependencies = [
+    "dissect-cstruct<5,>=4",
+    "dissect-util<4,>=3",
+]
+files = [
+    {file = "dissect_fat-3.13-py3-none-any.whl", hash = "sha256:e2f9e437bf79ce3e605b3090bfd05f50b6044125f6f1d0cff9e525beb2dacdc9"},
+    {file = "dissect_fat-3.13.tar.gz", hash = "sha256:f9630c3ae66fb058aabdbaa2fb92cecc7e4ba5c8d676dd39178ee911258e8448"},
+]
+
+[[package]]
+name = "dissect-ffs"
+version = "3.12"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing a parser for the FFS file system, commonly used by BSD operating systems"
+dependencies = [
+    "dissect-cstruct<5,>=4",
+    "dissect-util<4,>=3",
+]
+files = [
+    {file = "dissect_ffs-3.12-py3-none-any.whl", hash = "sha256:62f7b6c2d3482b7d41eadd101a99e6542089366526b8af28afaf4e3b9ce8d294"},
+    {file = "dissect_ffs-3.12.tar.gz", hash = "sha256:b946754c57b03a99ffffed095a226ae218b53f70d0540dcff73fccd4dcde89a6"},
+]
+
+[[package]]
+name = "dissect-fve"
+version = "4.6"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing a parsers for full volume encryption implementations, currently Linux Unified Key Setup (LUKS1 and LUKS2) and Microsoft's Bitlocker Disk Encryption"
+dependencies = [
+    "dissect-cstruct<5,>=4",
+    "dissect-util<4,>=3.22",
+    "pycryptodome",
+]
+files = [
+    {file = "dissect_fve-4.6-cp310-abi3-macosx_10_12_x86_64.whl", hash = "sha256:a1bca0a6e80da697117999bc8498451ef31560681accb01266c026ddb4995251"},
+    {file = "dissect_fve-4.6-cp310-abi3-macosx_11_0_arm64.whl", hash = "sha256:ebcd1562e8a5ab03bdc26d8042b364668b0ca24305363037e528bac33fd4ed70"},
+    {file = "dissect_fve-4.6-cp310-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:6638707f913a96cc891e21090bba02b1703f9d190fa309e5dc6839f090d8b3ca"},
+    {file = "dissect_fve-4.6-cp310-abi3-manylinux_2_28_i686.whl", hash = "sha256:238870554ef5afb6a33a86f44403f04b3024eb3106795dc3ded1e44856ee0834"},
+    {file = "dissect_fve-4.6-cp310-abi3-manylinux_2_28_ppc64le.whl", hash = "sha256:26390538a0bf321ea3071b5e41584ac4f3dcccf7996c3d296a846d5120195ba4"},
+    {file = "dissect_fve-4.6-cp310-abi3-manylinux_2_28_s390x.whl", hash = "sha256:eb0253af2436b0d6431f101df110449535b25dca9e29cedb92d9b3341eeb8883"},
+    {file = "dissect_fve-4.6-cp310-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:64f032d3b942190c8a326acfae2480c26f6a833ea825acd5666977a21b97b2e9"},
+    {file = "dissect_fve-4.6-cp310-abi3-manylinux_2_31_armv7l.whl", hash = "sha256:3f812764ce0ca5c280c0ffc0fdb120a6a3665ad56cdfd6daac194f32ab7624ca"},
+    {file = "dissect_fve-4.6-cp310-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:58df442230b11b6f0fbc66fff872ecae2b92a9004b3af66d5f741c201574760c"},
+    {file = "dissect_fve-4.6-cp310-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:976e8fea7963cab2618d3b4cbc9d27d877316fadaaf54a6e372d399d26dacdd9"},
+    {file = "dissect_fve-4.6-cp310-abi3-win32.whl", hash = "sha256:f2de1f1cf549e5eb38d35135b6c4e77aadd1bc04314f4f57885375309598cedb"},
+    {file = "dissect_fve-4.6-cp310-abi3-win_amd64.whl", hash = "sha256:f85fd8724f3e6bb4ca3796664b3fd6a8ce7316170909e9b87ab764b211f71f34"},
+    {file = "dissect_fve-4.6-cp310-abi3-win_arm64.whl", hash = "sha256:ce8d7bd33f20e3e0ec426ddd57f2d714f887d1601285be0117c54d8d625116fa"},
+    {file = "dissect_fve-4.6-pp311-pypy311_pp73-macosx_10_15_x86_64.whl", hash = "sha256:aa983a2647f31028080d774a3bb04d8bbc23072bdd7f3185611cec7667071290"},
+    {file = "dissect_fve-4.6-pp311-pypy311_pp73-macosx_11_0_arm64.whl", hash = "sha256:61729b2c17061a964dc8d6d462dc3047df62046ede737561264b1f199c38f987"},
+    {file = "dissect_fve-4.6-pp311-pypy311_pp73-manylinux_2_28_aarch64.whl", hash = "sha256:b3a069c1668ad42b4f9fdeeb4b58048dc7d277bcad83c7bcbaca24c43a5f61d5"},
+    {file = "dissect_fve-4.6-pp311-pypy311_pp73-manylinux_2_28_i686.whl", hash = "sha256:69d403901aede2b321cf5c3ff09b7e265fc260339e7ee5df785a44ceee85703c"},
+    {file = "dissect_fve-4.6-pp311-pypy311_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:202a19dfcc5ad67836a2ba49d47b1cd5f184dc88beef5c43d23c2a38168c6b33"},
+    {file = "dissect_fve-4.6-pp311-pypy311_pp73-win_amd64.whl", hash = "sha256:3731aba65addf546e214b3436239473bcf1854cc8879fdb1cf0d05883a6023f9"},
+    {file = "dissect_fve-4.6-py3-none-any.whl", hash = "sha256:53d4631ab8272a01a8ff9f0dab948a81745b2ff94d492a7cd6ae03dc7b1a8f3b"},
+    {file = "dissect_fve-4.6.tar.gz", hash = "sha256:49141e62cd3cc735c324f3c76c8635b3fbd0613316b2f823ee78a481c7c543fe"},
+]
+
+[[package]]
+name = "dissect-hypervisor"
+version = "3.21"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing parsers for various hypervisor disk, backup and configuration files"
+dependencies = [
+    "defusedxml",
+    "dissect-cstruct<5,>=4",
+    "dissect-util<4,>=3",
+]
+files = [
+    {file = "dissect_hypervisor-3.21-py3-none-any.whl", hash = "sha256:fd845a3e7bc20efca575d4cfbb49a21ca53e8d89efb8afeec180de8a6b62fd2f"},
+    {file = "dissect_hypervisor-3.21.tar.gz", hash = "sha256:5adc89a137c636b420200246f471dc2277a01924ed851a803ca7bb8b764a13c2"},
+]
+
+[[package]]
+name = "dissect-jffs"
+version = "1.6"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing a parser for the JFFS2 file system, commonly used by router operating systems"
+dependencies = [
+    "dissect-cstruct<5,>=4.dev",
+    "dissect-util<4,>=3",
+]
+files = [
+    {file = "dissect_jffs-1.6-py3-none-any.whl", hash = "sha256:e7d4e31378d317499619fe2696b605df6f3b38b3ad10aa7db11c0354a88bfb20"},
+    {file = "dissect_jffs-1.6.tar.gz", hash = "sha256:882fcb60f8c49cbc3413e910065f32ab8dc7bc6930cd72fada351462967902c6"},
+]
+
+[[package]]
+name = "dissect-ntfs"
+version = "3.16"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing a parser for the NTFS file system, used by the Windows operating system"
+dependencies = [
+    "dissect-cstruct<5,>=4",
+    "dissect-util<4,>=3",
+]
+files = [
+    {file = "dissect_ntfs-3.16-py3-none-any.whl", hash = "sha256:35625b3adae0ce6b0db16bbbd04179b92537816fa7e7135bb7d4ddd2fc530243"},
+    {file = "dissect_ntfs-3.16.tar.gz", hash = "sha256:ce93136796aa9471f3aa28855b4b3c3e8132f9f97bc17a2f5494e0a660c190dd"},
+]
+
+[[package]]
+name = "dissect-ole"
+version = "3.12"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing a parser for the Object Linking & Embedding (OLE) format, commonly used by document editors on Windows operating systems"
+dependencies = [
+    "dissect-cstruct<5,>=4",
+    "dissect-util<4,>=3",
+]
+files = [
+    {file = "dissect_ole-3.12-py3-none-any.whl", hash = "sha256:62570d04767f6e36e4a6ba1894a648bcc4c72c6a7777603c7c054d85ce621aef"},
+    {file = "dissect_ole-3.12.tar.gz", hash = "sha256:51708261c54ee657add6ad4ece4b375103ee02e16b076ecdae970b9c2dd5eab0"},
+]
+
+[[package]]
+name = "dissect-qnxfs"
+version = "1.2"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing a parser for the QNX4 and QNX6 file systems, commonly used in the QNX RTOS."
+dependencies = [
+    "dissect-cstruct<5,>=4",
+    "dissect-util<4,>=3",
+]
+files = [
+    {file = "dissect_qnxfs-1.2-py3-none-any.whl", hash = "sha256:57017ea0bfaaeb865119cb343c3c2ce5063f7cb0f96a5ab26d8a36fad5cc15dc"},
+    {file = "dissect_qnxfs-1.2.tar.gz", hash = "sha256:55ac121a19019a0bd15ef1e22fa09f7280958c2cbf0f60c5ed20c186c71d7d82"},
+]
+
+[[package]]
+name = "dissect-regf"
+version = "3.14"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing a parser for Windows registry file format, used to store application and OS configuration on Windows operating systems"
+dependencies = [
+    "dissect-cstruct<5,>=4",
+    "dissect-util<4,>=3",
+]
+files = [
+    {file = "dissect_regf-3.14-py3-none-any.whl", hash = "sha256:e9d9c0cd53a780ded1507bfe2e80c86820b6f12d6f8d4f3839d5e0a96e3fe7bc"},
+    {file = "dissect_regf-3.14.tar.gz", hash = "sha256:0df90d4e68453dae1e75a50bd343d84ffc413f4e65d527c05f657b7ea9f30f33"},
+]
+
+[[package]]
+name = "dissect-shellitem"
+version = "3.13"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing a parser for the Shellitem structures, commonly used by Microsoft Windows"
+dependencies = [
+    "dissect-cstruct<5,>=4",
+    "dissect-util<4,>=3",
+]
+files = [
+    {file = "dissect_shellitem-3.13-py3-none-any.whl", hash = "sha256:91a8605076f0dcf9fead425a69e704b57794eef2b1b6ada7cdc04bdcf3416fc5"},
+    {file = "dissect_shellitem-3.13.tar.gz", hash = "sha256:9d902da2a63dc3b735556bc5213429319b0c1fa4d2f7fd3537cd243045c7a292"},
+]
+
+[[package]]
+name = "dissect-squashfs"
+version = "1.12"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing a parser for the SquashFS file system, commonly used in appliance or device firmware"
+dependencies = [
+    "dissect-cstruct<5,>=4",
+    "dissect-util<4,>=3",
+]
+files = [
+    {file = "dissect_squashfs-1.12-py3-none-any.whl", hash = "sha256:af8d39f55c210069c56a15779da0929818eeddfc25298e397de2e0e70abb1ac4"},
+    {file = "dissect_squashfs-1.12.tar.gz", hash = "sha256:53826d58875637bba6e6a40e6b7dbe7c970bf1c61b07ca262bf0043332fcda9d"},
+]
+
+[[package]]
+name = "dissect-target"
+version = "3.25.1"
+requires_python = ">=3.10"
+summary = "This module ties all other Dissect modules together, it provides a programming API and command line tools which allow easy access to various data sources inside disk images or file collections (a.k.a. targets)"
+dependencies = [
+    "defusedxml",
+    "dissect-cstruct<5,>=4",
+    "dissect-database<2,>=1.1",
+    "dissect-eventlog<4,>=3",
+    "dissect-evidence<4,>=3.13",
+    "dissect-hypervisor<4,>=3.21",
+    "dissect-ntfs<4,>=3.16",
+    "dissect-regf<4,>=3.13",
+    "dissect-util<4,>=3",
+    "dissect-volume<4,>=3.17",
+    "flow-record~=3.21.0",
+    "structlog",
+]
+files = [
+    {file = "dissect_target-3.25.1-py3-none-any.whl", hash = "sha256:4e066c4b8361527b82dd1ebb0050e5225ee0f69d74dd120070d1fd88cc3380f4"},
+    {file = "dissect_target-3.25.1.tar.gz", hash = "sha256:adeb71ee9e9c1012f070abfd47ad68f9341577ed45305ec0b717c94bb16795be"},
+]
+
+[[package]]
+name = "dissect-target"
+version = "3.25.1"
+extras = ["full"]
+requires_python = ">=3.10"
+summary = "This module ties all other Dissect modules together, it provides a programming API and command line tools which allow easy access to various data sources inside disk images or file collections (a.k.a. targets)"
+dependencies = [
+    "asn1crypto",
+    "backports-zstd; python_version < \"3.14\"",
+    "dissect-apfs<2,>=1.1",
+    "dissect-archive<2,>=1",
+    "dissect-btrfs<2,>=1",
+    "dissect-cim<4,>=3",
+    "dissect-clfs<2,>=1",
+    "dissect-cramfs<2,>=1",
+    "dissect-etl<4,>=3",
+    "dissect-executable<2,>=1",
+    "dissect-extfs<4,>=3",
+    "dissect-fat<4,>=3",
+    "dissect-ffs<4,>=3",
+    "dissect-fve<5,>=4.5",
+    "dissect-jffs<2,>=1.5",
+    "dissect-ole<4,>=3",
+    "dissect-qnxfs<2,>=1.1",
+    "dissect-shellitem<4,>=3",
+    "dissect-squashfs<2,>=1",
+    "dissect-target==3.25.1",
+    "dissect-thumbcache<2,>=1",
+    "dissect-vmfs<4,>=3.12",
+    "dissect-xfs<4,>=3",
+    "fusepy",
+    "ipython",
+    "pycryptodome",
+    "ruamel-yaml",
+    "tomli; python_version < \"3.11\"",
+]
+files = [
+    {file = "dissect_target-3.25.1-py3-none-any.whl", hash = "sha256:4e066c4b8361527b82dd1ebb0050e5225ee0f69d74dd120070d1fd88cc3380f4"},
+    {file = "dissect_target-3.25.1.tar.gz", hash = "sha256:adeb71ee9e9c1012f070abfd47ad68f9341577ed45305ec0b717c94bb16795be"},
+]
+
+[[package]]
+name = "dissect-thumbcache"
+version = "1.11"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing parsers for the thumbcache of Windows systems."
+dependencies = [
+    "dissect-cstruct<5,>=4",
+    "dissect-util<4,>=3",
+]
+files = [
+    {file = "dissect_thumbcache-1.11-py3-none-any.whl", hash = "sha256:6f2e6b24d7cb7c0683785b284453f3d9a3414e5af0073affb4ec2cbad3a5812e"},
+    {file = "dissect_thumbcache-1.11.tar.gz", hash = "sha256:7af8025a8893214d78a263d6af51ce22a66f5a0f623560a00103ca24e25b1e17"},
+]
+
+[[package]]
+name = "dissect-util"
+version = "3.24"
+requires_python = ">=3.10.0"
+summary = "A Dissect module implementing various utility functions for the other Dissect modules"
+files = [
+    {file = "dissect_util-3.24-cp310-abi3-macosx_10_12_x86_64.whl", hash = "sha256:8ee31bc01fad8eca110de7866b467f6d3429f2296f57356a216beb45c4486891"},
+    {file = "dissect_util-3.24-cp310-abi3-macosx_11_0_arm64.whl", hash = "sha256:ef4830cfbcaccc23c71247c91ced4d1919ae32649d5a3a7a2f86fdf374979edc"},
+    {file = "dissect_util-3.24-cp310-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:42da8fa2569f961a313870e3fa74e33cc48116df20fd33e362db9a9de1ea43cb"},
+    {file = "dissect_util-3.24-cp310-abi3-manylinux_2_28_i686.whl", hash = "sha256:dab4b300e740e9f012f20f9ac2dee4923a18b2b1f57a34eb0669d1a670683e9b"},
+    {file = "dissect_util-3.24-cp310-abi3-manylinux_2_28_ppc64le.whl", hash = "sha256:057fa13c667c15ba86395b3987a444affcd46d7ae90ad2e5fe7cbffed9de65e0"},
+    {file = "dissect_util-3.24-cp310-abi3-manylinux_2_28_s390x.whl", hash = "sha256:04eb91a3173e402ed52a35be27ef66b9764087c063e318108a79ae17bc139226"},
+    {file = "dissect_util-3.24-cp310-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:edca81239873a3bd6b5f0a702fc0fde453e9b3c2cce37f2c166cdd5e235ccd20"},
+    {file = "dissect_util-3.24-cp310-abi3-manylinux_2_31_armv7l.whl", hash = "sha256:c480e02a07c6c51a8fb29d24fbf4a155b4eb874c803741cd8b28321cc6415a2a"},
+    {file = "dissect_util-3.24-cp310-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:df4130e896201c44e6b3d8ec1c022b586915abaedd1552f9c1b878bd343ae696"},
+    {file = "dissect_util-3.24-cp310-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:63157c377866bad0079d8e3eeb3de1de56b02df3538929ea383509335b970f84"},
+    {file = "dissect_util-3.24-cp310-abi3-win32.whl", hash = "sha256:740946195032f446ff216423cb870f78704a4579399c8d8d6558f046faae92f6"},
+    {file = "dissect_util-3.24-cp310-abi3-win_amd64.whl", hash = "sha256:5bc368d495afeb867b8bf5711f752bd023ae22334b474b375f5ac9a326fea89c"},
+    {file = "dissect_util-3.24-cp310-abi3-win_arm64.whl", hash = "sha256:2813265732db4c98585b8d0882147c464af4da7208b97ec99654b99a7ed84a2d"},
+    {file = "dissect_util-3.24-pp311-pypy311_pp73-macosx_10_15_x86_64.whl", hash = "sha256:59b03a3164214414b6432f865de119716f1abc074575d3b28f63d7bd54f20b22"},
+    {file = "dissect_util-3.24-pp311-pypy311_pp73-macosx_11_0_arm64.whl", hash = "sha256:839658982a39fd056dbbe7ca6a37fc691fe31882851aca0813bfa40b84d087b0"},
+    {file = "dissect_util-3.24-pp311-pypy311_pp73-manylinux_2_28_aarch64.whl", hash = "sha256:d317d3f3d03f5c47f7bace438205dfe288df86999501f084cbcbe4d7643fed90"},
+    {file = "dissect_util-3.24-pp311-pypy311_pp73-manylinux_2_28_i686.whl", hash = "sha256:5fb1a629d56d5c1c7cbc10f4669373133d06bd301c3cb00f13faa32724e45d4c"},
+    {file = "dissect_util-3.24-pp311-pypy311_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:90ce9930361eebea80f6360d1aa2b99fe70bfdca2e977cbe8b9717da9c3bcb80"},
+    {file = "dissect_util-3.24-pp311-pypy311_pp73-win_amd64.whl", hash = "sha256:62a448b73a43809a61d528867866e6e4772904bd93c7f7b99946e8045fd01b8b"},
+    {file = "dissect_util-3.24-py3-none-any.whl", hash = "sha256:031f91d7523818a3aced4d17594996bcc39bc4d93ffacc0b15a7b718c9b437cb"},
+    {file = "dissect_util-3.24.tar.gz", hash = "sha256:56ae08decaf4112d7fa9b9a575e5203b6dc85d9efe9a56d74ba34e0c2878c575"},
+]
+
+[[package]]
+name = "dissect-vmfs"
+version = "3.13"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing a parser for the VMFS file system, used by VMware virtualization software"
+dependencies = [
+    "dissect-cstruct<5,>=4",
+    "dissect-util<4,>=3",
+]
+files = [
+    {file = "dissect_vmfs-3.13-py3-none-any.whl", hash = "sha256:58302c41449e559e50f7498361b5ffcdde5134f5b26e4da89cf5a315a81e4fe3"},
+    {file = "dissect_vmfs-3.13.tar.gz", hash = "sha256:904a4116b944acfc6a7a9de013ae1db14c760cb76138fd77c6a5b510b98c828d"},
+]
+
+[[package]]
+name = "dissect-volume"
+version = "3.18"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing a parser for different disk volume and partition systems, for example LVM2, GPT and MBR"
+dependencies = [
+    "dissect-cstruct<5,>=4",
+    "dissect-util<4,>3",
+]
+files = [
+    {file = "dissect_volume-3.18-py3-none-any.whl", hash = "sha256:f8f321adccacbd948c503cf14a14d4a6626d1b86ddcbe55c532b59caad833d79"},
+    {file = "dissect_volume-3.18.tar.gz", hash = "sha256:79647740f1a4ba360afa9f3f77620ed016b0026a44386b3cdc31fddcf0142d9c"},
+]
+
+[[package]]
+name = "dissect-xfs"
+version = "3.13"
+requires_python = ">=3.10"
+summary = "A Dissect module implementing a parser for the XFS file system, commonly used by RedHat Linux distributions"
+dependencies = [
+    "dissect-cstruct<5,>=4",
+    "dissect-util<4,>=3",
+]
+files = [
+    {file = "dissect_xfs-3.13-py3-none-any.whl", hash = "sha256:4804678cf92df1d27428917ae31de30e399df9678ec9f2dd4d70382b78666073"},
+    {file = "dissect_xfs-3.13.tar.gz", hash = "sha256:3b9f1594792286eebdfa0a37c7bf2d76414a27d952ef963ea4266c7c9fee6d1f"},
 ]
 
 [[package]]
@@ -592,6 +1262,15 @@ summary = "Docutils -- Python Documentation Utilities"
 files = [
     {file = "docutils-0.21.2-py3-none-any.whl", hash = "sha256:dafca5b9e384f0e419294eb4d2ff9fa826435bf15f15b7bd45723e8ad76811b2"},
     {file = "docutils-0.21.2.tar.gz", hash = "sha256:3a6b18732edf182daa3cd12775bbb338cf5691468f91eeeb109deff6ebfa986f"},
+]
+
+[[package]]
+name = "dpkt"
+version = "1.9.8"
+summary = "fast, simple packet creation / parsing, with definitions for the basic TCP/IP protocols"
+files = [
+    {file = "dpkt-1.9.8-py3-none-any.whl", hash = "sha256:4da4d111d7bf67575b571f5c678c71bddd2d8a01a3d57d489faf0a92c748fbfd"},
+    {file = "dpkt-1.9.8.tar.gz", hash = "sha256:43f8686e455da5052835fd1eda2689d51de3670aac9799b1b00cfd203927ee45"},
 ]
 
 [[package]]
@@ -642,6 +1321,16 @@ files = [
 ]
 
 [[package]]
+name = "executing"
+version = "2.2.1"
+requires_python = ">=3.8"
+summary = "Get the currently executing AST node of a frame, and other information"
+files = [
+    {file = "executing-2.2.1-py2.py3-none-any.whl", hash = "sha256:760643d3452b4d777d295bb167ccc74c64a81df23fb5e08eff250c425a4b2017"},
+    {file = "executing-2.2.1.tar.gz", hash = "sha256:3632cc370565f6648cc328b32435bd120a1e4ebb20c77e3fdde9a13cd1e533c4"},
+]
+
+[[package]]
 name = "filelock"
 version = "3.21.1"
 requires_python = ">=3.10"
@@ -649,6 +1338,20 @@ summary = "A platform independent file lock."
 files = [
     {file = "filelock-3.21.1-py3-none-any.whl", hash = "sha256:f3aa1887cdf3514b13a379b5835ff35327d7aa24a96db4453b97531c00476760"},
     {file = "filelock-3.21.1.tar.gz", hash = "sha256:fd13d64b92f79605f30ffaa0a2accb793f178b8aebcf56be8f1cad922fd278ad"},
+]
+
+[[package]]
+name = "flow-record"
+version = "3.21"
+requires_python = ">=3.10"
+summary = "A library for defining and creating structured data (called records) that can be streamed to disk or piped to other tools that use flow.record"
+dependencies = [
+    "msgpack>=0.5.2",
+    "tzdata; platform_system == \"Windows\"",
+]
+files = [
+    {file = "flow_record-3.21-py3-none-any.whl", hash = "sha256:18ea7d7e67cd3f53327ab4bbe2e922d8d8861587208d1255b04bc1385f328d76"},
+    {file = "flow_record-3.21.tar.gz", hash = "sha256:09a2259001827553fbd81ed9ab382758a1d188906a21f62a5bce276be5f178a9"},
 ]
 
 [[package]]
@@ -666,6 +1369,14 @@ dependencies = [
 files = [
     {file = "furo-2025.12.19-py3-none-any.whl", hash = "sha256:bb0ead5309f9500130665a26bee87693c41ce4dbdff864dbfb6b0dae4673d24f"},
     {file = "furo-2025.12.19.tar.gz", hash = "sha256:188d1f942037d8b37cd3985b955839fea62baa1730087dc29d157677c857e2a7"},
+]
+
+[[package]]
+name = "fusepy"
+version = "3.0.1"
+summary = "Simple ctypes bindings for FUSE"
+files = [
+    {file = "fusepy-3.0.1.tar.gz", hash = "sha256:72ff783ec2f43de3ab394e3f7457605bf04c8cf288a2f4068b4cde141d4ee6bd"},
 ]
 
 [[package]]
@@ -748,6 +1459,42 @@ files = [
 ]
 
 [[package]]
+name = "ipython"
+version = "9.10.1"
+requires_python = ">=3.11"
+summary = "IPython: Productive Interactive Computing"
+dependencies = [
+    "colorama>=0.4.4; sys_platform == \"win32\"",
+    "decorator>=4.3.2",
+    "ipython-pygments-lexers>=1.0.0",
+    "jedi>=0.18.1",
+    "matplotlib-inline>=0.1.5",
+    "pexpect>4.3; sys_platform != \"win32\" and sys_platform != \"emscripten\"",
+    "prompt-toolkit<3.1.0,>=3.0.41",
+    "pygments>=2.11.0",
+    "stack-data>=0.6.0",
+    "traitlets>=5.13.0",
+    "typing-extensions>=4.6; python_version < \"3.12\"",
+]
+files = [
+    {file = "ipython-9.10.1-py3-none-any.whl", hash = "sha256:82d18ae9fb9164ded080c71ef92a182ee35ee7db2395f67616034bebb020a232"},
+    {file = "ipython-9.10.1.tar.gz", hash = "sha256:e170e9b2a44312484415bdb750492699bf329233b03f2557a9692cce6466ada4"},
+]
+
+[[package]]
+name = "ipython-pygments-lexers"
+version = "1.1.1"
+requires_python = ">=3.8"
+summary = "Defines a variety of Pygments lexers for highlighting IPython code."
+dependencies = [
+    "pygments",
+]
+files = [
+    {file = "ipython_pygments_lexers-1.1.1-py3-none-any.whl", hash = "sha256:a9462224a505ade19a605f71f8fa63c2048833ce50abc86768a0d81d876dc81c"},
+    {file = "ipython_pygments_lexers-1.1.1.tar.gz", hash = "sha256:09c0138009e56b6854f9535736f4171d855c8c08a563a0dcd8022f78355c7e81"},
+]
+
+[[package]]
 name = "isort"
 version = "7.0.0"
 requires_python = ">=3.10.0"
@@ -755,6 +1502,19 @@ summary = "A Python utility / library to sort Python imports."
 files = [
     {file = "isort-7.0.0-py3-none-any.whl", hash = "sha256:1bcabac8bc3c36c7fb7b98a76c8abb18e0f841a3ba81decac7691008592499c1"},
     {file = "isort-7.0.0.tar.gz", hash = "sha256:5513527951aadb3ac4292a41a16cbc50dd1642432f5e8c20057d414bdafb4187"},
+]
+
+[[package]]
+name = "jedi"
+version = "0.19.2"
+requires_python = ">=3.6"
+summary = "An autocompletion tool for Python that can be used for text editors."
+dependencies = [
+    "parso<0.9.0,>=0.8.4",
+]
+files = [
+    {file = "jedi-0.19.2-py2.py3-none-any.whl", hash = "sha256:a8ef22bde8490f57fe5c7681a3c83cb58874daf72b4784de3cce5b6ef6edb5b9"},
+    {file = "jedi-0.19.2.tar.gz", hash = "sha256:4770dc3de41bde3966b02eb84fbcf557fb33cce26ad23da12c742fb50ecb11f0"},
 ]
 
 [[package]]
@@ -1025,6 +1785,19 @@ files = [
 ]
 
 [[package]]
+name = "matplotlib-inline"
+version = "0.2.1"
+requires_python = ">=3.9"
+summary = "Inline Matplotlib backend for Jupyter"
+dependencies = [
+    "traitlets",
+]
+files = [
+    {file = "matplotlib_inline-0.2.1-py3-none-any.whl", hash = "sha256:d56ce5156ba6085e00a9d54fead6ed29a9c47e215cd1bba2e976ef39f5710a76"},
+    {file = "matplotlib_inline-0.2.1.tar.gz", hash = "sha256:e1ee949c340d771fc39e241ea75683deb94762c8fa5f2927ec57c83c4dffa9fe"},
+]
+
+[[package]]
 name = "mccabe"
 version = "0.7.0"
 requires_python = ">=3.6"
@@ -1055,6 +1828,42 @@ summary = "Markdown URL utilities"
 files = [
     {file = "mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8"},
     {file = "mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba"},
+]
+
+[[package]]
+name = "msgpack"
+version = "1.1.2"
+requires_python = ">=3.9"
+summary = "MessagePack serializer"
+files = [
+    {file = "msgpack-1.1.2-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:2e86a607e558d22985d856948c12a3fa7b42efad264dca8a3ebbcfa2735d786c"},
+    {file = "msgpack-1.1.2-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:283ae72fc89da59aa004ba147e8fc2f766647b1251500182fac0350d8af299c0"},
+    {file = "msgpack-1.1.2-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:61c8aa3bd513d87c72ed0b37b53dd5c5a0f58f2ff9f26e1555d3bd7948fb7296"},
+    {file = "msgpack-1.1.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:454e29e186285d2ebe65be34629fa0e8605202c60fbc7c4c650ccd41870896ef"},
+    {file = "msgpack-1.1.2-cp311-cp311-musllinux_1_2_aarch64.whl", hash = "sha256:7bc8813f88417599564fafa59fd6f95be417179f76b40325b500b3c98409757c"},
+    {file = "msgpack-1.1.2-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:bafca952dc13907bdfdedfc6a5f579bf4f292bdd506fadb38389afa3ac5b208e"},
+    {file = "msgpack-1.1.2-cp311-cp311-win32.whl", hash = "sha256:602b6740e95ffc55bfb078172d279de3773d7b7db1f703b2f1323566b878b90e"},
+    {file = "msgpack-1.1.2-cp311-cp311-win_amd64.whl", hash = "sha256:d198d275222dc54244bf3327eb8cbe00307d220241d9cec4d306d49a44e85f68"},
+    {file = "msgpack-1.1.2-cp311-cp311-win_arm64.whl", hash = "sha256:86f8136dfa5c116365a8a651a7d7484b65b13339731dd6faebb9a0242151c406"},
+    {file = "msgpack-1.1.2-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:70a0dff9d1f8da25179ffcf880e10cf1aad55fdb63cd59c9a49a1b82290062aa"},
+    {file = "msgpack-1.1.2-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:446abdd8b94b55c800ac34b102dffd2f6aa0ce643c55dfc017ad89347db3dbdb"},
+    {file = "msgpack-1.1.2-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:c63eea553c69ab05b6747901b97d620bb2a690633c77f23feb0c6a947a8a7b8f"},
+    {file = "msgpack-1.1.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:372839311ccf6bdaf39b00b61288e0557916c3729529b301c52c2d88842add42"},
+    {file = "msgpack-1.1.2-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:2929af52106ca73fcb28576218476ffbb531a036c2adbcf54a3664de124303e9"},
+    {file = "msgpack-1.1.2-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:be52a8fc79e45b0364210eef5234a7cf8d330836d0a64dfbb878efa903d84620"},
+    {file = "msgpack-1.1.2-cp312-cp312-win32.whl", hash = "sha256:1fff3d825d7859ac888b0fbda39a42d59193543920eda9d9bea44d958a878029"},
+    {file = "msgpack-1.1.2-cp312-cp312-win_amd64.whl", hash = "sha256:1de460f0403172cff81169a30b9a92b260cb809c4cb7e2fc79ae8d0510c78b6b"},
+    {file = "msgpack-1.1.2-cp312-cp312-win_arm64.whl", hash = "sha256:be5980f3ee0e6bd44f3a9e9dea01054f175b50c3e6cdb692bc9424c0bbb8bf69"},
+    {file = "msgpack-1.1.2-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:4efd7b5979ccb539c221a4c4e16aac1a533efc97f3b759bb5a5ac9f6d10383bf"},
+    {file = "msgpack-1.1.2-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:42eefe2c3e2af97ed470eec850facbe1b5ad1d6eacdbadc42ec98e7dcf68b4b7"},
+    {file = "msgpack-1.1.2-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:1fdf7d83102bf09e7ce3357de96c59b627395352a4024f6e2458501f158bf999"},
+    {file = "msgpack-1.1.2-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:fac4be746328f90caa3cd4bc67e6fe36ca2bf61d5c6eb6d895b6527e3f05071e"},
+    {file = "msgpack-1.1.2-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:fffee09044073e69f2bad787071aeec727183e7580443dfeb8556cbf1978d162"},
+    {file = "msgpack-1.1.2-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:5928604de9b032bc17f5099496417f113c45bc6bc21b5c6920caf34b3c428794"},
+    {file = "msgpack-1.1.2-cp313-cp313-win32.whl", hash = "sha256:a7787d353595c7c7e145e2331abf8b7ff1e6673a6b974ded96e6d4ec09f00c8c"},
+    {file = "msgpack-1.1.2-cp313-cp313-win_amd64.whl", hash = "sha256:a465f0dceb8e13a487e54c07d04ae3ba131c7c5b95e2612596eafde1dccf64a9"},
+    {file = "msgpack-1.1.2-cp313-cp313-win_arm64.whl", hash = "sha256:e69b39f8c0aa5ec24b57737ebee40be647035158f14ed4b40e6f150077e21a84"},
+    {file = "msgpack-1.1.2.tar.gz", hash = "sha256:3b60763c1373dd60f398488069bcdc703cd08a711477b5d480eecc9f9626f47e"},
 ]
 
 [[package]]
@@ -1285,6 +2094,16 @@ files = [
 ]
 
 [[package]]
+name = "parso"
+version = "0.8.6"
+requires_python = ">=3.6"
+summary = "A Python Parser"
+files = [
+    {file = "parso-0.8.6-py2.py3-none-any.whl", hash = "sha256:2c549f800b70a5c4952197248825584cb00f033b29c692671d3bf08bf380baff"},
+    {file = "parso-0.8.6.tar.gz", hash = "sha256:2b9a0332696df97d454fa67b81618fd69c35a7b90327cbe6ba5c92d2c68a7bfd"},
+]
+
+[[package]]
 name = "pathspec"
 version = "1.0.4"
 requires_python = ">=3.9"
@@ -1312,6 +2131,18 @@ summary = "Python PE parsing module"
 files = [
     {file = "pefile-2023.2.7-py3-none-any.whl", hash = "sha256:da185cd2af68c08a6cd4481f7325ed600a88f6a813bad9dea07ab3ef73d8d8d6"},
     {file = "pefile-2023.2.7.tar.gz", hash = "sha256:82e6114004b3d6911c77c3953e3838654b04511b8b66e8583db70c65998017dc"},
+]
+
+[[package]]
+name = "pexpect"
+version = "4.9.0"
+summary = "Pexpect allows easy control of interactive console applications."
+dependencies = [
+    "ptyprocess>=0.5",
+]
+files = [
+    {file = "pexpect-4.9.0-py2.py3-none-any.whl", hash = "sha256:7236d1e080e4936be2dc3e326cec0af72acf9212a7e1d060210e70a47e253523"},
+    {file = "pexpect-4.9.0.tar.gz", hash = "sha256:ee7d41123f3c9911050ea2c2dac107568dc43b2d3b0c7557a33212c398ead30f"},
 ]
 
 [[package]]
@@ -1412,6 +2243,19 @@ files = [
 ]
 
 [[package]]
+name = "prompt-toolkit"
+version = "3.0.52"
+requires_python = ">=3.8"
+summary = "Library for building powerful interactive command lines in Python"
+dependencies = [
+    "wcwidth",
+]
+files = [
+    {file = "prompt_toolkit-3.0.52-py3-none-any.whl", hash = "sha256:9aac639a3bbd33284347de5ad8d68ecc044b91a762dc39b7c21095fcd6a19955"},
+    {file = "prompt_toolkit-3.0.52.tar.gz", hash = "sha256:28cde192929c8e7321de85de1ddbe736f1375148b02f2e17edd840042b1be855"},
+]
+
+[[package]]
 name = "psutil"
 version = "7.2.2"
 requires_python = ">=3.6"
@@ -1479,6 +2323,24 @@ files = [
 ]
 
 [[package]]
+name = "ptyprocess"
+version = "0.7.0"
+summary = "Run a subprocess in a pseudo terminal"
+files = [
+    {file = "ptyprocess-0.7.0-py2.py3-none-any.whl", hash = "sha256:4b41f3967fce3af57cc7e94b888626c18bf37a083e3651ca8feeb66d492fef35"},
+    {file = "ptyprocess-0.7.0.tar.gz", hash = "sha256:5c5d0a3b48ceee0b48485e0c26037c0acd7d29765ca3fbb5cb3831d347423220"},
+]
+
+[[package]]
+name = "pure-eval"
+version = "0.2.3"
+summary = "Safely evaluate AST nodes without side effects"
+files = [
+    {file = "pure_eval-0.2.3-py3-none-any.whl", hash = "sha256:1db8e35b67b3d218d818ae653e27f06c3aa420901fa7b081ca98cbedc874e0d0"},
+    {file = "pure_eval-0.2.3.tar.gz", hash = "sha256:5f4e983f40564c576c7c8635ae88db5956bb2229d7e9237d03b3c0b0190eaf42"},
+]
+
+[[package]]
 name = "pyasn1"
 version = "0.6.0"
 requires_python = ">=3.8"
@@ -1505,6 +2367,37 @@ summary = "C parser in Python"
 files = [
     {file = "pycparser-3.0-py3-none-any.whl", hash = "sha256:b727414169a36b7d524c1c3e31839a521725078d7b2ff038656844266160a992"},
     {file = "pycparser-3.0.tar.gz", hash = "sha256:600f49d217304a5902ac3c37e1281c9fe94e4d0489de643a9504c5cdfdfc6b29"},
+]
+
+[[package]]
+name = "pycryptodome"
+version = "3.23.0"
+requires_python = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
+summary = "Cryptographic library for Python"
+files = [
+    {file = "pycryptodome-3.23.0-cp313-cp313t-macosx_10_13_universal2.whl", hash = "sha256:0011f7f00cdb74879142011f95133274741778abba114ceca229adbf8e62c3e4"},
+    {file = "pycryptodome-3.23.0-cp313-cp313t-macosx_10_13_x86_64.whl", hash = "sha256:90460fc9e088ce095f9ee8356722d4f10f86e5be06e2354230a9880b9c549aae"},
+    {file = "pycryptodome-3.23.0-cp313-cp313t-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:4764e64b269fc83b00f682c47443c2e6e85b18273712b98aa43bcb77f8570477"},
+    {file = "pycryptodome-3.23.0-cp313-cp313t-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:eb8f24adb74984aa0e5d07a2368ad95276cf38051fe2dc6605cbcf482e04f2a7"},
+    {file = "pycryptodome-3.23.0-cp313-cp313t-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:d97618c9c6684a97ef7637ba43bdf6663a2e2e77efe0f863cce97a76af396446"},
+    {file = "pycryptodome-3.23.0-cp313-cp313t-musllinux_1_2_aarch64.whl", hash = "sha256:9a53a4fe5cb075075d515797d6ce2f56772ea7e6a1e5e4b96cf78a14bac3d265"},
+    {file = "pycryptodome-3.23.0-cp313-cp313t-musllinux_1_2_i686.whl", hash = "sha256:763d1d74f56f031788e5d307029caef067febf890cd1f8bf61183ae142f1a77b"},
+    {file = "pycryptodome-3.23.0-cp313-cp313t-musllinux_1_2_x86_64.whl", hash = "sha256:954af0e2bd7cea83ce72243b14e4fb518b18f0c1649b576d114973e2073b273d"},
+    {file = "pycryptodome-3.23.0-cp313-cp313t-win32.whl", hash = "sha256:257bb3572c63ad8ba40b89f6fc9d63a2a628e9f9708d31ee26560925ebe0210a"},
+    {file = "pycryptodome-3.23.0-cp313-cp313t-win_amd64.whl", hash = "sha256:6501790c5b62a29fcb227bd6b62012181d886a767ce9ed03b303d1f22eb5c625"},
+    {file = "pycryptodome-3.23.0-cp313-cp313t-win_arm64.whl", hash = "sha256:9a77627a330ab23ca43b48b130e202582e91cc69619947840ea4d2d1be21eb39"},
+    {file = "pycryptodome-3.23.0-cp37-abi3-macosx_10_9_universal2.whl", hash = "sha256:187058ab80b3281b1de11c2e6842a357a1f71b42cb1e15bce373f3d238135c27"},
+    {file = "pycryptodome-3.23.0-cp37-abi3-macosx_10_9_x86_64.whl", hash = "sha256:cfb5cd445280c5b0a4e6187a7ce8de5a07b5f3f897f235caa11f1f435f182843"},
+    {file = "pycryptodome-3.23.0-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:67bd81fcbe34f43ad9422ee8fd4843c8e7198dd88dd3d40e6de42ee65fbe1490"},
+    {file = "pycryptodome-3.23.0-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c8987bd3307a39bc03df5c8e0e3d8be0c4c3518b7f044b0f4c15d1aa78f52575"},
+    {file = "pycryptodome-3.23.0-cp37-abi3-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:aa0698f65e5b570426fc31b8162ed4603b0c2841cbb9088e2b01641e3065915b"},
+    {file = "pycryptodome-3.23.0-cp37-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:53ecbafc2b55353edcebd64bf5da94a2a2cdf5090a6915bcca6eca6cc452585a"},
+    {file = "pycryptodome-3.23.0-cp37-abi3-musllinux_1_2_i686.whl", hash = "sha256:156df9667ad9f2ad26255926524e1c136d6664b741547deb0a86a9acf5ea631f"},
+    {file = "pycryptodome-3.23.0-cp37-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:dea827b4d55ee390dc89b2afe5927d4308a8b538ae91d9c6f7a5090f397af1aa"},
+    {file = "pycryptodome-3.23.0-cp37-abi3-win32.whl", hash = "sha256:507dbead45474b62b2bbe318eb1c4c8ee641077532067fec9c1aa82c31f84886"},
+    {file = "pycryptodome-3.23.0-cp37-abi3-win_amd64.whl", hash = "sha256:c75b52aacc6c0c260f204cbdd834f76edc9fb0d8e0da9fbf8352ef58202564e2"},
+    {file = "pycryptodome-3.23.0-cp37-abi3-win_arm64.whl", hash = "sha256:11eeeb6917903876f134b56ba11abe95c0b0fd5e3330def218083c7d98bbcb3c"},
+    {file = "pycryptodome-3.23.0.tar.gz", hash = "sha256:447700a657182d60338bab09fdb27518f8856aecd80ae4c6bdddb67ff5da44ef"},
 ]
 
 [[package]]
@@ -2039,6 +2932,16 @@ files = [
 ]
 
 [[package]]
+name = "ruamel-yaml"
+version = "0.19.1"
+requires_python = ">=3.9"
+summary = "ruamel.yaml is a YAML parser/emitter that supports roundtrip preservation of comments, seq/map flow style, and map key order"
+files = [
+    {file = "ruamel_yaml-0.19.1-py3-none-any.whl", hash = "sha256:27592957fedf6e0b62f281e96effd28043345e0e66001f97683aa9a40c667c93"},
+    {file = "ruamel_yaml-0.19.1.tar.gz", hash = "sha256:53eb66cd27849eff968ebf8f0bf61f46cdac2da1d1f3576dd4ccee9b25c31993"},
+]
+
+[[package]]
 name = "ruff"
 version = "0.15.1"
 requires_python = ">=3.7"
@@ -2283,6 +3186,20 @@ files = [
 ]
 
 [[package]]
+name = "stack-data"
+version = "0.6.3"
+summary = "Extract data from python stack frames and tracebacks for informative displays"
+dependencies = [
+    "asttokens>=2.1.0",
+    "executing>=1.2.0",
+    "pure-eval",
+]
+files = [
+    {file = "stack_data-0.6.3-py3-none-any.whl", hash = "sha256:d5558e0c25a4cb0853cddad3d77da9891a08cb85dd9f9f91b9f8cd66e511e695"},
+    {file = "stack_data-0.6.3.tar.gz", hash = "sha256:836a778de4fec4dcd1dcd89ed8abff8a221f58308462e1c4aa2a3cf30148f0b9"},
+]
+
+[[package]]
 name = "staticx"
 version = "0.14.1"
 requires_python = ">=3.7"
@@ -2303,6 +3220,19 @@ summary = "Manage dynamic plugins for Python applications"
 files = [
     {file = "stevedore-5.6.0-py3-none-any.whl", hash = "sha256:4a36dccefd7aeea0c70135526cecb7766c4c84c473b1af68db23d541b6dc1820"},
     {file = "stevedore-5.6.0.tar.gz", hash = "sha256:f22d15c6ead40c5bbfa9ca54aa7e7b4a07d59b36ae03ed12ced1a54cf0b51945"},
+]
+
+[[package]]
+name = "structlog"
+version = "25.5.0"
+requires_python = ">=3.8"
+summary = "Structured Logging for Python"
+dependencies = [
+    "typing-extensions; python_version < \"3.11\"",
+]
+files = [
+    {file = "structlog-25.5.0-py3-none-any.whl", hash = "sha256:a8453e9b9e636ec59bd9e79bbd4a72f025981b3ba0f5837aebf48f02f37a7f9f"},
+    {file = "structlog-25.5.0.tar.gz", hash = "sha256:098522a3bebed9153d4570c6d0288abf80a031dfdb2048d59a49e9dc2190fc98"},
 ]
 
 [[package]]
@@ -2341,6 +3271,16 @@ summary = "Style preserving TOML library"
 files = [
     {file = "tomlkit-0.14.0-py3-none-any.whl", hash = "sha256:592064ed85b40fa213469f81ac584f67a4f2992509a7c3ea2d632208623a3680"},
     {file = "tomlkit-0.14.0.tar.gz", hash = "sha256:cf00efca415dbd57575befb1f6634c4f42d2d87dbba376128adb42c121b87064"},
+]
+
+[[package]]
+name = "traitlets"
+version = "5.14.3"
+requires_python = ">=3.8"
+summary = "Traitlets Python configuration system"
+files = [
+    {file = "traitlets-5.14.3-py3-none-any.whl", hash = "sha256:b74e89e397b1ed28cc831db7aea759ba6640cb3de13090ca145426688ff1ac4f"},
+    {file = "traitlets-5.14.3.tar.gz", hash = "sha256:9ed0579d3502c94b4b3732ac120375cda96f923114522847de4b3bb98b96b6b7"},
 ]
 
 [[package]]
@@ -2384,6 +3324,16 @@ summary = "Backported and Experimental Type Hints for Python 3.9+"
 files = [
     {file = "typing_extensions-4.15.0-py3-none-any.whl", hash = "sha256:f0fa19c6845758ab08074a0cfa8b7aecb71c999ca73d62883bc25cc018c4e548"},
     {file = "typing_extensions-4.15.0.tar.gz", hash = "sha256:0cea48d173cc12fa28ecabc3b837ea3cf6f38c6d1136f85cbaaf598984861466"},
+]
+
+[[package]]
+name = "tzdata"
+version = "2026.1"
+requires_python = ">=2"
+summary = "Provider of IANA time zone data"
+files = [
+    {file = "tzdata-2026.1-py2.py3-none-any.whl", hash = "sha256:4b1d2be7ac37ceafd7327b961aa3a54e467efbdb563a23655fbfe0d39cfc42a9"},
+    {file = "tzdata-2026.1.tar.gz", hash = "sha256:67658a1903c75917309e753fdc349ac0efd8c27db7a0cb406a25be4840f87f98"},
 ]
 
 [[package]]

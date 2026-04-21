@@ -14,13 +14,12 @@ a 64KB buffer keeps memory usage constant regardless of file size.
 # This file is part of PEAT and is licensed under GPL-3.0.
 # See LICENSE for details.
 
-
 from __future__ import annotations
 
 import hashlib
 import os
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, BinaryIO
 
@@ -87,7 +86,7 @@ def compute_hashes(path: Path) -> tuple[str, str]:
         OSError: If the file cannot be read.
     """
     sha256 = hashlib.sha256()
-    md5 = hashlib.md5()  # noqa: S324 — MD5 used for identification, not security
+    md5 = hashlib.md5()
 
     with open(path, "rb") as f:
         while True:
@@ -141,8 +140,8 @@ def generate_forensic_metadata(path: Path, notes: str = "") -> ForensicMetadata:
     log.debug(f"MD5:     {md5_hex}")
 
     stat = path.stat()
-    mod_time = datetime.fromtimestamp(stat.st_mtime, tz=timezone.utc).isoformat()
-    ingest_time = datetime.now(tz=timezone.utc).isoformat()
+    mod_time = datetime.fromtimestamp(stat.st_mtime, tz=UTC).isoformat()
+    ingest_time = datetime.now(tz=UTC).isoformat()
 
     return ForensicMetadata(
         file_path=str(path.resolve()),
@@ -171,10 +170,7 @@ def verify_hash(path: Path, expected_sha256: str) -> bool:
     sha256_hex, _ = compute_hashes(path)
     match = sha256_hex == expected_sha256.lower()
     if not match:
-        log.warning(
-            f"Hash mismatch for {path.name}: "
-            f"expected {expected_sha256}, got {sha256_hex}"
-        )
+        log.warning(f"Hash mismatch for {path.name}: expected {expected_sha256}, got {sha256_hex}")
     return match
 
 
