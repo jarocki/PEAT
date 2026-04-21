@@ -17,4 +17,3 @@ Supported formats:
 #
 # This file is part of PEAT and is licensed under GPL-3.0.
 # See LICENSE for details.
-

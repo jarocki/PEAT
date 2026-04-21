@@ -13,7 +13,6 @@ from pathlib import Path
 import pytest
 
 from peat.forensic.integrity import (
-    ForensicMetadata,
     compute_hash_from_stream,
     compute_hashes,
     generate_forensic_metadata,
@@ -33,7 +32,7 @@ class TestComputeHashes:
         sha256_hex, md5_hex = compute_hashes(f)
 
         assert sha256_hex == hashlib.sha256(content).hexdigest()
-        assert md5_hex == hashlib.md5(content).hexdigest()  # noqa: S324
+        assert md5_hex == hashlib.md5(content).hexdigest()
 
     def test_empty_file(self, tmp_path: Path) -> None:
         """Empty file should produce the well-known empty-input hashes."""
@@ -43,7 +42,7 @@ class TestComputeHashes:
         sha256_hex, md5_hex = compute_hashes(f)
 
         assert sha256_hex == hashlib.sha256(b"").hexdigest()
-        assert md5_hex == hashlib.md5(b"").hexdigest()  # noqa: S324
+        assert md5_hex == hashlib.md5(b"").hexdigest()
 
     def test_large_file_streams(self, tmp_path: Path) -> None:
         """File larger than buffer size (64KB) should still hash correctly."""
@@ -51,7 +50,7 @@ class TestComputeHashes:
         f = tmp_path / "large.bin"
         f.write_bytes(content)
 
-        sha256_hex, md5_hex = compute_hashes(f)
+        sha256_hex, _md5_hex = compute_hashes(f)
 
         assert sha256_hex == hashlib.sha256(content).hexdigest()
 
@@ -73,7 +72,7 @@ class TestComputeHashFromStream:
         data = b"stream test data"
         stream = io.BytesIO(data)
         result = compute_hash_from_stream(stream, "md5")
-        assert result == hashlib.md5(data).hexdigest()  # noqa: S324
+        assert result == hashlib.md5(data).hexdigest()
 
 
 class TestVerifyHash:
@@ -115,7 +114,7 @@ class TestGenerateForensicMetadata:
         assert meta.file_name == "evidence.e01"
         assert meta.file_size == len(content)
         assert meta.sha256 == hashlib.sha256(content).hexdigest()
-        assert meta.md5 == hashlib.md5(content).hexdigest()  # noqa: S324
+        assert meta.md5 == hashlib.md5(content).hexdigest()
         assert meta.notes == "Test case 001"
         assert meta.ingest_time  # non-empty
         assert meta.original_modified_time  # non-empty

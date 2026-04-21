@@ -8,8 +8,6 @@ to keep the test suite fast and avoid shipping large binary fixtures.
 
 from pathlib import Path
 
-import pytest
-
 from peat.forensic import ForensicInputType, detect_input_type
 
 

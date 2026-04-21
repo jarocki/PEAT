@@ -20,7 +20,6 @@ distinctive network stack implementations.
 # This file is part of PEAT and is licensed under GPL-3.0.
 # See LICENSE for details.
 
-
 from __future__ import annotations
 
 import hashlib
@@ -99,11 +98,17 @@ _TCP_SIGNATURES: list[tuple[str, dict[str, Any]]] = [
     # QNX (common in safety systems) — TTL 255, moderate windows
     ("QNX", {"ttl_min": 250, "ttl_max": 255, "win_min": 16384, "win_max": 65535, "mss": 1460}),
     # Embedded Linux (gateways, modern PLCs) — TTL 64, larger windows
-    ("Embedded Linux", {"ttl_min": 60, "ttl_max": 64, "win_min": 29200, "win_max": 65535, "mss": 1460}),
+    (
+        "Embedded Linux",
+        {"ttl_min": 60, "ttl_max": 64, "win_min": 29200, "win_max": 65535, "mss": 1460},
+    ),
     # Windows (HMIs, engineering workstations) — TTL 128, large windows
     ("Windows", {"ttl_min": 120, "ttl_max": 128, "win_min": 8192, "win_max": 65535, "mss": 1460}),
     # Windows (older) — TTL 128, specific window sizes
-    ("Windows (legacy)", {"ttl_min": 120, "ttl_max": 128, "win_min": 16384, "win_max": 16384, "mss": 1460}),
+    (
+        "Windows (legacy)",
+        {"ttl_min": 120, "ttl_max": 128, "win_min": 16384, "win_max": 16384, "mss": 1460},
+    ),
     # Cisco IOS (managed switches in OT) — TTL 255
     ("Cisco IOS", {"ttl_min": 250, "ttl_max": 255, "win_min": 4128, "win_max": 4128, "mss": 536}),
 ]
@@ -146,7 +151,7 @@ def fingerprint_from_packets(
     """
     fingerprints: dict[str, DeviceFingerprint] = {}
 
-    for ts, raw_frame, src_ip, dst_ip, src_port, dst_port, payload in packets:
+    for _ts, raw_frame, src_ip, _dst_ip, src_port, dst_port, payload in packets:
         # Ensure fingerprint exists for source
         if src_ip not in fingerprints:
             fingerprints[src_ip] = DeviceFingerprint(ip=src_ip)
@@ -212,10 +217,17 @@ def fingerprint_from_dpkt_pcap(pcap_path) -> dict[str, DeviceFingerprint]:
 
                 if isinstance(ip.data, dpkt.tcp.TCP):
                     tcp = ip.data
-                    packets.append((
-                        ts, buf, src_ip, dst_ip,
-                        tcp.sport, tcp.dport, bytes(tcp.data),
-                    ))
+                    packets.append(
+                        (
+                            ts,
+                            buf,
+                            src_ip,
+                            dst_ip,
+                            tcp.sport,
+                            tcp.dport,
+                            bytes(tcp.data),
+                        )
+                    )
     except Exception as e:
         log.warning(f"Fingerprint PCAP read error: {e}")
 
@@ -252,13 +264,13 @@ def _extract_tcp_fingerprint(raw_frame: bytes, fp: DeviceFingerprint) -> None:
     is_syn = (flags & 0x02) != 0 and (flags & 0x10) == 0  # SYN without ACK
 
     if is_syn:
-        window = struct.unpack("!H", raw_frame[tcp_start + 14:tcp_start + 16])[0]
+        window = struct.unpack("!H", raw_frame[tcp_start + 14 : tcp_start + 16])[0]
         fp.tcp_window_size = window
 
         # Parse TCP options
         data_offset = (raw_frame[tcp_start + 12] >> 4) * 4
         options_end = tcp_start + data_offset
-        _parse_tcp_options(raw_frame[tcp_start + 20:options_end], fp)
+        _parse_tcp_options(raw_frame[tcp_start + 20 : options_end], fp)
 
 
 def _parse_tcp_options(options_bytes: bytes, fp: DeviceFingerprint) -> None:
@@ -283,7 +295,7 @@ def _parse_tcp_options(options_bytes: bytes, fp: DeviceFingerprint) -> None:
 
         # Extract MSS (kind 2, length 4)
         if kind == 2 and length == 4 and i + 3 < len(options_bytes):
-            fp.tcp_mss = struct.unpack("!H", options_bytes[i + 2:i + 4])[0]
+            fp.tcp_mss = struct.unpack("!H", options_bytes[i + 2 : i + 4])[0]
 
         i += length
 
@@ -291,15 +303,18 @@ def _parse_tcp_options(options_bytes: bytes, fp: DeviceFingerprint) -> None:
 
 
 def _detect_ics_protocol(
-    payload: bytes, src_port: int, dst_port: int, fp: DeviceFingerprint
+    payload: bytes,
+    src_port: int,  # noqa: ARG001
+    dst_port: int,  # noqa: ARG001
+    fp: DeviceFingerprint,
 ) -> None:
     """Detect ICS protocols from payload bytes (port-agnostic)."""
     if len(payload) < 2:
         return
 
-    for proto_name, sig_bytes, offset, desc in _ICS_PAYLOAD_SIGNATURES:
+    for proto_name, sig_bytes, offset, _desc in _ICS_PAYLOAD_SIGNATURES:
         if offset + len(sig_bytes) <= len(payload):
-            if payload[offset:offset + len(sig_bytes)] == sig_bytes:
+            if payload[offset : offset + len(sig_bytes)] == sig_bytes:
                 fp.ics_protocols.add(proto_name)
 
     # Modbus-specific: check protocol ID field (bytes 2-3 must be 0x0000)
@@ -333,7 +348,7 @@ def _compute_ja3(payload: bytes) -> str:
         # TLS record: type(1) + version(2) + length(2) + handshake
         # Handshake: type(1) + length(3) + client_version(2) + random(32) + ...
         hs_start = 5
-        client_version = struct.unpack("!H", payload[hs_start + 4:hs_start + 6])[0]
+        client_version = struct.unpack("!H", payload[hs_start + 4 : hs_start + 6])[0]
 
         # Session ID
         sid_offset = hs_start + 38
@@ -345,18 +360,18 @@ def _compute_ja3(payload: bytes) -> str:
         cs_offset = sid_offset + 1 + sid_len
         if cs_offset + 2 > len(payload):
             return ""
-        cs_len = struct.unpack("!H", payload[cs_offset:cs_offset + 2])[0]
+        cs_len = struct.unpack("!H", payload[cs_offset : cs_offset + 2])[0]
 
         ciphers = []
         for i in range(0, cs_len, 2):
             if cs_offset + 2 + i + 2 <= len(payload):
-                cs = struct.unpack("!H", payload[cs_offset + 2 + i:cs_offset + 2 + i + 2])[0]
+                cs = struct.unpack("!H", payload[cs_offset + 2 + i : cs_offset + 2 + i + 2])[0]
                 # Skip GREASE values
                 if (cs & 0x0F0F) != 0x0A0A:
                     ciphers.append(str(cs))
 
         ja3_str = f"{client_version},{'-'.join(ciphers)},,,"
-        return hashlib.md5(ja3_str.encode()).hexdigest()  # noqa: S324
+        return hashlib.md5(ja3_str.encode()).hexdigest()
 
     except (struct.error, IndexError):
         return ""
@@ -368,7 +383,7 @@ def _extract_tls_version(payload: bytes) -> str:
         return ""
     hs_start = 5
     try:
-        ver = struct.unpack("!H", payload[hs_start + 4:hs_start + 6])[0]
+        ver = struct.unpack("!H", payload[hs_start + 4 : hs_start + 6])[0]
         versions = {0x0301: "TLS 1.0", 0x0302: "TLS 1.1", 0x0303: "TLS 1.2", 0x0304: "TLS 1.3"}
         return versions.get(ver, f"0x{ver:04x}")
     except (struct.error, IndexError):
@@ -380,7 +395,7 @@ def _format_mac(mac_bytes: bytes) -> str:
     return ":".join(f"{b:02x}" for b in mac_bytes)
 
 
-def _guess_os(ttl: int, window_size: int, mss: int) -> str:
+def _guess_os(ttl: int, window_size: int, mss: int) -> str:  # noqa: ARG001
     """Guess the OS/platform from TCP stack signature."""
     for os_name, sig in _TCP_SIGNATURES:
         if sig["ttl_min"] <= ttl <= sig["ttl_max"]:
@@ -418,4 +433,6 @@ def _compute_confidence(fp: DeviceFingerprint) -> None:
         score += 0.1
 
     fp.confidence = min(score, 1.0)
-    fp.method = "passive_tcp" + ("+ja3" if fp.ja3 else "") + ("+ics_payload" if fp.ics_protocols else "")
+    fp.method = (
+        "passive_tcp" + ("+ja3" if fp.ja3 else "") + ("+ics_payload" if fp.ics_protocols else "")
+    )

@@ -8,22 +8,19 @@ tests use dpkt to construct full PCAP files for end-to-end validation.
 """
 
 import struct
+import time
 from pathlib import Path
 
 import dpkt
-import time
-import pytest
 
 from peat.forensic.fingerprint import (
     DeviceFingerprint,
+    _compute_confidence,
     _detect_ics_protocol,
     _extract_tcp_fingerprint,
-    _guess_os,
-    _compute_confidence,
     _format_mac,
+    _guess_os,
     _is_tls_client_hello,
-    _parse_tcp_options,
-    _ICS_PAYLOAD_SIGNATURES,
     fingerprint_from_dpkt_pcap,
 )
 
@@ -39,10 +36,16 @@ def _build_syn_frame(
     eth = b"\x66\x77\x88\x99\xaa\xbb" + src_mac + b"\x08\x00"
 
     # IP header (20 bytes, IHL=5)
-    ip = struct.pack("!BBHHHBBH4s4s",
-        0x45, 0, 60,           # version/IHL, DSCP, total length
-        0, 0,                   # identification, flags/fragment
-        ttl, 6, 0,             # TTL, protocol=TCP, checksum
+    ip = struct.pack(
+        "!BBHHHBBH4s4s",
+        0x45,
+        0,
+        60,  # version/IHL, DSCP, total length
+        0,
+        0,  # identification, flags/fragment
+        ttl,
+        6,
+        0,  # TTL, protocol=TCP, checksum
         b"\xc0\xa8\x01\x64",  # src IP 192.168.1.100
         b"\xc0\xa8\x01\x01",  # dst IP 192.168.1.1
     )
@@ -50,11 +53,17 @@ def _build_syn_frame(
     # TCP header (20 bytes base + MSS option 4 bytes = 24, data_offset=6)
     tcp_flags = 0x02  # SYN
     data_offset = 6  # 6 * 4 = 24 bytes
-    tcp = struct.pack("!HHIIBBHHH",
-        5000, 502,              # src_port, dst_port
-        1000, 0,                # seq, ack
-        (data_offset << 4), tcp_flags,  # data_offset + flags
-        window, 0, 0,          # window, checksum, urgent
+    tcp = struct.pack(
+        "!HHIIBBHHH",
+        5000,
+        502,  # src_port, dst_port
+        1000,
+        0,  # seq, ack
+        (data_offset << 4),
+        tcp_flags,  # data_offset + flags
+        window,
+        0,
+        0,  # window, checksum, urgent
     )
     # MSS option: kind=2, length=4, value
     tcp += struct.pack("!BBH", 2, 4, mss)
@@ -174,9 +183,14 @@ class TestConfidence:
 
     def test_full_fingerprint_high_confidence(self) -> None:
         fp = DeviceFingerprint(
-            ip="1.2.3.4", ttl=64, tcp_window_size=29200, tcp_mss=1460,
-            tcp_options="2,3,4,8", os_guess="Embedded Linux",
-            ics_protocols={"modbus_tcp"}, ja3="abc123",
+            ip="1.2.3.4",
+            ttl=64,
+            tcp_window_size=29200,
+            tcp_mss=1460,
+            tcp_options="2,3,4,8",
+            os_guess="Embedded Linux",
+            ics_protocols={"modbus_tcp"},
+            ja3="abc123",
         )
         _compute_confidence(fp)
         assert fp.confidence >= 0.9
@@ -200,9 +214,14 @@ class TestDeviceFingerprint:
 
     def test_to_dict(self) -> None:
         fp = DeviceFingerprint(
-            ip="192.168.1.100", mac="00:11:22:33:44:55",
-            ttl=64, tcp_window_size=29200, os_guess="Embedded Linux",
-            ics_protocols={"modbus_tcp"}, confidence=0.85, method="passive_tcp+ics_payload",
+            ip="192.168.1.100",
+            mac="00:11:22:33:44:55",
+            ttl=64,
+            tcp_window_size=29200,
+            os_guess="Embedded Linux",
+            ics_protocols={"modbus_tcp"},
+            confidence=0.85,
+            method="passive_tcp+ics_payload",
         )
         d = fp.to_dict()
 
@@ -228,13 +247,22 @@ class TestPCAPIntegration:
 
         # Modbus data packet
         modbus_payload = struct.pack(">HHHBB", 1, 0, 2, 1, 3)
-        tcp_data = dpkt.tcp.TCP(sport=5000, dport=502, seq=1000, off=5,
-                                flags=dpkt.tcp.TH_ACK, data=modbus_payload)
-        ip_data = dpkt.ip.IP(src=b"\xc0\xa8\x01\x64", dst=b"\xc0\xa8\x01\x01",
-                             p=6, data=tcp_data, len=20+len(tcp_data))
-        eth_data = dpkt.ethernet.Ethernet(src=b"\x00\x11\x22\x33\x44\x55",
-                                          dst=b"\x66\x77\x88\x99\xaa\xbb",
-                                          type=0x0800, data=ip_data)
+        tcp_data = dpkt.tcp.TCP(
+            sport=5000, dport=502, seq=1000, off=5, flags=dpkt.tcp.TH_ACK, data=modbus_payload
+        )
+        ip_data = dpkt.ip.IP(
+            src=b"\xc0\xa8\x01\x64",
+            dst=b"\xc0\xa8\x01\x01",
+            p=6,
+            data=tcp_data,
+            len=20 + len(tcp_data),
+        )
+        eth_data = dpkt.ethernet.Ethernet(
+            src=b"\x00\x11\x22\x33\x44\x55",
+            dst=b"\x66\x77\x88\x99\xaa\xbb",
+            type=0x0800,
+            data=ip_data,
+        )
         writer.writepkt(bytes(eth_data), ts=time.time() + 0.001)
         writer.close()
 

@@ -23,12 +23,9 @@ auto-detection.
 # This file is part of PEAT and is licensed under GPL-3.0.
 # See LICENSE for details.
 
-
 from __future__ import annotations
 
-import re
 import xml.etree.ElementTree as ET
-from datetime import datetime
 from pathlib import Path
 
 from peat import log
@@ -41,9 +38,25 @@ _GE_USER_COLS = {"user", "username", "user id", "operator"}
 _GE_SOURCE_COLS = {"source", "origin", "interface", "port"}
 
 # GE UR event classification keywords
-_GE_PROTECTION_KW = {"trip", "pickup", "dropout", "overcurrent", "overvoltage",
-                      "undervoltage", "underfrequency", "overfrequency", "fault",
-                      "50", "51", "67", "87", "21", "59", "27", "81"}
+_GE_PROTECTION_KW = {
+    "trip",
+    "pickup",
+    "dropout",
+    "overcurrent",
+    "overvoltage",
+    "undervoltage",
+    "underfrequency",
+    "overfrequency",
+    "fault",
+    "50",
+    "51",
+    "67",
+    "87",
+    "21",
+    "59",
+    "27",
+    "81",
+}
 _GE_AUTH_KW = {"login", "logout", "password", "access", "user", "lockout", "session"}
 _GE_CONFIG_KW = {"setting", "config", "download", "upload", "program", "firmware", "update"}
 
@@ -55,10 +68,14 @@ class GEURLogParser(LogParser):
     vendor = "GE"
     description = "GE Multilin UR relay event and security audit log parser"
     file_patterns = [
-        "*GE*.csv", "*ge*.csv",
-        "*UR*.csv", "*ur*.csv",
-        "*EnerVista*.csv", "*enervista*.csv",
-        "*audit*.csv", "*event*.csv",
+        "*GE*.csv",
+        "*ge*.csv",
+        "*UR*.csv",
+        "*ur*.csv",
+        "*EnerVista*.csv",
+        "*enervista*.csv",
+        "*audit*.csv",
+        "*event*.csv",
     ]
 
     @classmethod
@@ -69,8 +86,14 @@ class GEURLogParser(LogParser):
         lower = sample.lower()
 
         # Check for GE/UR/EnerVista indicators in content
-        ge_indicators = {"ge multilin", "enervista", "universal relay", "ge ur",
-                         "security audit", "multilin"}
+        ge_indicators = {
+            "ge multilin",
+            "enervista",
+            "universal relay",
+            "ge ur",
+            "security audit",
+            "multilin",
+        }
         if any(ind in lower for ind in ge_indicators):
             return True
 
@@ -109,19 +132,21 @@ class GEURLogParser(LogParser):
             if source:
                 extra["source_interface"] = source
 
-            entries.append(ParsedLogEntry(
-                timestamp=timestamp,
-                message=event_text or str(row),
-                original=str(row),
-                source_type="ge_ur_csv",
-                source_file=path.name,
-                action=action,
-                category=category,
-                severity=severity,
-                device_vendor="GE",
-                device_model="Universal Relay",
-                extra=extra,
-            ))
+            entries.append(
+                ParsedLogEntry(
+                    timestamp=timestamp,
+                    message=event_text or str(row),
+                    original=str(row),
+                    source_type="ge_ur_csv",
+                    source_file=path.name,
+                    action=action,
+                    category=category,
+                    severity=severity,
+                    device_vendor="GE",
+                    device_model="Universal Relay",
+                    extra=extra,
+                )
+            )
 
         log.info(f"Parsed {len(entries)} events from GE UR log: {path.name}")
         return entries
@@ -160,40 +185,44 @@ class GESCLParser(LogParser):
             manufacturer = ied.get("manufacturer", "")
             ied_type = ied.get("type", "")
 
-            entries.append(ParsedLogEntry(
-                message=f"IED: {ied_name} ({manufacturer} {ied_type})",
-                original=ET.tostring(ied, encoding="unicode")[:500],
-                source_type="ge_scl_xml",
-                source_file=path.name,
-                action="ied_definition",
-                category="configuration",
-                severity="info",
-                device_vendor=manufacturer or "GE",
-                device_model=ied_type,
-                device_id=ied_name,
-                extra={
-                    "ied_name": ied_name,
-                    "manufacturer": manufacturer,
-                    "type": ied_type,
-                },
-            ))
+            entries.append(
+                ParsedLogEntry(
+                    message=f"IED: {ied_name} ({manufacturer} {ied_type})",
+                    original=ET.tostring(ied, encoding="unicode")[:500],
+                    source_type="ge_scl_xml",
+                    source_file=path.name,
+                    action="ied_definition",
+                    category="configuration",
+                    severity="info",
+                    device_vendor=manufacturer or "GE",
+                    device_model=ied_type,
+                    device_id=ied_name,
+                    extra={
+                        "ied_name": ied_name,
+                        "manufacturer": manufacturer,
+                        "type": ied_type,
+                    },
+                )
+            )
 
             # Extract GOOSE control blocks
             for goose in ied.findall(".//scl:GSEControl", ns) or ied.findall(".//GSEControl"):
                 goose_name = goose.get("name", "")
                 app_id = goose.get("appID", "")
-                entries.append(ParsedLogEntry(
-                    message=f"GOOSE: {goose_name} (appID={app_id}) on {ied_name}",
-                    original=ET.tostring(goose, encoding="unicode")[:500],
-                    source_type="ge_scl_xml",
-                    source_file=path.name,
-                    action="goose_config",
-                    category="configuration",
-                    severity="info",
-                    device_vendor=manufacturer or "GE",
-                    device_id=ied_name,
-                    extra={"goose_name": goose_name, "app_id": app_id},
-                ))
+                entries.append(
+                    ParsedLogEntry(
+                        message=f"GOOSE: {goose_name} (appID={app_id}) on {ied_name}",
+                        original=ET.tostring(goose, encoding="unicode")[:500],
+                        source_type="ge_scl_xml",
+                        source_file=path.name,
+                        action="goose_config",
+                        category="configuration",
+                        severity="info",
+                        device_vendor=manufacturer or "GE",
+                        device_id=ied_name,
+                        extra={"goose_name": goose_name, "app_id": app_id},
+                    )
+                )
 
         log.info(f"Parsed {len(entries)} items from SCL XML: {path.name}")
         return entries

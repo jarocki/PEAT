@@ -11,56 +11,111 @@ synthetic Zeek JSON log fixtures that match real Zeek output format.
 import json
 from pathlib import Path
 
-import pytest
-
 from peat.forensic.zeek import (
+    _ICS_LOG_FILES,
     ZeekAnalysisResult,
-    find_zeek,
+    _extract_mitre_notices,
     _parse_single_zeek_log,
     _parse_zeek_logs,
-    _extract_mitre_notices,
-    _ICS_LOG_FILES,
+    find_zeek,
 )
-
 
 # -- Zeek JSON log fixtures --
 
 ZEEK_CONN_LOG = [
-    {"ts": 1710511425.123, "uid": "CjkHGe1kHbVRe3fNi", "id.orig_h": "192.168.1.100",
-     "id.orig_p": 5000, "id.resp_h": "192.168.1.1", "id.resp_p": 502,
-     "proto": "tcp", "service": "modbus", "duration": 0.5, "orig_bytes": 100, "resp_bytes": 200},
-    {"ts": 1710511426.456, "uid": "CaB4Tt3yFSs3jMPn6f", "id.orig_h": "192.168.1.200",
-     "id.orig_p": 6000, "id.resp_h": "192.168.1.1", "id.resp_p": 44818,
-     "proto": "tcp", "service": "enip", "duration": 1.2, "orig_bytes": 50, "resp_bytes": 150},
+    {
+        "ts": 1710511425.123,
+        "uid": "CjkHGe1kHbVRe3fNi",
+        "id.orig_h": "192.168.1.100",
+        "id.orig_p": 5000,
+        "id.resp_h": "192.168.1.1",
+        "id.resp_p": 502,
+        "proto": "tcp",
+        "service": "modbus",
+        "duration": 0.5,
+        "orig_bytes": 100,
+        "resp_bytes": 200,
+    },
+    {
+        "ts": 1710511426.456,
+        "uid": "CaB4Tt3yFSs3jMPn6f",
+        "id.orig_h": "192.168.1.200",
+        "id.orig_p": 6000,
+        "id.resp_h": "192.168.1.1",
+        "id.resp_p": 44818,
+        "proto": "tcp",
+        "service": "enip",
+        "duration": 1.2,
+        "orig_bytes": 50,
+        "resp_bytes": 150,
+    },
 ]
 
 ZEEK_MODBUS_LOG = [
-    {"ts": 1710511425.123, "uid": "CjkHGe1kHbVRe3fNi", "id.orig_h": "192.168.1.100",
-     "id.resp_h": "192.168.1.1", "func": "READ_HOLDING_REGISTERS",
-     "exception": "", "track_address": 100, "quantity": 10, "unit_id": 1},
-    {"ts": 1710511425.456, "uid": "CjkHGe1kHbVRe3fNi", "id.orig_h": "192.168.1.100",
-     "id.resp_h": "192.168.1.1", "func": "WRITE_SINGLE_REGISTER",
-     "exception": "", "track_address": 40, "quantity": 1, "unit_id": 1},
+    {
+        "ts": 1710511425.123,
+        "uid": "CjkHGe1kHbVRe3fNi",
+        "id.orig_h": "192.168.1.100",
+        "id.resp_h": "192.168.1.1",
+        "func": "READ_HOLDING_REGISTERS",
+        "exception": "",
+        "track_address": 100,
+        "quantity": 10,
+        "unit_id": 1,
+    },
+    {
+        "ts": 1710511425.456,
+        "uid": "CjkHGe1kHbVRe3fNi",
+        "id.orig_h": "192.168.1.100",
+        "id.resp_h": "192.168.1.1",
+        "func": "WRITE_SINGLE_REGISTER",
+        "exception": "",
+        "track_address": 40,
+        "quantity": 1,
+        "unit_id": 1,
+    },
 ]
 
 ZEEK_DNP3_LOG = [
-    {"ts": 1710511427.789, "uid": "D1n3po2BHl8oKq5N8", "id.orig_h": "192.168.1.100",
-     "id.resp_h": "192.168.1.50", "fc_request": "READ", "fc_reply": "RESPONSE",
-     "iin": 0, "objects": 3},
+    {
+        "ts": 1710511427.789,
+        "uid": "D1n3po2BHl8oKq5N8",
+        "id.orig_h": "192.168.1.100",
+        "id.resp_h": "192.168.1.50",
+        "fc_request": "READ",
+        "fc_reply": "RESPONSE",
+        "iin": 0,
+        "objects": 3,
+    },
 ]
 
 ZEEK_NOTICE_LOG_WITH_ACID = [
-    {"ts": 1710511430.000, "note": "ACID::ICS_ATT&CK_T0801",
-     "msg": "MITRE ATT&CK T0801 - Monitor Process State detected on Modbus",
-     "src": "192.168.1.100", "dst": "192.168.1.1", "sub": "Modbus read coils"},
-    {"ts": 1710511431.000, "note": "ACID::ICS_ATT&CK_T0855",
-     "msg": "MITRE ATT&CK T0855 - Unauthorized Command Message",
-     "src": "192.168.1.200", "dst": "192.168.1.1", "sub": "ENIP SendRRData"},
+    {
+        "ts": 1710511430.000,
+        "note": "ACID::ICS_ATT&CK_T0801",
+        "msg": "MITRE ATT&CK T0801 - Monitor Process State detected on Modbus",
+        "src": "192.168.1.100",
+        "dst": "192.168.1.1",
+        "sub": "Modbus read coils",
+    },
+    {
+        "ts": 1710511431.000,
+        "note": "ACID::ICS_ATT&CK_T0855",
+        "msg": "MITRE ATT&CK T0855 - Unauthorized Command Message",
+        "src": "192.168.1.200",
+        "dst": "192.168.1.1",
+        "sub": "ENIP SendRRData",
+    },
 ]
 
 ZEEK_NOTICE_LOG_NORMAL = [
-    {"ts": 1710511432.000, "note": "SSL::Invalid_Server_Cert",
-     "msg": "SSL certificate validation failed", "src": "10.0.0.1", "dst": "10.0.0.2"},
+    {
+        "ts": 1710511432.000,
+        "note": "SSL::Invalid_Server_Cert",
+        "msg": "SSL certificate validation failed",
+        "src": "10.0.0.1",
+        "dst": "10.0.0.2",
+    },
 ]
 
 

@@ -23,19 +23,16 @@ defer deep dissection of those protocols to optional Zeek integration.
 # This file is part of PEAT and is licensed under GPL-3.0.
 # See LICENSE for details.
 
-
 from __future__ import annotations
 
 import json
 import struct
-from collections import defaultdict
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
 from peat import config, log
-
 
 # Well-known ICS protocol ports
 ICS_PORTS: dict[int, str] = {
@@ -218,17 +215,21 @@ def analyze_pcap(
         zeek_result = analyze_with_zeek(pcap_path, output_dir=zeek_dir)
 
         if zeek_result.zeek_available and zeek_result.ics_events:
-            log.info(
-                f"Stage 3: Zeek added {len(zeek_result.ics_events)} ICS events"
-                f"{f', {len(zeek_result.mitre_techniques)} MITRE techniques' if zeek_result.mitre_techniques else ''}"
+            mitre_msg = (
+                f", {len(zeek_result.mitre_techniques)} MITRE techniques"
+                if zeek_result.mitre_techniques
+                else ""
             )
+            log.info(f"Stage 3: Zeek added {len(zeek_result.ics_events)} ICS events{mitre_msg}")
             # Merge Zeek ICS events into result
             for zeek_event in zeek_result.ics_events:
-                result.ics_events.append(ICSEvent(
-                    ics_protocol=zeek_event.get("_zeek_log", "").replace(".log", ""),
-                    description=json.dumps(zeek_event, default=str),
-                    extra=zeek_event,
-                ))
+                result.ics_events.append(
+                    ICSEvent(
+                        ics_protocol=zeek_event.get("_zeek_log", "").replace(".log", ""),
+                        description=json.dumps(zeek_event, default=str),
+                        extra=zeek_event,
+                    )
+                )
 
     # Build asset inventory from flows
     _build_asset_inventory(flows, result)
@@ -318,7 +319,7 @@ def _stage1_triage(
 
                 # Build flow key (bidirectional)
                 flow_key = _flow_key(src_ip, dst_ip, src_port, dst_port, proto)
-                pkt_time = datetime.fromtimestamp(ts, tz=timezone.utc)
+                pkt_time = datetime.fromtimestamp(ts, tz=UTC)
 
                 if flow_key not in flows:
                     ics_proto = _identify_ics_protocol(src_port, dst_port)
@@ -368,7 +369,7 @@ def _stage2_dissect(
     Parses Modbus TCP, DNP3, and EtherNet/IP payloads from collected packets.
     """
     for ts, payload, src_ip, dst_ip, src_port, dst_port in ics_packets:
-        timestamp = datetime.fromtimestamp(ts, tz=timezone.utc)
+        timestamp = datetime.fromtimestamp(ts, tz=UTC)
         ics_proto = _identify_ics_protocol(src_port, dst_port)
 
         events: list[ICSEvent] = []
@@ -380,13 +381,17 @@ def _stage2_dissect(
             events = _dissect_enip(payload, timestamp, src_ip, dst_ip, src_port, dst_port)
         elif ics_proto:
             # Port-identified but no deep parser — record as generic ICS event
-            events = [ICSEvent(
-                timestamp=timestamp,
-                src_ip=src_ip, dst_ip=dst_ip,
-                src_port=src_port, dst_port=dst_port,
-                ics_protocol=ics_proto,
-                description=f"{ics_proto} traffic ({len(payload)} bytes)",
-            )]
+            events = [
+                ICSEvent(
+                    timestamp=timestamp,
+                    src_ip=src_ip,
+                    dst_ip=dst_ip,
+                    src_port=src_port,
+                    dst_port=dst_port,
+                    ics_protocol=ics_proto,
+                    description=f"{ics_proto} traffic ({len(payload)} bytes)",
+                )
+            ]
 
         result.ics_events.extend(events)
 
@@ -409,8 +414,12 @@ _MODBUS_FUNCTIONS: dict[int, str] = {
 
 
 def _dissect_modbus(
-    payload: bytes, timestamp: datetime,
-    src_ip: str, dst_ip: str, src_port: int, dst_port: int,
+    payload: bytes,
+    timestamp: datetime,
+    src_ip: str,
+    dst_ip: str,
+    src_port: int,
+    dst_port: int,
 ) -> list[ICSEvent]:
     """Parse Modbus TCP/IP payload (MBAP header + PDU)."""
     if len(payload) < 8:  # MBAP header is 7 bytes + at least 1 byte PDU
@@ -418,7 +427,7 @@ def _dissect_modbus(
 
     # MBAP Header: transaction_id(2) + protocol_id(2) + length(2) + unit_id(1)
     try:
-        transaction_id, protocol_id, length, unit_id = struct.unpack(">HHHB", payload[:7])
+        transaction_id, protocol_id, _length, unit_id = struct.unpack(">HHHB", payload[:7])
     except struct.error:
         return []
 
@@ -445,18 +454,22 @@ def _dissect_modbus(
         extra["quantity"] = quantity
         desc += f" addr={start_addr} qty={quantity}"
 
-    return [ICSEvent(
-        timestamp=timestamp,
-        src_ip=src_ip, dst_ip=dst_ip,
-        src_port=src_port, dst_port=dst_port,
-        ics_protocol="modbus_tcp",
-        function_code=actual_fc,
-        function_name=fc_name,
-        unit_id=unit_id,
-        description=desc,
-        is_request=is_request,
-        extra=extra,
-    )]
+    return [
+        ICSEvent(
+            timestamp=timestamp,
+            src_ip=src_ip,
+            dst_ip=dst_ip,
+            src_port=src_port,
+            dst_port=dst_port,
+            ics_protocol="modbus_tcp",
+            function_code=actual_fc,
+            function_name=fc_name,
+            unit_id=unit_id,
+            description=desc,
+            is_request=is_request,
+            extra=extra,
+        )
+    ]
 
 
 _DNP3_FUNCTIONS: dict[int, str] = {
@@ -473,8 +486,12 @@ _DNP3_FUNCTIONS: dict[int, str] = {
 
 
 def _dissect_dnp3(
-    payload: bytes, timestamp: datetime,
-    src_ip: str, dst_ip: str, src_port: int, dst_port: int,
+    payload: bytes,
+    timestamp: datetime,
+    src_ip: str,
+    dst_ip: str,
+    src_port: int,
+    dst_port: int,
 ) -> list[ICSEvent]:
     """Parse DNP3 over TCP payload (start bytes + header)."""
     if len(payload) < 10:
@@ -485,7 +502,7 @@ def _dissect_dnp3(
         return []
 
     length = payload[2]
-    control = payload[3]
+    _control = payload[3]
     dst_addr = struct.unpack("<H", payload[4:6])[0]
     src_addr = struct.unpack("<H", payload[6:8])[0]
 
@@ -499,23 +516,31 @@ def _dissect_dnp3(
     fc_name = _DNP3_FUNCTIONS.get(function_code, f"FC 0x{function_code:02x}")
     is_request = function_code < 0x80
 
-    return [ICSEvent(
-        timestamp=timestamp,
-        src_ip=src_ip, dst_ip=dst_ip,
-        src_port=src_port, dst_port=dst_port,
-        ics_protocol="dnp3",
-        function_code=function_code,
-        function_name=fc_name,
-        unit_id=dst_addr,
-        description=f"{fc_name} (src_addr={src_addr}, dst_addr={dst_addr})",
-        is_request=is_request,
-        extra={"src_address": src_addr, "dst_address": dst_addr, "dnp3_length": length},
-    )]
+    return [
+        ICSEvent(
+            timestamp=timestamp,
+            src_ip=src_ip,
+            dst_ip=dst_ip,
+            src_port=src_port,
+            dst_port=dst_port,
+            ics_protocol="dnp3",
+            function_code=function_code,
+            function_name=fc_name,
+            unit_id=dst_addr,
+            description=f"{fc_name} (src_addr={src_addr}, dst_addr={dst_addr})",
+            is_request=is_request,
+            extra={"src_address": src_addr, "dst_address": dst_addr, "dnp3_length": length},
+        )
+    ]
 
 
 def _dissect_enip(
-    payload: bytes, timestamp: datetime,
-    src_ip: str, dst_ip: str, src_port: int, dst_port: int,
+    payload: bytes,
+    timestamp: datetime,
+    src_ip: str,
+    dst_ip: str,
+    src_port: int,
+    dst_port: int,
 ) -> list[ICSEvent]:
     """Parse EtherNet/IP encapsulation header."""
     if len(payload) < 24:  # ENIP header is 24 bytes
@@ -541,20 +566,25 @@ def _dissect_enip(
 
     cmd_name = _ENIP_COMMANDS.get(command, f"Cmd 0x{command:04x}")
 
-    return [ICSEvent(
-        timestamp=timestamp,
-        src_ip=src_ip, dst_ip=dst_ip,
-        src_port=src_port, dst_port=dst_port,
-        ics_protocol="enip",
-        function_code=command,
-        function_name=cmd_name,
-        description=f"{cmd_name} (session=0x{session_handle:08x}, len={length})",
-        is_request=dst_port == 44818,
-        extra={"session_handle": session_handle, "enip_length": length},
-    )]
+    return [
+        ICSEvent(
+            timestamp=timestamp,
+            src_ip=src_ip,
+            dst_ip=dst_ip,
+            src_port=src_port,
+            dst_port=dst_port,
+            ics_protocol="enip",
+            function_code=command,
+            function_name=cmd_name,
+            description=f"{cmd_name} (session=0x{session_handle:08x}, len={length})",
+            is_request=dst_port == 44818,
+            extra={"session_handle": session_handle, "enip_length": length},
+        )
+    ]
 
 
 # -- Utility functions --
+
 
 def _inet_ntoa(packed: bytes) -> str:
     """Convert packed 4-byte IP to dotted notation."""
@@ -648,9 +678,7 @@ def _write_results(result: PcapAnalysisResult, output_dir: Path) -> None:
             log.warning(f"Failed to write inventory: {e}")
 
 
-def _write_fingerprints(
-    fingerprints: dict[str, Any], output_dir: Path
-) -> None:
+def _write_fingerprints(fingerprints: dict[str, Any], output_dir: Path) -> None:
     """Write device fingerprints to a JSON file."""
     fp_path = output_dir / "device-fingerprints.json"
     try:

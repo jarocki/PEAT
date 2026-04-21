@@ -18,20 +18,16 @@ full PEAT initialization.
 # This file is part of PEAT and is licensed under GPL-3.0.
 # See LICENSE for details.
 
-
 from __future__ import annotations
 
 import csv
 import hashlib
 import io
-import re
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
-from typing import Any, Iterator
-
-from peat import log
+from typing import Any
 
 
 @dataclass
@@ -206,7 +202,7 @@ class LogParser(ABC):
             "%d-%b-%Y %H:%M:%S",
         ]
 
-        for fmt in (formats or default_formats):
+        for fmt in formats or default_formats:
             try:
                 return datetime.strptime(ts_str, fmt)
             except ValueError:

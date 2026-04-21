@@ -10,15 +10,13 @@ extraction workflow. The fs parameter in _check_and_extract is unused
 when extract_artifacts=False, so we pass None instead of mocking.
 """
 
-import pytest
-
 from peat.forensic.image import (
+    _EXCLUDED_DIRS,
+    _EXTRA_ICS_PATTERNS,
     ExtractedArtifact,
     ImageAnalysisResult,
     _check_and_extract,
     _get_ics_file_patterns,
-    _EXTRA_ICS_PATTERNS,
-    _EXCLUDED_DIRS,
 )
 
 

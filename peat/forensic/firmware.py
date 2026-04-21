@@ -19,10 +19,8 @@ the extracted artifacts to `peat forensic` or `peat parse`.
 # This file is part of PEAT and is licensed under GPL-3.0.
 # See LICENSE for details.
 
-
 from __future__ import annotations
 
-import io
 import json
 import struct
 import zlib
@@ -31,7 +29,6 @@ from pathlib import Path
 from typing import Any
 
 from peat import config, log
-
 
 # Magic byte signatures for embedded filesystems and formats
 SIGNATURES: dict[str, bytes] = {
