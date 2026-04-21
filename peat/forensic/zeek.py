@@ -190,6 +190,11 @@ def _run_zeek(
     result: ZeekAnalysisResult,
 ) -> bool:
     """Execute Zeek against a PCAP file."""
+    if not pcap_path.is_file():
+        log.error(f"PCAP file not found: {pcap_path}")
+        result.errors.append(f"PCAP file not found: {pcap_path}")
+        return False
+
     cmd = [
         zeek_bin,
         "-C",  # Ignore checksum errors (common in forensic captures)

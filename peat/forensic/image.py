@@ -568,10 +568,28 @@ def _extract_artifact(
     artifact: ExtractedArtifact,
     output_dir: Path,
 ) -> ExtractedArtifact:
-    """Extract a file from the forensic image to the output directory."""
+    """Extract a file from the forensic image to the output directory.
+
+    @decision DEC-SEC-001
+    @title Path traversal prevention in disk image extraction
+    @status accepted
+    @rationale Forensic disk images from untrusted sources may contain
+        files with paths like '../../etc/passwd' designed to write outside
+        the output directory. We resolve the destination path and validate
+        it stays within output_dir before any I/O occurs.
+    """
     # Sanitize the virtual path for use as a local path
     safe_path = virtual_path.lstrip("/").replace("\\", "/")
     dest = output_dir / safe_path
+    # Prevent path traversal — resolved path must stay within output_dir
+    try:
+        dest = dest.resolve()
+        if not dest.is_relative_to(output_dir.resolve()):
+            log.warning(f"Path traversal blocked: {virtual_path}")
+            return artifact
+    except (ValueError, OSError):
+        log.warning(f"Invalid path blocked: {virtual_path}")
+        return artifact
     dest.parent.mkdir(parents=True, exist_ok=True)
 
     try:
