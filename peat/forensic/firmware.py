@@ -30,6 +30,11 @@ from typing import Any
 
 from peat import config, log
 
+# Maximum decompressed size (100 MB) to prevent decompression bombs
+_MAX_DECOMPRESS_SIZE = 100 * 1024 * 1024  # 100 MB
+# Maximum compression ratio before flagging as suspicious
+_MAX_DECOMPRESS_RATIO = 100  # 100:1 ratio
+
 # Magic byte signatures for embedded filesystems and formats
 SIGNATURES: dict[str, bytes] = {
     "vxworks_estfbinr": b"ESTFBINR",
@@ -233,6 +238,58 @@ def _extract_region(
         result.errors.append(error_msg)
 
 
+def _safe_decompress(data: bytes, wbits: int = zlib.MAX_WBITS) -> bytes | None:
+    """Decompress with size limit to prevent decompression bombs.
+
+    Returns decompressed bytes or None if limits are exceeded.
+
+    @decision DEC-SEC-002
+    @title Safe decompression with bomb detection
+    @status accepted
+    @rationale Firmware binaries from untrusted sources may contain
+        decompression bombs (small compressed payloads that expand to
+        gigabytes). Incremental decompression with size and ratio checks
+        prevents memory exhaustion while still handling legitimate data.
+    """
+    obj = zlib.decompressobj(wbits)
+    chunks: list[bytes] = []
+    total_size = 0
+    # Process in 64KB chunks
+    chunk_size = 65536
+    pos = 0
+    try:
+        while pos < len(data):
+            chunk = obj.decompress(data[pos : pos + chunk_size], _MAX_DECOMPRESS_SIZE - total_size)
+            total_size += len(chunk)
+            chunks.append(chunk)
+            pos += chunk_size
+            if total_size > _MAX_DECOMPRESS_SIZE:
+                log.warning(
+                    f"Decompression bomb detected: output exceeds {_MAX_DECOMPRESS_SIZE:,} bytes"
+                )
+                return None
+            # Check ratio
+            if pos > 0 and total_size > pos * _MAX_DECOMPRESS_RATIO:
+                log.warning(
+                    f"Suspicious compression ratio ({total_size}/{pos} = {total_size / pos:.0f}:1)"
+                )
+                return None
+        # Flush remaining
+        chunk = obj.flush()
+        total_size += len(chunk)
+        chunks.append(chunk)
+        if total_size > _MAX_DECOMPRESS_SIZE:
+            log.warning(
+                f"Decompression bomb detected: output exceeds {_MAX_DECOMPRESS_SIZE:,} bytes"
+            )
+            return None
+    except zlib.error:
+        if chunks:
+            return b"".join(chunks)  # Return partial data
+        return None
+    return b"".join(chunks)
+
+
 def _extract_vxworks(
     data: bytes,
     offset: int,
@@ -247,9 +304,12 @@ def _extract_vxworks(
     """
     payload_start = offset + 8  # Skip "ESTFBINR"
 
-    # Try to decompress the payload
+    # Try to decompress the payload (with bomb protection)
     try:
-        decompressed = zlib.decompress(data[payload_start:])
+        decompressed = _safe_decompress(data[payload_start:])
+        if decompressed is None:
+            log.warning(f"VxWorks decompression failed or exceeded limits at 0x{offset:08x}")
+            raise zlib.error("size limit exceeded")
         out_path = output_dir / f"vxworks_0x{offset:08x}_decompressed.bin"
         out_path.write_bytes(decompressed)
         region.size = len(decompressed)
@@ -281,10 +341,11 @@ def _extract_compressed(
 ) -> None:
     """Extract zlib or gzip compressed data."""
     try:
-        if sig_type == "gzip":
-            decompressed = zlib.decompress(data[offset:], zlib.MAX_WBITS | 16)
-        else:
-            decompressed = zlib.decompress(data[offset:])
+        wbits = (zlib.MAX_WBITS | 16) if sig_type == "gzip" else zlib.MAX_WBITS
+        decompressed = _safe_decompress(data[offset:], wbits)
+        if decompressed is None:
+            log.warning(f"Decompression of {sig_type} at 0x{offset:08x} exceeded size limits")
+            return
 
         out_path = output_dir / f"{sig_type}_0x{offset:08x}_decompressed.bin"
         out_path.write_bytes(decompressed)
